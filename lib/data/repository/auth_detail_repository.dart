@@ -7,18 +7,21 @@ class UserAuthDetailRepository {
     return _authDetail ?? UserAuthDetail.empty();
   }
 
-  void initUserAuthDetail(
-      {required String fullName,
-      required String phoneNumber,
-      required String password}) {
+  void setUserPhone({
+    required String phoneNumber,
+  }) {
     _authDetail ??= UserAuthDetail.empty();
-    _authDetail = _authDetail?.copyWith(
-        fullName: fullName, phoneNumber: phoneNumber, password: password);
+    _authDetail = _authDetail?.copyWith(phoneNumber: phoneNumber);
   }
 
-  void updateUserRole({required SelectedRole role}) {
+  void setUserRole({required SelectedRole role}) {
     _authDetail ??= UserAuthDetail.empty();
     _authDetail = _authDetail?.copyWith(role: role);
+  }
+
+  void setUserPassword(String password) {
+    _authDetail ??= UserAuthDetail.empty();
+    _authDetail = _authDetail?.copyWith(password: password);
   }
 
   SelectedRole getUserRole() {

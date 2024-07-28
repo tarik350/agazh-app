@@ -7,28 +7,30 @@ abstract class PersonalInfoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EmailChanged extends PersonalInfoEvent {
-  final String email;
-  const EmailChanged(this.email);
-
-  @override
-  List<Object> get props => [email];
-}
-
-class NameChanged extends PersonalInfoEvent {
+class FullNameChanged extends PersonalInfoEvent {
   final String name;
-  const NameChanged(this.name);
+  const FullNameChanged(this.name);
 
   @override
   List<Object> get props => [name];
 }
 
-class PhoneNumberChanged extends PersonalInfoEvent {
-  final String phoneNumber;
-  const PhoneNumberChanged(this.phoneNumber);
+class FamilySizeChanged extends PersonalInfoEvent {
+  final String familySize;
+
+  const FamilySizeChanged(this.familySize);
+  @override
+  List<Object> get props => [familySize];
+}
+
+class IdCardChanged extends PersonalInfoEvent {
+  final Uint8List file;
+  final String path;
+
+  const IdCardChanged({required this.file, required this.path});
 
   @override
-  List<Object> get props => [phoneNumber];
+  List<Object> get props => [file, path];
 }
 
 class FormSubmitted extends PersonalInfoEvent {}

@@ -29,9 +29,9 @@ class AddressInfoForm extends StatelessWidget {
           _HouseNumberInput(),
           const SizedBox(height: 12.0),
           // _HouseNumberInput(),
+          // // const SizedBox(height: 12.0),
+          // _FamilySizeInput(),
           // const SizedBox(height: 12.0),
-          _FamilySizeInput(),
-          const SizedBox(height: 12.0),
           //replace this with image uploader vierw
           _IdCardInput(),
           const SizedBox(height: 12.0),
@@ -71,26 +71,26 @@ class _HouseNumberInput extends StatelessWidget {
   }
 }
 
-class _FamilySizeInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AddressInfoBloc, AddressInfoState>(
-      buildWhen: (previous, current) =>
-          previous.familySize != current.familySize,
-      builder: (context, state) {
-        return CustomTextfield(
-            hintText: "Family Size",
-            obscureText: false,
-            onChanged: (familySize) => context
-                .read<AddressInfoBloc>()
-                .add(FamilySizeChanged(familySize)),
-            keyString: "billingAddressForm_apartmentInput_textField",
-            inputType: TextInputType.text,
-            errorText: null);
-      },
-    );
-  }
-}
+// class _FamilySizeInput extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<AddressInfoBloc, AddressInfoState>(
+//       buildWhen: (previous, current) =>
+//           previous.familySize != current.familySize,
+//       builder: (context, state) {
+//         return CustomTextfield(
+//             hintText: "Family Size",
+//             obscureText: false,
+//             onChanged: (familySize) => context
+//                 .read<AddressInfoBloc>()
+//                 .add(FamilySizeChanged(familySize)),
+//             keyString: "billingAddressForm_apartmentInput_textField",
+//             inputType: TextInputType.text,
+//             errorText: null);
+//       },
+//     );
+//   }
+// }
 
 class _CityInput extends StatelessWidget {
   @override

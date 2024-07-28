@@ -26,99 +26,17 @@ class RegisterForm extends StatelessWidget {
             );
         }
       },
-      child: Padding(
-        padding: EdgeInsets.all(28.w),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100.r),
-                  child: ClipOval(
-                    child: SizedBox.fromSize(
-                      size: Size.fromRadius(100.r),
-                      child: Image.asset(
-                        "assets/images/placeholder.jpg",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              Center(
-                child: Text(
-                  "Welcolme to \nCompany Name.",
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Center(
-                child: Text(
-                  'all in one platform for to find and get a job',
-                  style: TextStyle(
-                      color: AppColors.primaryColor.withOpacity(.8),
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic),
-                ),
-              ),
-              SizedBox(
-                height: 50.h,
-              ),
-              const _FullNameInput(),
-              SizedBox(
-                height: 12.h,
-              ),
-              _PhoneNumberInput(),
-              SizedBox(
-                height: 12.h,
-              ),
-              const _PasswordInput(),
-              SizedBox(
-                height: 40.h,
-              ),
-              const _SubmitButton()
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 12.h,
           ),
-        ),
+          _PhoneNumberInput(),
+          const Spacer(),
+          const _SubmitButton()
+        ],
       ),
-    );
-  }
-}
-
-class _FullNameInput extends StatelessWidget {
-  const _FullNameInput({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      builder: (context, state) {
-        return BlocBuilder<RegisterBloc, RegisterState>(
-          buildWhen: (previous, current) =>
-              previous.fullName != current.fullName,
-          builder: (context, state) {
-            return CustomTextfield(
-              hintText: 'Full Name',
-              obscureText: false,
-              onChanged: (fullName) =>
-                  context.read<RegisterBloc>().add(FullNameChanged(fullName)),
-              keyString: 'registerForm_fullNameInput_textfield',
-              inputType: TextInputType.text,
-              errorText:
-                  state.fullName.invalid ? state.fullName.error?.message : null,
-            );
-          },
-        );
-      },
     );
   }
 }
@@ -131,6 +49,11 @@ class _PhoneNumberInput extends StatelessWidget {
           previous.phoneNumber != current.phoneNumber,
       builder: (context, state) {
         return CustomTextfield(
+            suffix: Image.asset(
+              "assets/images/image1.png",
+              width: 12,
+              height: 12,
+            ),
             obscureText: false,
             inputType: TextInputType.phone,
             onChanged: (phone) =>
@@ -140,28 +63,6 @@ class _PhoneNumberInput extends StatelessWidget {
             errorText: state.phoneNumber.invalid
                 ? state.phoneNumber.error!.message
                 : null);
-      },
-    );
-  }
-}
-
-class _PasswordInput extends StatelessWidget {
-  const _PasswordInput({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      buildWhen: (previous, current) => previous.password != current.password,
-      builder: (context, state) {
-        return CustomTextfield(
-            hintText: "Password",
-            obscureText: false,
-            onChanged: (password) =>
-                context.read<RegisterBloc>().add(PasswordChanged(password)),
-            keyString: "registerForm_passwordInput_textField",
-            inputType: TextInputType.text,
-            errorText:
-                state.password.invalid ? state.password.error?.message : null);
       },
     );
   }
@@ -184,9 +85,32 @@ class _SubmitButton extends StatelessWidget {
               ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted())
               : null,
           lable: "Regsiter",
-          backgroundColor: Colors.black,
+          backgroundColor: AppColors.primaryColor,
         );
       },
     );
   }
 }
+
+
+// class _PasswordInput extends StatelessWidget {
+//   const _PasswordInput({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<RegisterBloc, RegisterState>(
+//       buildWhen: (previous, current) => previous.password != current.password,
+//       builder: (context, state) {
+//         return CustomTextfield(
+//             hintText: "Password",
+//             obscureText: false,
+//             onChanged: (password) =>
+//                 context.read<RegisterBloc>().add(PasswordChanged(password)),
+//             keyString: "registerForm_passwordInput_textField",
+//             inputType: TextInputType.text,
+//             errorText:
+//                 state.password.invalid ? state.password.error?.message : null);
+//       },
+//     );
+//   }
+// }

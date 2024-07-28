@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: const [Locale('en', 'US'), Locale('am', 'ET')],
         locale: context.locale,
-        title: 'Flutter Demo',
         theme: ThemeData(fontFamily: "Mulish"),
         home: ScreenUtilInit(
             designSize: const Size(360, 800),

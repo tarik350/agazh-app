@@ -12,16 +12,17 @@ class OtpCubit extends Cubit<OtpState> {
   void submitOptRequest(String verificationId) async {
     emit(state.copyWith(status: OtpStatus.submissionInProgress));
     try {
-      // final response =
-      // await _authService.verifyOtp(state.otpString, verificationId);
-      emit(state.copyWith(status: OtpStatus.submissionSuccess));
-      // if (response == true) {
-      //   // emit(OtpSuccessState());
-      // } else {
-      //   // emit(OtpFailedState("Error verifying OTP"));
-      //   emit(state.copyWith(status: OtpStatus.submissionFailure));
-      // }
+      final response =
+          await _authService.verifyOtp(state.otpString, verificationId);
+      if (response == true) {
+        emit(state.copyWith(status: OtpStatus.submissionSuccess));
+        //   // emit(OtpSuccessState());
+      } else {
+        //   // emit(OtpFailedState("Error verifying OTP"));
+        emit(state.copyWith(status: OtpStatus.submissionFailure));
+      }
     } catch (e) {
+      emit(state.copyWith(status: OtpStatus.submissionFailure));
       // emit(OtpFailedState(e.toString()));
     }
   }
@@ -31,6 +32,7 @@ class OtpCubit extends Cubit<OtpState> {
   }
 
   void onOtpStringChange(String value) {
-    emit(state.copyWith(status: OtpStatus.invalid));
+    if (state.otpString.length != 6) {}
+    // eit(state.copyWith(status: OtpStatus.invalid));
   }
 }

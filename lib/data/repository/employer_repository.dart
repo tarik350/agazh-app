@@ -10,22 +10,21 @@ class EmployerRepositroy {
   }
 
   void updatePersonalInfo(
-      {required String name,
-      required String email,
-      required String phoneNumber,
+      {required String fullName,
+      required String idCardPathString,
       required UserAuthDetail userAuthDetail}) async {
     _user ??= Employeer.empty();
 
     _user = _user?.copyWith(
       userAuthDetail: userAuthDetail,
       personalInfo:
-          PersonalInfo(name: name, email: email, phoneNumber: phoneNumber),
+          PersonalInfo(fullName: fullName, idCardPathString: idCardPathString),
     );
   }
 
   void updateAddressInfo({
     required String houseNumber,
-    required String familySize,
+    // required String familySize,
     required String city,
     required String idCardImage,
   }) async {
@@ -33,7 +32,7 @@ class EmployerRepositroy {
     _user = _user?.copyWith(
       addressInfo: AddressInfo(
         houseNumber: houseNumber,
-        familySize: familySize,
+        // familySize: familySize,
         city: city,
         idCardImage: idCardImage,
       ),
@@ -49,7 +48,6 @@ class EmployerRepositroy {
     _user ??= Employeer.empty();
     _user = _user?.copyWith(
       userAuthDetail: UserAuthDetail(
-        fullName: fullName,
         phoneNumber: phoneNumber,
         password: password,
         role: role,

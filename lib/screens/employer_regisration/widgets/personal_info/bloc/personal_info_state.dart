@@ -1,32 +1,37 @@
 part of 'personal_info_bloc.dart';
 
+enum IDCardUploadStatus { loading, completed, failed, pure }
+
 class PersonalInfoState extends Equatable {
   const PersonalInfoState({
-    this.email = const Email.pure(),
-    this.name = const Name.pure(),
-    this.phoneNumber = const PhoneNumber.pure(),
+    this.fullName = const FullName.pure(),
+    this.familySize = const FamilySize.pure(),
+    this.idCardPathString = '',
+    this.idCardUploadStatus = IDCardUploadStatus.pure,
     this.status = FormzStatus.pure,
   });
 
-  final Email email;
-  final Name name;
-  final PhoneNumber phoneNumber;
   final FormzStatus status;
+  final FullName fullName;
+  final FamilySize familySize;
+  final String idCardPathString;
+  final IDCardUploadStatus idCardUploadStatus;
 
-  PersonalInfoState copyWith({
-    Email? email,
-    Name? name,
-    PhoneNumber? phoneNumber,
-    FormzStatus? status,
-  }) {
+  PersonalInfoState copyWith(
+      {FullName? fullName,
+      FormzStatus? status,
+      String? idCardPathString,
+      IDCardUploadStatus? idCardUploadStatus,
+      FamilySize? familySize}) {
     return PersonalInfoState(
-      email: email ?? this.email,
-      name: name ?? this.name,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      status: status ?? this.status,
-    );
+        fullName: fullName ?? this.fullName,
+        idCardUploadStatus: idCardUploadStatus ?? this.idCardUploadStatus,
+        status: status ?? this.status,
+        familySize: familySize ?? this.familySize,
+        idCardPathString: idCardPathString ?? this.idCardPathString);
   }
 
   @override
-  List<Object> get props => [email, name, phoneNumber, status];
+  List<Object> get props =>
+      [familySize, fullName, idCardUploadStatus, idCardPathString, status];
 }

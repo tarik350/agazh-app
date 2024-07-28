@@ -1,15 +1,13 @@
 part of 'register_bloc.dart';
 
 class RegisterState extends Equatable {
-  final FullName fullName;
   final PhoneNumber phoneNumber;
-  final Password password;
+  // final Password password;
   final FormzStatus status;
   final String? errorMessage;
   final String? verificationId;
   const RegisterState({
-    this.fullName = const FullName.pure(),
-    this.password = const Password.pure(),
+    // this.password = const Password.pure(),
     this.status = FormzStatus.pure,
     this.errorMessage,
     this.verificationId,
@@ -28,21 +26,20 @@ class RegisterState extends Equatable {
     }
 
     return RegisterState(
-        fullName: fullName ?? this.fullName,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
-        status: status ?? this.status,
-        errorMessage: status == FormzStatus.submissionFailure
-            ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
-            : errorMessage ?? this.errorMessage,
-        verificationId: verificationId ?? this.verificationId,
-        password: password ?? this.password);
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      status: status ?? this.status,
+      errorMessage: status == FormzStatus.submissionFailure
+          ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
+          : errorMessage ?? this.errorMessage,
+      verificationId: verificationId ?? this.verificationId,
+      // password: password ?? this.password
+    );
   }
 
   @override
   List<dynamic> get props => [
-        fullName,
         phoneNumber,
-        password,
+        // password,
         status,
         errorMessage,
       ];

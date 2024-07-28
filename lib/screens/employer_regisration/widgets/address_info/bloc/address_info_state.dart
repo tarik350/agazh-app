@@ -3,7 +3,7 @@ part of 'address_info_bloc.dart';
 class AddressInfoState extends Equatable {
   const AddressInfoState({
     this.houseNumber = const HouseNumber.pure(),
-    this.familySize = const FamilySize.pure(),
+    // this.familySize = const FamilySize.pure(),
     this.city = const City.pure(),
     // this.country = const Country.pure(),
     this.idCardIage = const IdCardImage.pure(),
@@ -11,7 +11,7 @@ class AddressInfoState extends Equatable {
   });
 
   final HouseNumber houseNumber;
-  final FamilySize familySize;
+  // final FamilySize familySize;
   final City city;
   // final Country country;
   final IdCardImage idCardIage;
@@ -19,7 +19,7 @@ class AddressInfoState extends Equatable {
 
   AddressInfoState copyWith({
     HouseNumber? houseNumber,
-    FamilySize? familySize,
+    // FamilySize? familySize,
     City? city,
     // Country? country,
     IdCardImage? idCardIage,
@@ -27,7 +27,7 @@ class AddressInfoState extends Equatable {
   }) {
     return AddressInfoState(
       houseNumber: houseNumber ?? this.houseNumber,
-      familySize: familySize ?? this.familySize,
+      // familySize: familySize ?? this.familySize,
       city: city ?? this.city,
       // country: country ?? this.country,
       idCardIage: idCardIage ?? this.idCardIage,
@@ -36,5 +36,5 @@ class AddressInfoState extends Equatable {
   }
 
   @override
-  List<Object> get props => [houseNumber, familySize, city, idCardIage, status];
+  List<Object> get props => [houseNumber, city, idCardIage, status];
 }

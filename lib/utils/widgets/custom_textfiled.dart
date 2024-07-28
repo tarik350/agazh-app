@@ -4,23 +4,24 @@ class CustomTextfield extends StatelessWidget {
   // final controller;
   final String hintText;
   final bool obscureText;
-  final Function(String) onChanged;
+  final Function(dynamic) onChanged;
   final String keyString;
   final String? errorText;
   final TextInputType inputType;
   final String? initialValue;
+  final Widget? suffix;
 
-  const CustomTextfield({
-    super.key,
-    // required this.controller,
-    this.initialValue,
-    required this.hintText,
-    required this.obscureText,
-    required this.onChanged,
-    required this.keyString,
-    required this.inputType,
-    required this.errorText,
-  });
+  const CustomTextfield(
+      {super.key,
+      // required this.controller,
+      this.initialValue,
+      required this.hintText,
+      required this.obscureText,
+      required this.onChanged,
+      required this.keyString,
+      required this.inputType,
+      required this.errorText,
+      this.suffix});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +29,13 @@ class CustomTextfield extends StatelessWidget {
       // controller: controller,
       initialValue: initialValue,
       obscureText: obscureText,
+
       key: Key(keyString),
       onChanged: onChanged,
       keyboardType: TextInputType.emailAddress,
+
       decoration: InputDecoration(
+          suffix: suffix,
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),

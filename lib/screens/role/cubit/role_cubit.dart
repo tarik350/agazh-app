@@ -14,7 +14,7 @@ class RoleCubit extends Cubit<RoleState> {
       : super(const RoleState());
 
   void setUserRole() {
-    userAuthDetailRepository.updateUserRole(role: state.role);
+    userAuthDetailRepository.setUserRole(role: state.role);
     emit(state.copyWith(status: RoleSubmissionStatus.submit));
   }
 

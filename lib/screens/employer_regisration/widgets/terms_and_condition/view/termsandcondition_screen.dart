@@ -22,15 +22,15 @@ class TermsAndConditionScreen extends StatelessWidget {
             children: [
               // const Text('terms and conditions'),
               const _CustomHeader('Personal Information'),
-              _CustomText('Name', user.personalInfo.name),
-              _CustomText('Email', user.personalInfo.email),
-              _CustomText('Phone Number', user.personalInfo.phoneNumber),
+              // _CustomText('Name', user.personalInfo.name),
+              // _CustomText('Email', user.personalInfo.email),
+              // _CustomText('Phone Number', user.personalInfo.phoneNumber),
               const SizedBox(height: 12.0),
-              const _CustomHeader('Billing Address'),
-              _CustomText('city', user.addressInfo.city),
-              _CustomText('family size', user.addressInfo.familySize),
-              _CustomText('house number', user.addressInfo.houseNumber),
-              _CustomText('id card image ', user.addressInfo.idCardImage),
+              // const _CustomHeader('Billing Address'),
+              // _CustomText('city', user.addressInfo.city),
+              // _CustomText('family size', user.addressInfo.familySize),
+              // _CustomText('house number', user.addressInfo.houseNumber),
+              // _CustomText('id card image ', user.addressInfo.idCardImage),
               _CustomText(
                   "role",
                   user.userAuthDetail.role == SelectedRole.employee

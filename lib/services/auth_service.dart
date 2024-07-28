@@ -15,7 +15,7 @@ class AuthService {
   String? phone;
   bool? isAuthenticated;
   UserModel? user;
-  final _firestoreService = FirestoreService();
+  final _firestoreService = FirebaseService();
 
   // AuthService.instance() : isAuthenticated = false;
 

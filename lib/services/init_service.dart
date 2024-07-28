@@ -8,9 +8,9 @@ final getit = GetIt.instance;
 Future<void> initApp() async {
   final authService = AuthService();
   final roleService = RoleService();
-  final firestoreService = FirestoreService();
+  final firestoreService = FirebaseService();
 
   getit.registerSingleton<AuthService>(authService);
   getit.registerSingleton<RoleService>(roleService);
-  getit.registerSingleton<FirestoreService>(firestoreService);
+  getit.registerSingleton<FirebaseService>(firestoreService);
 }

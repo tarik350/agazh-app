@@ -48,66 +48,58 @@ class Employeer extends Equatable {
 
 class PersonalInfo extends Equatable {
   const PersonalInfo({
-    required this.name,
-    required this.email,
-    required this.phoneNumber,
+    required this.fullName,
+    required this.idCardPathString,
   });
 
-  final String name;
-  final String email;
-  final String phoneNumber;
+  final String fullName;
+  final String idCardPathString;
 
   factory PersonalInfo.empty() {
     return const PersonalInfo(
-      name: '',
-      email: '',
-      phoneNumber: '',
+      fullName: '',
+      idCardPathString: '',
     );
   }
 
   PersonalInfo copyWith({
-    String? name,
-    String? email,
-    String? phoneNumber,
+    String? fullName,
+    String? idCardPathString,
   }) {
     return PersonalInfo(
-      name: name ?? this.name,
-      email: email ?? this.email,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
+      fullName: fullName ?? this.fullName,
+      idCardPathString: idCardPathString ?? this.idCardPathString,
     );
   }
 
   factory PersonalInfo.fromJson(Map<String, dynamic> json) {
     return PersonalInfo(
-      name: json['name'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'],
+      fullName: json['fullName'],
+      idCardPathString: json['idCardPathString'],
     );
   }
 
-  // toJson method
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'email': email,
-      'phoneNumber': phoneNumber,
+      'fullName': fullName,
+      'idCardPathString': idCardPathString,
     };
   }
 
   @override
-  List<Object?> get props => [name, email, phoneNumber];
+  List<Object?> get props => [fullName, idCardPathString];
 }
 
 class AddressInfo extends Equatable {
   const AddressInfo({
     required this.houseNumber,
-    required this.familySize,
+    // required this.familySize,
     required this.city,
     required this.idCardImage,
   });
 
   final String houseNumber;
-  final String familySize;
+  // final String familySize;
   final String city;
 
   final String idCardImage;
@@ -115,7 +107,7 @@ class AddressInfo extends Equatable {
   factory AddressInfo.empty() {
     return const AddressInfo(
       houseNumber: '',
-      familySize: '',
+      // familySize: '',
       city: '',
       idCardImage: '',
     );
@@ -129,7 +121,7 @@ class AddressInfo extends Equatable {
   }) {
     return AddressInfo(
       houseNumber: houseNumber ?? this.houseNumber,
-      familySize: familySize ?? this.familySize,
+      // familySize: familySize ?? this.familySize,
       city: city ?? this.city,
       idCardImage: idCardImage ?? this.idCardImage,
     );
@@ -138,7 +130,7 @@ class AddressInfo extends Equatable {
   factory AddressInfo.fromJson(Map<String, dynamic> json) {
     return AddressInfo(
       houseNumber: json['houseNumber'],
-      familySize: json['familySize'],
+      // familySize: json['familySize'],
       city: json['city'],
       idCardImage: json['idCardImage'],
     );
@@ -148,14 +140,14 @@ class AddressInfo extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'houseNumber': houseNumber,
-      'familySize': familySize,
+      // 'familySize': familySize,
       'city': city,
       'idCardImage': idCardImage
     };
   }
 
   @override
-  List<Object?> get props => [houseNumber, familySize, city, idCardImage];
+  List<Object?> get props => [houseNumber, city, idCardImage];
 }
 
 class Payment extends Equatable {

@@ -15,18 +15,11 @@ class PhoneNumberChanged extends RegisterEvent {
   List<Object> get props => [phoneNumber];
 }
 
-class FullNameChanged extends RegisterEvent {
-  final String fullName;
-  const FullNameChanged(this.fullName);
-  @override
-  List<Object> get props => [fullName];
-}
-
-class PasswordChanged extends RegisterEvent {
-  final String password;
-  const PasswordChanged(this.password);
-  @override
-  List<Object> get props => [password];
-}
+// class PasswordChanged extends RegisterEvent {
+//   final String password;
+//   const PasswordChanged(this.password);
+//   @override
+//   List<Object> get props => [password];
+// }
 
 class RegisterFormSubmitted extends RegisterEvent {}

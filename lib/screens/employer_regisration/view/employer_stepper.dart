@@ -1,6 +1,8 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/view/address_info_page.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/view/personal_info_page.dart';
@@ -19,23 +21,61 @@ class EmployerStepper extends StatelessWidget {
             child: Column(
               children: [
                 EasyStepper(
+                  stepRadius: 30.r,
+                  // internalPadding: 50,
+                  lineStyle: LineStyle(
+                      activeLineColor: AppColors.primaryColor,
+                      unreachedLineColor: Colors.grey.shade500),
                   direction: Axis.horizontal,
-                  enableStepTapping: true,
+                  showScrollbar: false,
+                  showTitle: false,
                   activeStep: state.activeStepperIndex,
+                  borderThickness: 14.sp,
+                  activeStepBorderColor: AppColors.primaryColor,
+                  unreachedStepBorderColor: Colors.grey.shade500,
+                  showLoadingAnimation: false,
+                  activeStepIconColor: AppColors.primaryColor,
+                  finishedStepBackgroundColor: AppColors.succesColor,
                   onStepReached: (index) {
                     // context.read<EmployerRegistrationCubit>().stepTapped(index);
                   },
                   steps: const [
-                    EasyStep(icon: Icon(Icons.ondemand_video)),
-                    EasyStep(icon: Icon(Icons.ondemand_video)),
-                    EasyStep(icon: Icon(Icons.ondemand_video)),
+                    EasyStep(
+                        icon: Icon(Icons.person),
+                        finishIcon: Icon(
+                          Icons.check_circle,
+                          color: AppColors.succesColor,
+                        ),
+                        title: "Personal information"),
+                    EasyStep(
+                        icon: Icon(
+                          Icons.location_on_rounded,
+                        ),
+                        finishIcon: Icon(
+                          Icons.check_circle,
+                          color: AppColors.succesColor,
+                        ),
+                        topTitle: true,
+                        title: "Demography"),
+                    EasyStep(
+                        icon: Icon(
+                          Icons.policy,
+                        ),
+                        topTitle: true,
+                        title: "Demography"),
+                    // EasyStep(icon: Icon(Icons.ondemand_video)),
                   ],
                 ),
-                state.activeStepperIndex == 0
-                    ? const PersonalInfoScreen()
-                    : state.activeStepperIndex == 1
-                        ? const AddressInfoScreen()
-                        : const TermsAndConditionScreen()
+                SizedBox(
+                  height: 30.h,
+                ),
+                Container(
+                  child: state.activeStepperIndex == 0
+                      ? const PersonalInfoScreen()
+                      : state.activeStepperIndex == 1
+                          ? const AddressInfoScreen()
+                          : const TermsAndConditionScreen(),
+                )
               ],
             ),
           ),

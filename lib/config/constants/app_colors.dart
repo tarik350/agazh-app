@@ -6,7 +6,8 @@ class AppColors {
   //
   // static final Color  = Colors.purple.shade500;
   static final Color navBarSecondaryColor = Colors.amber.shade800;
-  static final Color lightGreen = Colors.green.shade400;
+  static const Color succesColor = Color.fromARGB(255, 32, 199, 38);
+  static const Color errorColor = Color.fromARGB(255, 241, 87, 76);
   static const Color whiteColor = Colors.white;
   static const Color blackColor = Colors.black;
 }

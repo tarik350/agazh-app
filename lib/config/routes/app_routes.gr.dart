@@ -58,7 +58,8 @@ abstract class $AppRouter extends _i9.RootStackRouter {
       );
     },
     OtpRoute.name: (routeData) {
-      final args = routeData.argsAs<OtpRouteArgs>();
+      final args =
+          routeData.argsAs<OtpRouteArgs>(orElse: () => const OtpRouteArgs());
       return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i6.OtpScreen(
@@ -157,7 +158,7 @@ class OnboardingRoute extends _i9.PageRouteInfo<void> {
 class OtpRoute extends _i9.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     _i10.Key? key,
-    required String verificationId,
+    String verificationId = "verification id",
     List<_i9.PageRouteInfo>? children,
   }) : super(
           OtpRoute.name,
@@ -177,7 +178,7 @@ class OtpRoute extends _i9.PageRouteInfo<OtpRouteArgs> {
 class OtpRouteArgs {
   const OtpRouteArgs({
     this.key,
-    required this.verificationId,
+    this.verificationId = "verification id",
   });
 
   final _i10.Key? key;
