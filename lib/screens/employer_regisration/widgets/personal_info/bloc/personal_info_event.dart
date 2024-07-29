@@ -33,4 +33,14 @@ class IdCardChanged extends PersonalInfoEvent {
   List<Object> get props => [file, path];
 }
 
+class ProfilePictureChanged extends PersonalInfoEvent {
+  final Uint8List file;
+  final String path;
+
+  const ProfilePictureChanged({required this.file, required this.path});
+
+  @override
+  List<Object> get props => [file, path];
+}
+
 class FormSubmitted extends PersonalInfoEvent {}

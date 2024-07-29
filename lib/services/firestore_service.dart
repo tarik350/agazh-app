@@ -37,7 +37,7 @@ class FirebaseService {
     // String id = const Uuid().v1();
 //this referance allows to store diffrent posts of the same user without over writting one with another
 // _auth.currentUser!.uid
-    ref = _storage.ref().child(childName).child(_auth.currentUser!.uid);
+    ref = _storage.ref().child(childName).child("anyting");
 
     // } else {
     //   ref = _storage.ref().child(childName).child(_auth.currentUser!.uid);

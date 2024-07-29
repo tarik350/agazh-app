@@ -1,6 +1,6 @@
 part of 'personal_info_bloc.dart';
 
-enum IDCardUploadStatus {
+enum ImageUploadStatus {
   loading,
   completed,
   failed,
@@ -13,7 +13,9 @@ class PersonalInfoState extends Equatable {
     this.fullName = const FullName.pure(),
     this.familySize = const FamilySize.pure(),
     this.idCardPathString = '',
-    this.idCardUploadStatus = IDCardUploadStatus.pure,
+    this.profilePicturePathString = '',
+    this.profilePictureUploadStatus = ImageUploadStatus.pure,
+    this.idCardUploadStatus = ImageUploadStatus.pure,
     this.status = FormzStatus.pure,
   });
 
@@ -21,23 +23,38 @@ class PersonalInfoState extends Equatable {
   final FullName fullName;
   final FamilySize familySize;
   final String idCardPathString;
-  final IDCardUploadStatus idCardUploadStatus;
+  final String profilePicturePathString;
+  final ImageUploadStatus idCardUploadStatus;
+  final ImageUploadStatus profilePictureUploadStatus;
 
   PersonalInfoState copyWith(
       {FullName? fullName,
       FormzStatus? status,
       String? idCardPathString,
-      IDCardUploadStatus? idCardUploadStatus,
+      ImageUploadStatus? idCardUploadStatus,
+      ImageUploadStatus? profilePictureUploadStatus,
+      String? profilePicturePathString,
       FamilySize? familySize}) {
     return PersonalInfoState(
         fullName: fullName ?? this.fullName,
         idCardUploadStatus: idCardUploadStatus ?? this.idCardUploadStatus,
+        profilePictureUploadStatus:
+            profilePictureUploadStatus ?? this.profilePictureUploadStatus,
         status: status ?? this.status,
         familySize: familySize ?? this.familySize,
+        profilePicturePathString:
+            profilePicturePathString ?? this.profilePicturePathString,
         idCardPathString: idCardPathString ?? this.idCardPathString);
   }
 
   @override
-  List<Object> get props =>
-      [familySize, fullName, idCardUploadStatus, idCardPathString, status];
+  List<Object> get props => [
+        familySize,
+        fullName,
+        idCardUploadStatus,
+        profilePicturePathString,
+        profilePictureUploadStatus,
+        idCardPathString,
+        status
+      ];
 }

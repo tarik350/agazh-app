@@ -28,7 +28,7 @@ class PersonalInfoForm extends StatelessWidget {
               const SnackBar(content: Text('Something went wrong!')),
             );
         }
-        if (state.idCardUploadStatus == IDCardUploadStatus.notUploaded) {
+        if (state.idCardUploadStatus == ImageUploadStatus.notUploaded) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -39,6 +39,9 @@ class PersonalInfoForm extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            const _ProfilePictureUploader(),
+            const SizedBox(height: 20.0),
+
             _FullNameInput(),
             // const SizedBox(height: 12.0),
             // _PhoneNumberInput(),
@@ -154,40 +157,127 @@ class _ImageUploaderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () async {
-          Uint8List image = await pickImage(ImageSource.gallery);
-          if (context.mounted) {
-            context
-                .read<PersonalInfoBloc>()
-                .add(IdCardChanged(file: image, path: "idcard."));
-          }
-        },
-        child: SizedBox(
-          width: double.infinity,
-          // decoration: const BoxDecoration(),
-          child: DottedBorder(
-            color: AppColors.primaryColor,
-            strokeWidth: 4.w,
-            strokeCap: StrokeCap.butt,
-            radius: Radius.circular(30.r),
-            child: Center(
-              child: Column(children: [
-                Icon(
-                  Icons.add,
-                  size: 30.h,
-                  color: AppColors.primaryColor,
-                ),
-                const Text(
-                  "Upload ID",
-                  style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.bold),
-                )
-              ]),
-            ),
-          ),
-        ));
+    return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
+      builder: (context, state) {
+        return GestureDetector(
+            onTap: () async {
+              Uint8List image = await pickImage(ImageSource.gallery);
+              if (context.mounted) {
+                context
+                    .read<PersonalInfoBloc>()
+                    .add(IdCardChanged(file: image, path: "idcard."));
+              }
+            },
+            child: SizedBox(
+              width: double.infinity,
+              // decoration: const BoxDecoration(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DottedBorder(
+                    color: AppColors.primaryColor,
+                    strokeWidth: 4.w,
+                    strokeCap: StrokeCap.butt,
+                    radius: Radius.circular(30.r),
+                    child: state.idCardUploadStatus != ImageUploadStatus.loading
+                        ? Center(
+                            child: Column(children: [
+                              Icon(
+                                Icons.add,
+                                size: 30.h,
+                                color: AppColors.primaryColor,
+                              ),
+                              const Text(
+                                "Upload ID",
+                                style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ]),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                              child: SizedBox(
+                                width: 12.h,
+                                height: 12.w,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                  strokeWidth: 4.w,
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  state.idCardUploadStatus == ImageUploadStatus.completed
+                      ? Text(
+                          "Image uploaded successfully",
+                          style: TextStyle(
+                              color: AppColors.succesColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.sp),
+                        )
+                      : Container()
+                ],
+              ),
+            ));
+      },
+    );
+  }
+}
+
+class _ProfilePictureUploader extends StatelessWidget {
+  const _ProfilePictureUploader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
+      builder: (context, state) {
+        return Stack(
+          children: [
+            state.profilePictureUploadStatus == ImageUploadStatus.completed
+                ? CircleAvatar(
+                    radius: 40.r,
+                    backgroundImage:
+                        NetworkImage(state.profilePicturePathString))
+                // MemoryImage(state.profilePicturePathString))
+                : CircleAvatar(
+                    radius: 40.r,
+                    backgroundColor: AppColors.secondaryColor,
+                    child: state.profilePictureUploadStatus ==
+                            ImageUploadStatus.loading
+                        ? SizedBox(
+                            width: 12.w,
+                            height: 12.h,
+                            child: CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                              strokeWidth: 4.w,
+                            ),
+                          )
+                        : const Icon(Icons.person)),
+            Positioned(
+                bottom: -10,
+                left: 35.w,
+                child: IconButton(
+                    onPressed: () async {
+                      Uint8List image = await pickImage(ImageSource.gallery);
+                      if (context.mounted) {
+                        context.read<PersonalInfoBloc>().add(
+                            ProfilePictureChanged(
+                                file: image, path: "profilePics"));
+                      }
+                    },
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      size: 23.r,
+                    )))
+          ],
+        );
+      },
+    );
   }
 }
 

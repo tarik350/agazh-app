@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/auth_detail_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
+import 'package:mobile_app/flow_builder_screen.dart';
 
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/FullName.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/family_size.dart';
@@ -27,6 +29,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     on<FamilySizeChanged>(_onFamilySizeChanged);
     on<FormSubmitted>(_onFormSubmitted);
     on<IdCardChanged>(_onIdCardChanged);
+    on<ProfilePictureChanged>(_onProfilePictureChanged);
   }
 
   void _onNameChanged(
@@ -61,18 +64,35 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
 
   FutureOr<void> _onIdCardChanged(
       IdCardChanged event, Emitter<PersonalInfoState> emit) async {
-    emit(state.copyWith(idCardUploadStatus: IDCardUploadStatus.loading));
+    emit(state.copyWith(idCardUploadStatus: ImageUploadStatus.loading));
     try {
       final response =
           await _firebaseService.uploadImgeToStorage(event.path, event.file);
       if (response.isNotEmpty) {
         emit(state.copyWith(
-            idCardUploadStatus: IDCardUploadStatus.completed,
+            idCardUploadStatus: ImageUploadStatus.completed,
             idCardPathString: response));
         //todo update the personal info
       } else {}
     } catch (e) {
-      emit(state.copyWith(idCardUploadStatus: IDCardUploadStatus.failed));
+      emit(state.copyWith(idCardUploadStatus: ImageUploadStatus.failed));
+    }
+  }
+
+  FutureOr<void> _onProfilePictureChanged(
+      ProfilePictureChanged event, Emitter<PersonalInfoState> emit) async {
+    emit(state.copyWith(profilePictureUploadStatus: ImageUploadStatus.loading));
+    try {
+      final response =
+          await _firebaseService.uploadImgeToStorage(event.path, event.file);
+      if (response.isNotEmpty) {
+        emit(state.copyWith(
+            profilePictureUploadStatus: ImageUploadStatus.completed,
+            profilePicturePathString: response));
+      } else {}
+    } catch (e) {
+      emit(
+          state.copyWith(profilePictureUploadStatus: ImageUploadStatus.failed));
     }
   }
 
@@ -81,10 +101,10 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     Emitter<PersonalInfoState> emit,
   ) async {
     if (state.status.isValidated) {
-      if (state.idCardUploadStatus != IDCardUploadStatus.completed) {
-        emit(
-            state.copyWith(idCardUploadStatus: IDCardUploadStatus.notUploaded));
+      if (state.idCardUploadStatus != ImageUploadStatus.completed) {
+        emit(state.copyWith(idCardUploadStatus: ImageUploadStatus.notUploaded));
         //return statemetn here expcutoin should stop here
+        // return;
       }
 
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
