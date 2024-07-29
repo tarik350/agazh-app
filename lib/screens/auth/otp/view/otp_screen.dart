@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +20,8 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<UserAuthDetailRepository>().getUserAuthDetail();
-    final String title =
-        user.role == SelectedRole.employee ? "Employee" : "Employer";
+    // final String title =
+    // user.role == SelectedRole.employee ? "Employee" : "Employer";
     return Scaffold(
       body: SafeArea(
         child: BlocProvider(

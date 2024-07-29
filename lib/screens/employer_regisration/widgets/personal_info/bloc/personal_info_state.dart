@@ -1,6 +1,12 @@
 part of 'personal_info_bloc.dart';
 
-enum IDCardUploadStatus { loading, completed, failed, pure }
+enum IDCardUploadStatus {
+  loading,
+  completed,
+  failed,
+  pure,
+  notUploaded,
+}
 
 class PersonalInfoState extends Equatable {
   const PersonalInfoState({

@@ -1,10 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/view/employer_stepper.dart';

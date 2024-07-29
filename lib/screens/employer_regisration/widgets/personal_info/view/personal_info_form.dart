@@ -21,12 +21,18 @@ class PersonalInfoForm extends StatelessWidget {
     // final state = context.read<PersonalInfoBloc>().state.name.value;
     return BlocListener<PersonalInfoBloc, PersonalInfoState>(
       listener: (context, state) {
-        print(state);
         if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               const SnackBar(content: Text('Something went wrong!')),
+            );
+        }
+        if (state.idCardUploadStatus == IDCardUploadStatus.notUploaded) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(content: Text('Please upload your id')),
             );
         }
       },

@@ -58,6 +58,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
   //     status: Formz.validate([state.email, state.name, phoneNumber]),
   //   ));
   // }
+
   FutureOr<void> _onIdCardChanged(
       IdCardChanged event, Emitter<PersonalInfoState> emit) async {
     emit(state.copyWith(idCardUploadStatus: IDCardUploadStatus.loading));
@@ -81,7 +82,9 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
   ) async {
     if (state.status.isValidated) {
       if (state.idCardUploadStatus != IDCardUploadStatus.completed) {
-        emit(state.copyWith(idCardUploadStatus: IDCardUploadStatus.failed));
+        emit(
+            state.copyWith(idCardUploadStatus: IDCardUploadStatus.notUploaded));
+        //return statemetn here expcutoin should stop here
       }
 
       emit(state.copyWith(status: FormzStatus.submissionInProgress));

@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/services/firestore_service.dart';
-import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/data/models/user_old.dart';
+import 'package:mobile_app/services/firestore_service.dart';
 
 class AuthService {
   String? verificationId;

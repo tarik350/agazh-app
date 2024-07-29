@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/data/models/Employer.dart';
-import 'package:mobile_app/data/repository/auth_detail_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/bloc/personal_info_bloc.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/cubit/termsandcondition_cubit.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 
 class TermsAndConditionScreen extends StatelessWidget {

@@ -12,7 +12,7 @@ class IdCardImage extends FormzInput<String, PostcodeValidationError> {
   const IdCardImage.pure() : super.pure('');
   const IdCardImage.dirty([String value = '']) : super.dirty(value);
 
-  static final _postcodeRegex = RegExp(r"[0-9]{6}");
+  // static final _postcodeRegex = RegExp(r"[0-9]{6}");
 
   @override
   PostcodeValidationError? validator(String value) {
