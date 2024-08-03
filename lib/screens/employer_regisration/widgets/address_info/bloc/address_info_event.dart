@@ -31,13 +31,13 @@ class CityChanged extends AddressInfoEvent {
   List<Object> get props => [city];
 }
 
-// class CountryChanged extends AddressInfoEvent {
-//   final String country;
-//   const CountryChanged(this.country);
+class SubCityChanged extends AddressInfoEvent {
+  final String country;
+  const SubCityChanged(this.country);
 
-//   @override
-//   List<Object> get props => [country];
-// }
+  @override
+  List<Object> get props => [country];
+}
 
 class IdCardChanged extends AddressInfoEvent {
   final String idCardImage;

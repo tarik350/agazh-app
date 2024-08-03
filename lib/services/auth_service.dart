@@ -2,10 +2,16 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/data/models/Employer.dart';
 import 'package:mobile_app/data/models/user_old.dart';
+import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/firestore_service.dart';
+import 'package:mobile_app/utils/exceptions/exceptions.dart';
+
+import '../data/models/employee.dart';
 
 class AuthService {
   String? verificationId;
@@ -15,9 +21,15 @@ class AuthService {
   UserModel? user;
   final _firestoreService = FirebaseService();
 
-  // AuthService.instance() : isAuthenticated = false;
+  void setIsAuthenticated(bool isAuth) {
+    isAuthenticated = isAuth;
+  }
 
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future<String?> phoneVerification(String phone) async {
     final Completer<String?> completer = Completer<String?>();
     try {
@@ -98,7 +110,7 @@ class AuthService {
   }
 
   Future<String?> getUserRole() async {
-    final user = await FirebaseFirestore.instance
+    final user = await _db
         .collection('users')
         .where('phoneNumber', isEqualTo: phone)
         .get();
@@ -130,6 +142,52 @@ class AuthService {
     }
     if (location != null) {
       user!.location = location;
+    }
+  }
+
+  Future<bool> checkUserExists(String phoneNumber, UserRole role) async {
+    try {
+      if (role.name == 'none') {
+        throw RoleCanNotBeNoneException();
+      }
+      final String collectionName =
+          role == UserRole.employee ? "employees" : "employers";
+
+      CollectionReference employerCollection =
+          FirebaseFirestore.instance.collection(collectionName);
+
+      QuerySnapshot querySnapshot =
+          await employerCollection.where('phone', isEqualTo: phoneNumber).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> lookupUser(
+      String phone, String password, String collectionName) async {
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      final QuerySnapshot querySnapshot = await firestore
+          .collection(collectionName)
+          .where('phone', isEqualTo: phone)
+          .where('password', isEqualTo: password)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.data() as Map<String, dynamic>;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

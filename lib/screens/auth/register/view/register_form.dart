@@ -5,7 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
+import 'package:mobile_app/data/repository/employee_repository.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/register/bloc/register_bloc.dart';
+import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
+import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
 
@@ -24,6 +28,26 @@ class RegisterForm extends StatelessWidget {
             ..showSnackBar(
               SnackBar(content: Text(message ?? "Unknown error occured")),
             );
+        }
+        if (state.status.isSubmissionSuccess) {
+          try {
+            final role = context.read<RoleCubit>().state.userRole;
+            if (role == UserRole.employee) {
+              context
+                  .read<EmployeeRepository>()
+                  .updatePhone(state.phoneNumber.value);
+              context.router.push(OtpRoute(
+                  verificationId: state.verificationId!, route: "register"));
+            } else if (role == UserRole.employer) {
+              context
+                  .read<EmployerRepository>()
+                  .updatePhone(state.phoneNumber.value);
+              context.router.push(OtpRoute(
+                  verificationId: state.verificationId!, route: "register"));
+            }
+          } catch (e) {
+            debugPrint(e.toString());
+          }
         }
       },
       child: Column(
@@ -73,18 +97,17 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterBloc, RegisterState>(
-      listener: (context, state) => {
-        if (state.status.isSubmissionSuccess)
-          {context.router.push(OtpRoute(verificationId: state.verificationId!))}
-      },
+    return BlocBuilder<RegisterBloc, RegisterState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated
-              ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted())
+          onTap: state.status.isValidated &&
+                  !state.status.isSubmissionInProgress
+              ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted(
+                  context.read<RoleCubit>().state.userRole))
               : null,
-          lable: "Regsiter",
+          lable:
+              state.status.isSubmissionInProgress ? "Loading..." : "Regsiter",
           backgroundColor: AppColors.primaryColor,
         );
       },

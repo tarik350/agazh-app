@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/bloc/address_info_bloc.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
@@ -26,6 +29,8 @@ class AddressInfoForm extends StatelessWidget {
         children: [
           _CityInput(),
           const SizedBox(height: 12.0),
+          _SubCityInput(),
+          const SizedBox(height: 12.0),
           _HouseNumberInput(),
           const SizedBox(height: 12.0),
           // _HouseNumberInput(),
@@ -33,7 +38,7 @@ class AddressInfoForm extends StatelessWidget {
           // _FamilySizeInput(),
           // const SizedBox(height: 12.0),
           //replace this with image uploader vierw
-          _IdCardInput(),
+          _FamilySizeInput(),
           const SizedBox(height: 12.0),
           Row(
             children: [
@@ -111,6 +116,26 @@ class _CityInput extends StatelessWidget {
   }
 }
 
+class _SubCityInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddressInfoBloc, AddressInfoState>(
+      buildWhen: (previous, current) => previous.subCity != current.subCity,
+      builder: (context, state) {
+        return CustomTextfield(
+            hintText: "Sub City",
+            obscureText: false,
+            onChanged: (subCity) =>
+                context.read<AddressInfoBloc>().add(SubCityChanged(subCity)),
+            keyString: "subCity_subCityInput_textField",
+            inputType: TextInputType.text,
+            errorText:
+                state.subCity.invalid ? state.subCity.error?.message : null);
+      },
+    );
+  }
+}
+
 // class _HouseNumberInput extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -131,23 +156,22 @@ class _CityInput extends StatelessWidget {
 //   }
 // }
 
-//replace this with image uploader vierw
-class _IdCardInput extends StatelessWidget {
+class _FamilySizeInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddressInfoBloc, AddressInfoState>(
       buildWhen: (previous, current) =>
-          previous.idCardIage != current.idCardIage,
+          previous.familySize != current.familySize,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "ZIP / idCardIage",
+            hintText: "Family Size",
             obscureText: false,
-            onChanged: (idCardIage) =>
-                context.read<AddressInfoBloc>().add(IdCardChanged(idCardIage)),
-            keyString: "billingAddressForm_postcodeInput_textField",
-            inputType: TextInputType.text,
-            errorText: state.idCardIage.invalid
-                ? state.idCardIage.error?.message
+            onChanged: (name) =>
+                context.read<AddressInfoBloc>().add(FamilySizeChanged(name)),
+            keyString: 'familySize_FamilySizeInput_textField',
+            inputType: TextInputType.number,
+            errorText: state.familySize.invalid
+                ? state.familySize.error!.message
                 : null);
       },
     );

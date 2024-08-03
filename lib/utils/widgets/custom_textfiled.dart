@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile_app/config/constants/app_colors.dart';
 
 class CustomTextfield extends StatelessWidget {
   // final controller;
@@ -26,16 +28,12 @@ class CustomTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // controller: controller,
       initialValue: initialValue,
       obscureText: obscureText,
-
       key: Key(keyString),
       onChanged: onChanged,
       keyboardType: TextInputType.emailAddress,
-
       decoration: InputDecoration(
-          suffix: suffix,
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -49,11 +47,11 @@ class CustomTextfield extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400),
           ),
-          fillColor: Colors.grey.shade200,
+          fillColor: AppColors.primaryColor.withOpacity(.1),
           filled: true,
           hintText: hintText,
           errorText: errorText,
-          hintStyle: TextStyle(color: Colors.grey[500])),
+          hintStyle: TextStyle(color: Colors.grey.shade500)),
     );
   }
 }

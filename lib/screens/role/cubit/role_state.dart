@@ -1,16 +1,17 @@
 part of 'role_cubit.dart';
 
 class RoleState extends Equatable {
-  final SelectedRole role;
+  final UserRole userRole;
   final RoleSubmissionStatus status;
 
   const RoleState(
-      {this.role = SelectedRole.unknown,
+      {this.userRole = UserRole.none,
       this.status = RoleSubmissionStatus.invalid});
-  RoleState copyWith({SelectedRole? role, RoleSubmissionStatus? status}) {
-    return RoleState(status: status ?? this.status, role: role ?? this.role);
+  RoleState copyWith({UserRole? userRole, RoleSubmissionStatus? status}) {
+    return RoleState(
+        status: status ?? this.status, userRole: userRole ?? this.userRole);
   }
 
   @override
-  List<Object> get props => [role, status];
+  List<Object> get props => [userRole, status];
 }

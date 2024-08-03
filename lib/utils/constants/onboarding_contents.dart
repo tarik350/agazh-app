@@ -12,20 +12,21 @@ class OnboardingContents {
 
 List<OnboardingContents> contents = [
   OnboardingContents(
-    title: "Track Your work and get the result",
+    title: "Connect & Discover",
     image: "assets/images/image1.png",
-    desc: "Remember to keep track of your professional accomplishments.",
+    desc:
+        "Easily find and offer a wide range of services. Simplify your search for jobs or candidates.",
   ),
   OnboardingContents(
-    title: "Stay organized with team",
+    title: "Find Your Next Job",
     image: "assets/images/image2.png",
     desc:
-        "But understanding the contributions our colleagues make to our teams and companies.",
+        "Create your profile and connect with clients. Showcase your skills and discover new opportunities.",
   ),
   OnboardingContents(
-    title: "Get notified when work happens",
+    title: "Find the Right Talent",
     image: "assets/images/image3.png",
     desc:
-        "Take control of notifications, collaborate live or on your own time.",
+        "Post your needs and browse profiles. Find the perfect professional for your requirements quickly",
   ),
 ];

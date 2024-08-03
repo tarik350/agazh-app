@@ -1,7 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/config/constants/app_colors.dart';
+import 'package:mobile_app/config/routes/app_routes.gr.dart';
+import 'package:mobile_app/screens/auth/login/view/login_screen.dart';
 import 'package:mobile_app/utils/constants/onboarding_contents.dart';
 import 'package:mobile_app/utils/helpers/size_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
 class OnboardingScreen extends StatefulWidget {
@@ -33,11 +37,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(50),
-        ),
-        color: Color(0xFF000000),
-      ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(50),
+          ),
+          color: AppColors.primaryColor),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
       curve: Curves.easeIn,
@@ -118,9 +121,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? Padding(
                           padding: const EdgeInsets.all(30),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final sharedPreferance =
+                                  await SharedPreferences.getInstance();
+                              await sharedPreferance.setBool(
+                                  'hasSeenOnboarding', true);
+                              if (context.mounted) {
+                                context.router.push(const LoginRoute());
+                              }
+                            },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
+                              backgroundColor: AppColors.primaryColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -132,7 +143,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               textStyle:
                                   TextStyle(fontSize: (width <= 550) ? 13 : 17),
                             ),
-                            child: const Text("START"),
+                            child: const Text(
+                              "START",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         )
                       : Padding(
@@ -164,7 +178,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: AppColors.primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50),
                                   ),
@@ -177,7 +191,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   textStyle: TextStyle(
                                       fontSize: (width <= 550) ? 13 : 17),
                                 ),
-                                child: const Text("NEXT"),
+                                child: const Text(
+                                  "NEXT",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ],
                           ),

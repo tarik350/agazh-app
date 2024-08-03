@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/bloc/personal_info_bloc.dart';
+import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/services/image_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
@@ -25,42 +26,51 @@ class PersonalInfoForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Something went wrong!')),
+              SnackBar(
+                  content: Text(state.errorMessage ?? 'Something went wrong!')),
             );
         }
         if (state.idCardUploadStatus == ImageUploadStatus.notUploaded) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Please upload your id')),
+              SnackBar(
+                  content:
+                      Text(state.errorMessage ?? "Id card is not uploaded")),
+            );
+        }
+        // if (state.profilePictureUploadStatus == ImageUploadStatus.completed) {
+        //   ScaffoldMessenger.of(context)
+        //     ..hideCurrentSnackBar()
+        //     ..showSnackBar(
+        //       const SnackBar(
+        //           content: Text("Profile picture uploaded successfully")),
+        //     );
+        // }
+        if (state.profilePictureUploadStatus == ImageUploadStatus.failed) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(content: Text("Error ")),
             );
         }
       },
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const _ProfilePictureUploader(),
-            const SizedBox(height: 20.0),
-
-            _FullNameInput(),
-            // const SizedBox(height: 12.0),
-            // _PhoneNumberInput(),
-            const SizedBox(height: 20.0),
-            _FamilySizeInput(),
-            const SizedBox(height: 20.0),
-
-            const _ImageUploaderButton(),
-            const SizedBox(height: 20.0),
-
-            Row(
-              children: [
-                Expanded(child: _SubmitButton()),
-                // const SizedBox(width: 8.0),
-                // _CancelButton(),
-              ],
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          const _ProfilePictureUploader(),
+          const SizedBox(height: 20.0),
+          _FullNameInput(),
+          const SizedBox(height: 20.0),
+          const _ImageUploaderButton(),
+          const SizedBox(height: 20.0),
+          Row(
+            children: [
+              Expanded(child: _SubmitButton()),
+              // const SizedBox(width: 8.0),
+              // _CancelButton(),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -105,28 +115,6 @@ class _FullNameInput extends StatelessWidget {
   }
 }
 
-class _FamilySizeInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
-      buildWhen: (previous, current) =>
-          previous.familySize != current.familySize,
-      builder: (context, state) {
-        return CustomTextfield(
-            hintText: "Family Size",
-            obscureText: false,
-            onChanged: (name) =>
-                context.read<PersonalInfoBloc>().add(FamilySizeChanged(name)),
-            keyString: 'familySize_FullNameInput_textField',
-            inputType: TextInputType.number,
-            errorText: state.familySize.invalid
-                ? state.familySize.error!.message
-                : null);
-      },
-    );
-  }
-}
-
 class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -141,7 +129,9 @@ class _SubmitButton extends StatelessWidget {
       builder: (context, state) {
         return CustomButton(
           onTap: state.status.isValidated
-              ? () => context.read<PersonalInfoBloc>().add(FormSubmitted())
+              ? () => context
+                  .read<PersonalInfoBloc>()
+                  .add(FormSubmitted(context.read<RoleCubit>().state.userRole))
               : null,
           lable:
               state.status.isSubmissionInProgress ? "Proceeding..." : "Proceed",
@@ -165,7 +155,7 @@ class _ImageUploaderButton extends StatelessWidget {
               if (context.mounted) {
                 context
                     .read<PersonalInfoBloc>()
-                    .add(IdCardChanged(file: image, path: "idcard."));
+                    .add(IdCardChanged(file: image, path: "idcard"));
               }
             },
             child: SizedBox(

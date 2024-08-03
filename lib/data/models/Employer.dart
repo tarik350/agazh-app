@@ -1,191 +1,101 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_app/data/models/UserAuthDetail.dart';
 
-class Employeer extends Equatable {
-  const Employeer(
-      {required this.personalInfo,
-      required this.addressInfo,
-      required this.userAuthDetail});
+class Employer extends Equatable {
+  final String fullName;
+  final String id;
+  final int familySize;
+  final String role;
+  final String city;
+  final String subCity;
+  final int houseNumber;
+  final String idCardImagePath;
+  final String profilePicturePath;
+  final String phone;
+  final String password;
 
-  final PersonalInfo personalInfo;
-  final AddressInfo addressInfo;
-  final UserAuthDetail userAuthDetail;
-
-  factory Employeer.empty() {
-    return Employeer(
-        personalInfo: PersonalInfo.empty(),
-        addressInfo: AddressInfo.empty(),
-        userAuthDetail: UserAuthDetail.empty());
-  }
-
-  Employeer copyWith(
-      {PersonalInfo? personalInfo,
-      AddressInfo? addressInfo,
-      UserAuthDetail? userAuthDetail}) {
-    return Employeer(
-        personalInfo: personalInfo ?? this.personalInfo,
-        addressInfo: addressInfo ?? this.addressInfo,
-        userAuthDetail: userAuthDetail ?? this.userAuthDetail);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'personalInfo': personalInfo.toJson(),
-      "addressInfo": addressInfo.toJson()
-    };
-  }
-
-  factory Employeer.fromJson(Map<String, dynamic> json) {
-    return Employeer(
-        personalInfo: json['personalInfo'],
-        addressInfo: json['addressInfo'],
-        userAuthDetail: json['userAuthDetail']);
-  }
+  const Employer(
+      {this.fullName = '',
+      this.id = '',
+      this.familySize = 0,
+      this.role = 'employer',
+      this.city = '',
+      this.subCity = '',
+      this.houseNumber = 0,
+      this.idCardImagePath = '',
+      this.profilePicturePath = '',
+      this.phone = '',
+      this.password = ''});
 
   @override
-  List<Object?> get props => [personalInfo, addressInfo];
-}
+  List<Object?> get props => [
+        fullName,
+        id,
+        familySize,
+        role,
+        city,
+        subCity,
+        houseNumber,
+        idCardImagePath,
+        profilePicturePath,
+        phone,
+        password
+      ];
 
-class PersonalInfo extends Equatable {
-  const PersonalInfo({
-    required this.fullName,
-    required this.idCardPathString,
-  });
-
-  final String fullName;
-  final String idCardPathString;
-
-  factory PersonalInfo.empty() {
-    return const PersonalInfo(
-      fullName: '',
-      idCardPathString: '',
-    );
-  }
-
-  PersonalInfo copyWith({
-    String? fullName,
-    String? idCardPathString,
-  }) {
-    return PersonalInfo(
-      fullName: fullName ?? this.fullName,
-      idCardPathString: idCardPathString ?? this.idCardPathString,
-    );
-  }
-
-  factory PersonalInfo.fromJson(Map<String, dynamic> json) {
-    return PersonalInfo(
-      fullName: json['fullName'],
-      idCardPathString: json['idCardPathString'],
+  factory Employer.fromJson(Map<String, dynamic> json) {
+    return Employer(
+      fullName: json['fullName'] ?? '',
+      id: json['id'] ?? '',
+      familySize: json['familySize'] ?? 0,
+      role: json['role'] ?? 'employer',
+      city: json['city'] ?? '',
+      subCity: json['subCity'] ?? '',
+      houseNumber: json['houseNumber'] ?? 0,
+      idCardImagePath: json['idCardImagePath'] ?? '',
+      profilePicturePath: json['profilePicturePath'] ?? '',
+      phone: json['phone'] ?? '',
+      password: json['password'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'fullName': fullName,
-      'idCardPathString': idCardPathString,
-    };
-  }
-
-  @override
-  List<Object?> get props => [fullName, idCardPathString];
-}
-
-class AddressInfo extends Equatable {
-  const AddressInfo({
-    required this.houseNumber,
-    // required this.familySize,
-    required this.city,
-    required this.idCardImage,
-  });
-
-  final String houseNumber;
-  // final String familySize;
-  final String city;
-
-  final String idCardImage;
-
-  factory AddressInfo.empty() {
-    return const AddressInfo(
-      houseNumber: '',
-      // familySize: '',
-      city: '',
-      idCardImage: '',
-    );
-  }
-
-  AddressInfo copyWith({
-    String? houseNumber,
-    String? familySize,
-    String? city,
-    String? idCardImage,
-  }) {
-    return AddressInfo(
-      houseNumber: houseNumber ?? this.houseNumber,
-      // familySize: familySize ?? this.familySize,
-      city: city ?? this.city,
-      idCardImage: idCardImage ?? this.idCardImage,
-    );
-  }
-
-  factory AddressInfo.fromJson(Map<String, dynamic> json) {
-    return AddressInfo(
-      houseNumber: json['houseNumber'],
-      // familySize: json['familySize'],
-      city: json['city'],
-      idCardImage: json['idCardImage'],
-    );
-  }
-
-  // toJson method
-  Map<String, dynamic> toJson() {
-    return {
-      'houseNumber': houseNumber,
-      // 'familySize': familySize,
+      'id': id,
+      'familySize': familySize,
+      'role': role,
       'city': city,
-      'idCardImage': idCardImage
+      'subCity': subCity,
+      'houseNumber': houseNumber,
+      'idCardImagePath': idCardImagePath,
+      'profilePicturePath': profilePicturePath,
+      'phone': phone,
+      'password': password
     };
   }
 
-  @override
-  List<Object?> get props => [houseNumber, city, idCardImage];
-}
-
-class Payment extends Equatable {
-  const Payment({
-    required this.cardName,
-    required this.cardNumber,
-    required this.expiryDate,
-    required this.cvvNumber,
-  });
-
-  final String cardName;
-  final String cardNumber;
-  final String expiryDate;
-  final String cvvNumber;
-
-  factory Payment.empty() {
-    return const Payment(
-      cardName: '',
-      cardNumber: '',
-      expiryDate: '',
-      cvvNumber: '',
-    );
+  Employer copyWith(
+      {String? fullName,
+      String? id,
+      int? familySize,
+      String? role,
+      String? city,
+      String? subCity,
+      int? houseNumber,
+      String? idCardImagePath,
+      String? profilePicturePath,
+      String? phone,
+      String? password}) {
+    return Employer(
+        fullName: fullName ?? this.fullName,
+        id: id ?? this.id,
+        familySize: familySize ?? this.familySize,
+        role: role ?? this.role,
+        city: city ?? this.city,
+        subCity: subCity ?? this.subCity,
+        houseNumber: houseNumber ?? this.houseNumber,
+        idCardImagePath: idCardImagePath ?? this.idCardImagePath,
+        profilePicturePath: profilePicturePath ?? this.profilePicturePath,
+        phone: phone ?? this.phone,
+        password: password ?? this.password);
   }
-
-  Payment copyWith({
-    String? cardName,
-    String? cardNumber,
-    String? expiryDate,
-    String? cvvNumber,
-  }) {
-    return Payment(
-      cardName: cardName ?? this.cardName,
-      cardNumber: cardNumber ?? this.cardNumber,
-      expiryDate: expiryDate ?? this.expiryDate,
-      cvvNumber: cvvNumber ?? this.cvvNumber,
-    );
-  }
-
-  @override
-  List<Object?> get props => [cardName, cardNumber, expiryDate, cvvNumber];
 }

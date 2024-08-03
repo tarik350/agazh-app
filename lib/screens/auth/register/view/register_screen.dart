@@ -19,9 +19,7 @@ class RegisterScreen extends StatelessWidget {
       // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: BlocProvider<RegisterBloc>(
-          create: (context) => RegisterBloc(
-              userAuthDetailRepository:
-                  context.read<UserAuthDetailRepository>()),
+          create: (context) => RegisterBloc(),
           child: GradientBackgroundContainer(
               showNavButton: true,
               title: Container(

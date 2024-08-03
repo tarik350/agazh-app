@@ -23,15 +23,43 @@ enum OtpStatus {
 
 class OtpState extends Equatable {
   final String otpString;
-  final OtpStatus status;
+  final OtpStatus otpStringStatus;
+  final OtpStatus otpSubmissionStatus;
+  final bool isResendDisabled;
+  final OtpStatus otpResendStatus;
+  final String verificationId;
 
-  const OtpState({this.otpString = '', this.status = OtpStatus.pure});
+  const OtpState(
+      {this.otpString = '',
+      this.otpStringStatus = OtpStatus.pure,
+      this.otpSubmissionStatus = OtpStatus.pure,
+      this.otpResendStatus = OtpStatus.pure,
+      this.verificationId = '',
+      this.isResendDisabled = true});
 
-  OtpState copyWith({String? otpString, OtpStatus? status}) {
+  OtpState copyWith(
+      {String? otpString,
+      OtpStatus? otpStringStatus,
+      bool? isResendDisabled,
+      String? verificationId,
+      OtpStatus? otpResendStatus,
+      OtpStatus? otpSubmissionStatus}) {
     return OtpState(
-        otpString: otpString ?? this.otpString, status: status ?? this.status);
+        otpString: otpString ?? this.otpString,
+        otpResendStatus: otpResendStatus ?? this.otpResendStatus,
+        verificationId: verificationId ?? this.verificationId,
+        otpSubmissionStatus: otpSubmissionStatus ?? this.otpSubmissionStatus,
+        isResendDisabled: isResendDisabled ?? this.isResendDisabled,
+        otpStringStatus: otpStringStatus ?? this.otpStringStatus);
   }
 
   @override
-  List<Object> get props => [otpString, status];
+  List<Object> get props => [
+        otpString,
+        otpSubmissionStatus,
+        isResendDisabled,
+        otpStringStatus,
+        verificationId,
+        otpResendStatus
+      ];
 }

@@ -4,21 +4,21 @@ import 'package:mobile_app/screens/role/enums/selected_role.dart';
 class UserAuthDetail extends Equatable {
   final String phoneNumber;
   final String password;
-  final SelectedRole role;
+  final UserRole role;
 
   const UserAuthDetail(
       {required this.phoneNumber, required this.role, required this.password});
 
   factory UserAuthDetail.empty() {
     return const UserAuthDetail(
-        phoneNumber: "", role: SelectedRole.unknown, password: "");
+        phoneNumber: "", role: UserRole.none, password: "");
   }
 
   UserAuthDetail copyWith({
     String? fullName,
     String? phoneNumber,
     String? password,
-    SelectedRole? role,
+    UserRole? role,
   }) {
     final user = UserAuthDetail(
         phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -32,15 +32,15 @@ class UserAuthDetail extends Equatable {
       phoneNumber: json['phoneNumber'] as String,
       password: json['password'] as String,
       role: json['role'].toString().toLowerCase() == 'employee'
-          ? SelectedRole.employee
-          : SelectedRole.employer,
+          ? UserRole.employee
+          : UserRole.employer,
     );
   }
   Map<String, dynamic> toJson() {
     return {
       'phoneNumber': phoneNumber,
       'password': password,
-      'role': role == SelectedRole.employee ? "employee" : "employer",
+      'role': role == UserRole.employee ? "employee" : "employer",
     };
   }
 

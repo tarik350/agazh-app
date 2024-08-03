@@ -1,12 +1,20 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: HomeRoute.page),
-        AutoRoute(page: LoginRoute.page, initial: true),
+        AutoRoute(
+            page: SiraAppRoute.page, initial: true, guards: [AuthGuard()]),
+        AutoRoute(page: ProfileRoute.page),
+        AutoRoute(page: EmployeeProfileRoute.page),
+        AutoRoute(
+          page: LoginRoute.page,
+        ),
         AutoRoute(
           page: OtpRoute.page,
         ),
@@ -23,8 +31,29 @@ class AppRouter extends $AppRouter {
           page: OnboardingRoute.page,
         ),
         // AutoRoute(page: HomeRoute.page, initial: true),
-        AutoRoute(
-          page: EmployerStepperRoute.page,
-        )
+        AutoRoute(page: EmployerStepperRoute.page),
+        AutoRoute(page: EmployeeStepperRoute.page),
+        AutoRoute(page: EmployeeDetailRoute.page),
+        AutoRoute(page: EmployerRequestRoute.page)
       ];
+}
+
+class AuthGuard extends AutoRouteGuard {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void onNavigation(NavigationResolver resolver, StackRouter router) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final bool hasSeenOnboarding =
+        preferences.getBool('hasSeenOnboarding') ?? false;
+    final User? user = _auth.currentUser;
+
+    if (!hasSeenOnboarding) {
+      router.push(const OnboardingRoute());
+    } else if (user == null) {
+      router.replace(const LoginRoute());
+    } else {
+      resolver.next();
+    }
+  }
 }

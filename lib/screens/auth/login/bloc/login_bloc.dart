@@ -1,0 +1,92 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/rendering.dart';
+import 'package:formz/formz.dart';
+import 'package:mobile_app/screens/auth/register/bloc/register_bloc.dart';
+import 'package:mobile_app/screens/auth/register/models/Password.dart';
+import 'package:mobile_app/screens/auth/register/models/phone_number.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/utils/exceptions/exceptions.dart';
+
+import '../../../role/enums/selected_role.dart';
+
+part 'login_event.dart';
+part 'login_state.dart';
+
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  final _authService = AuthService();
+  LoginBloc() : super(const LoginState()) {
+    on<LoginFormSubmitted>(_onLogin);
+    on<PhoneNumberChanged>(_onPhoneChanged);
+    on<PasswordChanged>(_onPasswordChanged);
+    on<SelectedRoleChange>(_onSelectedRoleChange);
+  }
+
+  FutureOr<void> _onPhoneChanged(
+      PhoneNumberChanged event, Emitter<LoginState> emit) {
+    final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
+    emit(state.copyWith(
+        phoneNumber: phoneNumber,
+        status: Formz.validate([phoneNumber, state.password])));
+  }
+
+  FutureOr<void> _onPasswordChanged(
+      PasswordChanged event, Emitter<LoginState> emit) {
+    final passwrod = Password.dirty(event.password);
+    emit(state.copyWith(
+        password: passwrod,
+        status: Formz.validate([passwrod, state.phoneNumber])));
+  }
+
+  FutureOr<void> _onLogin(
+      LoginFormSubmitted event, Emitter<LoginState> emit) async {
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    try {
+      final user = await _authService.lookupUser(
+          state.phoneNumber.value,
+          state.password.value,
+          state.userRole == UserRole.employer
+              ? "employers"
+              : UserRole.employee.name);
+      if (user == null) {
+        throw UserDoesNotExist();
+      }
+      final String? verificationId =
+          await _authService.phoneVerification(state.phoneNumber.value);
+
+      if (verificationId != null) {
+        emit(state.copyWith(
+            status: FormzStatus.submissionSuccess,
+            verificationId: verificationId));
+      } else {
+        throw VerificationIdNotReceivedException();
+      }
+    } on UserDoesNotExist catch (e) {
+      emit(state.copyWith(
+          status: FormzStatus.submissionFailure, errorMessage: e.message));
+    } catch (e) {
+      emit(state.copyWith(
+          status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+    }
+  }
+
+  FutureOr<void> _onSelectedRoleChange(
+      SelectedRoleChange event, Emitter<LoginState> emit) {
+    if (event.userRole == 'employer') {
+      final status = Formz.validate([state.password, state.phoneNumber]);
+
+      emit(state.copyWith(
+          userRole: UserRole.employer,
+          status: Formz.validate([state.password, state.phoneNumber])));
+    } else {
+      final status = Formz.validate([state.password, state.phoneNumber]);
+
+      emit(state.copyWith(
+          userRole: UserRole.employee,
+          status: Formz.validate([state.password, state.phoneNumber])));
+    }
+  }
+}

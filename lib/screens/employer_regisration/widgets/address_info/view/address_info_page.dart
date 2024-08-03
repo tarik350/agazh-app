@@ -11,7 +11,7 @@ class AddressInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddressInfoBloc(
-        employerRepositroy: context.read<EmployerRepositroy>(),
+        employerRepositroy: context.read<EmployerRepository>(),
       ),
       child: const AddressInfoForm(),
     );

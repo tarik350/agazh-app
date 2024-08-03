@@ -8,85 +8,253 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/material.dart' as _i10;
-import 'package:mobile_app/flow_builder_screen.dart' as _i4;
-import 'package:mobile_app/screens/auth/login_screen.dart' as _i3;
-import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i6;
+import 'package:auto_route/auto_route.dart' as _i15;
+import 'package:flutter/material.dart' as _i16;
+import 'package:mobile_app/data/models/employee.dart' as _i17;
+import 'package:mobile_app/data/models/Employer.dart' as _i19;
+import 'package:mobile_app/flow_builder_screen.dart' as _i8;
+import 'package:mobile_app/screens/app/view/sira_app.dart' as _i14;
+import 'package:mobile_app/screens/auth/login/view/login_screen.dart' as _i7;
+import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i10;
 import 'package:mobile_app/screens/auth/register/view/register_screen.dart'
-    as _i7;
+    as _i12;
+import 'package:mobile_app/screens/employee/view/employee_registration_screen.dart'
+    as _i3;
 import 'package:mobile_app/screens/employer_regisration/view/employer_stepper_screen.dart'
-    as _i1;
-import 'package:mobile_app/screens/home/home_screen.dart' as _i2;
-import 'package:mobile_app/screens/onboarding/view/onboarding_screen.dart'
     as _i5;
-import 'package:mobile_app/screens/role/view/role_screen.dart' as _i8;
+import 'package:mobile_app/screens/home/employee/empoyee_detail_screen.dart'
+    as _i1;
+import 'package:mobile_app/screens/home/view/employer_requests_screen.dart'
+    as _i4;
+import 'package:mobile_app/screens/home/view/home_screen.dart' as _i6;
+import 'package:mobile_app/screens/onboarding/view/onboarding_screen.dart'
+    as _i9;
+import 'package:mobile_app/screens/profile/view/employee_profile_screen.dart'
+    as _i2;
+import 'package:mobile_app/screens/profile/view/profile_screen.dart' as _i11;
+import 'package:mobile_app/screens/role/enums/selected_role.dart' as _i18;
+import 'package:mobile_app/screens/role/view/role_screen.dart' as _i13;
 
-abstract class $AppRouter extends _i9.RootStackRouter {
+abstract class $AppRouter extends _i15.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i9.PageFactory> pagesMap = {
-    EmployerStepperRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+  final Map<String, _i15.PageFactory> pagesMap = {
+    EmployeeDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<EmployeeDetailRouteArgs>();
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i1.EmployerStepperScreen(),
+        child: _i1.EmployeeDetailScreen(
+          key: args.key,
+          employee: args.employee,
+        ),
+      );
+    },
+    EmployeeProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<EmployeeProfileRouteArgs>();
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i2.EmployeeProfileScreen(
+          key: args.key,
+          employee: args.employee,
+        ),
+      );
+    },
+    EmployeeStepperRoute.name: (routeData) {
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i3.EmployeeStepperScreen(),
+      );
+    },
+    EmployerRequestRoute.name: (routeData) {
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i4.EmployerRequestScreen(),
+      );
+    },
+    EmployerStepperRoute.name: (routeData) {
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i5.EmployerStepperScreen(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.HomeScreen(),
+        child: const _i6.HomeScreen(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.LoginScreen(),
+        child: const _i7.LoginScreen(),
       );
     },
     MyFlowRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.MyFlowScreen(),
+        child: const _i8.MyFlowScreen(),
       );
     },
     OnboardingRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.OnboardingScreen(),
+        child: const _i9.OnboardingScreen(),
       );
     },
     OtpRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<OtpRouteArgs>(orElse: () => const OtpRouteArgs());
-      return _i9.AutoRoutePage<dynamic>(
+      final args = routeData.argsAs<OtpRouteArgs>();
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i6.OtpScreen(
+        child: _i10.OtpScreen(
           key: args.key,
           verificationId: args.verificationId,
+          route: args.route,
+          userRole: args.userRole,
+          phoneNumber: args.phoneNumber,
+        ),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileRouteArgs>();
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i11.ProfileScreen(
+          key: args.key,
+          employer: args.employer,
         ),
       );
     },
     RegisterRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i7.RegisterScreen(),
+        child: const _i12.RegisterScreen(),
       );
     },
     RoleRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i15.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.RoleScreen(),
+        child: const _i13.RoleScreen(),
+      );
+    },
+    SiraAppRoute.name: (routeData) {
+      return _i15.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i14.SiraAppScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.EmployerStepperScreen]
-class EmployerStepperRoute extends _i9.PageRouteInfo<void> {
-  const EmployerStepperRoute({List<_i9.PageRouteInfo>? children})
+/// [_i1.EmployeeDetailScreen]
+class EmployeeDetailRoute extends _i15.PageRouteInfo<EmployeeDetailRouteArgs> {
+  EmployeeDetailRoute({
+    _i16.Key? key,
+    required _i17.Employee employee,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
+          EmployeeDetailRoute.name,
+          args: EmployeeDetailRouteArgs(
+            key: key,
+            employee: employee,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EmployeeDetailRoute';
+
+  static const _i15.PageInfo<EmployeeDetailRouteArgs> page =
+      _i15.PageInfo<EmployeeDetailRouteArgs>(name);
+}
+
+class EmployeeDetailRouteArgs {
+  const EmployeeDetailRouteArgs({
+    this.key,
+    required this.employee,
+  });
+
+  final _i16.Key? key;
+
+  final _i17.Employee employee;
+
+  @override
+  String toString() {
+    return 'EmployeeDetailRouteArgs{key: $key, employee: $employee}';
+  }
+}
+
+/// generated route for
+/// [_i2.EmployeeProfileScreen]
+class EmployeeProfileRoute
+    extends _i15.PageRouteInfo<EmployeeProfileRouteArgs> {
+  EmployeeProfileRoute({
+    _i16.Key? key,
+    required _i17.Employee employee,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
+          EmployeeProfileRoute.name,
+          args: EmployeeProfileRouteArgs(
+            key: key,
+            employee: employee,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EmployeeProfileRoute';
+
+  static const _i15.PageInfo<EmployeeProfileRouteArgs> page =
+      _i15.PageInfo<EmployeeProfileRouteArgs>(name);
+}
+
+class EmployeeProfileRouteArgs {
+  const EmployeeProfileRouteArgs({
+    this.key,
+    required this.employee,
+  });
+
+  final _i16.Key? key;
+
+  final _i17.Employee employee;
+
+  @override
+  String toString() {
+    return 'EmployeeProfileRouteArgs{key: $key, employee: $employee}';
+  }
+}
+
+/// generated route for
+/// [_i3.EmployeeStepperScreen]
+class EmployeeStepperRoute extends _i15.PageRouteInfo<void> {
+  const EmployeeStepperRoute({List<_i15.PageRouteInfo>? children})
+      : super(
+          EmployeeStepperRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EmployeeStepperRoute';
+
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i4.EmployerRequestScreen]
+class EmployerRequestRoute extends _i15.PageRouteInfo<void> {
+  const EmployerRequestRoute({List<_i15.PageRouteInfo>? children})
+      : super(
+          EmployerRequestRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EmployerRequestRoute';
+
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i5.EmployerStepperScreen]
+class EmployerStepperRoute extends _i15.PageRouteInfo<void> {
+  const EmployerStepperRoute({List<_i15.PageRouteInfo>? children})
       : super(
           EmployerStepperRoute.name,
           initialChildren: children,
@@ -94,13 +262,13 @@ class EmployerStepperRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'EmployerStepperRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i2.HomeScreen]
-class HomeRoute extends _i9.PageRouteInfo<void> {
-  const HomeRoute({List<_i9.PageRouteInfo>? children})
+/// [_i6.HomeScreen]
+class HomeRoute extends _i15.PageRouteInfo<void> {
+  const HomeRoute({List<_i15.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -108,13 +276,13 @@ class HomeRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i3.LoginScreen]
-class LoginRoute extends _i9.PageRouteInfo<void> {
-  const LoginRoute({List<_i9.PageRouteInfo>? children})
+/// [_i7.LoginScreen]
+class LoginRoute extends _i15.PageRouteInfo<void> {
+  const LoginRoute({List<_i15.PageRouteInfo>? children})
       : super(
           LoginRoute.name,
           initialChildren: children,
@@ -122,13 +290,13 @@ class LoginRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i4.MyFlowScreen]
-class MyFlowRoute extends _i9.PageRouteInfo<void> {
-  const MyFlowRoute({List<_i9.PageRouteInfo>? children})
+/// [_i8.MyFlowScreen]
+class MyFlowRoute extends _i15.PageRouteInfo<void> {
+  const MyFlowRoute({List<_i15.PageRouteInfo>? children})
       : super(
           MyFlowRoute.name,
           initialChildren: children,
@@ -136,13 +304,13 @@ class MyFlowRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'MyFlowRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i5.OnboardingScreen]
-class OnboardingRoute extends _i9.PageRouteInfo<void> {
-  const OnboardingRoute({List<_i9.PageRouteInfo>? children})
+/// [_i9.OnboardingScreen]
+class OnboardingRoute extends _i15.PageRouteInfo<void> {
+  const OnboardingRoute({List<_i15.PageRouteInfo>? children})
       : super(
           OnboardingRoute.name,
           initialChildren: children,
@@ -150,51 +318,104 @@ class OnboardingRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'OnboardingRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i6.OtpScreen]
-class OtpRoute extends _i9.PageRouteInfo<OtpRouteArgs> {
+/// [_i10.OtpScreen]
+class OtpRoute extends _i15.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
-    _i10.Key? key,
-    String verificationId = "verification id",
-    List<_i9.PageRouteInfo>? children,
+    _i16.Key? key,
+    required String verificationId,
+    required String route,
+    _i18.UserRole? userRole,
+    String phoneNumber = '',
+    List<_i15.PageRouteInfo>? children,
   }) : super(
           OtpRoute.name,
           args: OtpRouteArgs(
             key: key,
             verificationId: verificationId,
+            route: route,
+            userRole: userRole,
+            phoneNumber: phoneNumber,
           ),
           initialChildren: children,
         );
 
   static const String name = 'OtpRoute';
 
-  static const _i9.PageInfo<OtpRouteArgs> page =
-      _i9.PageInfo<OtpRouteArgs>(name);
+  static const _i15.PageInfo<OtpRouteArgs> page =
+      _i15.PageInfo<OtpRouteArgs>(name);
 }
 
 class OtpRouteArgs {
   const OtpRouteArgs({
     this.key,
-    this.verificationId = "verification id",
+    required this.verificationId,
+    required this.route,
+    this.userRole,
+    this.phoneNumber = '',
   });
 
-  final _i10.Key? key;
+  final _i16.Key? key;
 
   final String verificationId;
 
+  final String route;
+
+  final _i18.UserRole? userRole;
+
+  final String phoneNumber;
+
   @override
   String toString() {
-    return 'OtpRouteArgs{key: $key, verificationId: $verificationId}';
+    return 'OtpRouteArgs{key: $key, verificationId: $verificationId, route: $route, userRole: $userRole, phoneNumber: $phoneNumber}';
   }
 }
 
 /// generated route for
-/// [_i7.RegisterScreen]
-class RegisterRoute extends _i9.PageRouteInfo<void> {
-  const RegisterRoute({List<_i9.PageRouteInfo>? children})
+/// [_i11.ProfileScreen]
+class ProfileRoute extends _i15.PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    _i16.Key? key,
+    required _i19.Employer employer,
+    List<_i15.PageRouteInfo>? children,
+  }) : super(
+          ProfileRoute.name,
+          args: ProfileRouteArgs(
+            key: key,
+            employer: employer,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
+
+  static const _i15.PageInfo<ProfileRouteArgs> page =
+      _i15.PageInfo<ProfileRouteArgs>(name);
+}
+
+class ProfileRouteArgs {
+  const ProfileRouteArgs({
+    this.key,
+    required this.employer,
+  });
+
+  final _i16.Key? key;
+
+  final _i19.Employer employer;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key, employer: $employer}';
+  }
+}
+
+/// generated route for
+/// [_i12.RegisterScreen]
+class RegisterRoute extends _i15.PageRouteInfo<void> {
+  const RegisterRoute({List<_i15.PageRouteInfo>? children})
       : super(
           RegisterRoute.name,
           initialChildren: children,
@@ -202,13 +423,13 @@ class RegisterRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'RegisterRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i8.RoleScreen]
-class RoleRoute extends _i9.PageRouteInfo<void> {
-  const RoleRoute({List<_i9.PageRouteInfo>? children})
+/// [_i13.RoleScreen]
+class RoleRoute extends _i15.PageRouteInfo<void> {
+  const RoleRoute({List<_i15.PageRouteInfo>? children})
       : super(
           RoleRoute.name,
           initialChildren: children,
@@ -216,5 +437,19 @@ class RoleRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'RoleRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i14.SiraAppScreen]
+class SiraAppRoute extends _i15.PageRouteInfo<void> {
+  const SiraAppRoute({List<_i15.PageRouteInfo>? children})
+      : super(
+          SiraAppRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SiraAppRoute';
+
+  static const _i15.PageInfo<void> page = _i15.PageInfo<void>(name);
 }

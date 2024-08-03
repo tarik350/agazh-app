@@ -42,5 +42,6 @@ class RegisterState extends Equatable {
         // password,
         status,
         errorMessage,
+        verificationId
       ];
 }

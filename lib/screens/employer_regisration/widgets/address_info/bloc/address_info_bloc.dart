@@ -1,24 +1,27 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/address_info/billing_address.dart';
 
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/city.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/postcode.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/street.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/familly_size.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/house_number.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/personal_info.dart';
 
 part 'address_info_event.dart';
 part 'address_info_state.dart';
 
 class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
-  final EmployerRepositroy employerRepositroy;
+  final EmployerRepository employerRepositroy;
   AddressInfoBloc({required this.employerRepositroy})
       : super(const AddressInfoState()) {
     on<HouseNumberChanged>(_onHouseNumberChanged);
-    // on<FamilySizeChanged>(_onFamilySizeChanged);
+    on<FamilySizeChanged>(_onFamilySizeChanged);
     on<CityChanged>(_onCityChanged);
-    // on<CountryChanged>(_onCountryChanged);
-    on<IdCardChanged>(_onIdCardImageChanged);
+    on<SubCityChanged>(_onSubcityChanged);
     on<FormSubmitted>(_onFormSubmitted);
   }
 
@@ -34,27 +37,25 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         state.houseNumber,
         // state.familySize,
         state.city,
-        state.idCardIage,
       ]),
     ));
   }
 
-  // void _onFamilySizeChanged(
-  //   FamilySizeChanged event,
-  //   Emitter<AddressInfoState> emit,
-  // ) {
-  //   final familySize = FamilySize.dirty(event.familySize);
-  //   emit(state.copyWith(
-  //     familySize: familySize,
-  //     status: Formz.validate([
-  //       state.familySize,
-  //       familySize,
-  //       state.city,
-  //       state.houseNumber,
-  //       state.idCardIage
-  //     ]),
-  //   ));
-  // }
+  void _onFamilySizeChanged(
+    FamilySizeChanged event,
+    Emitter<AddressInfoState> emit,
+  ) {
+    final familySize = FamilySize.dirty(event.familySize);
+    emit(state.copyWith(
+      familySize: familySize,
+      status: Formz.validate([
+        state.familySize,
+        familySize,
+        state.city,
+        state.houseNumber,
+      ]),
+    ));
+  }
 
   void _onCityChanged(
     CityChanged event,
@@ -68,41 +69,22 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         city,
         state.city,
         state.houseNumber,
-        state.idCardIage
       ]),
     ));
   }
 
-  // void _onCountryChanged(
-  //   CountryChanged event,
-  //   Emitter<AddressInfoState> emit,
-  // ) {
-  //   final country = Country.dirty(event.country);
-  //   emit(state.copyWith(
-  //     country: country,
-  //     status: Formz.validate([
-  //       state.houseNumber,
-  //       state.familySize,
-  //       state.city,
-  //       country,
-  //       state.idCardIage
-  //     ]),
-  //   ));
-  // }
-
-  void _onIdCardImageChanged(
-    IdCardChanged event,
+  void _onSubcityChanged(
+    SubCityChanged event,
     Emitter<AddressInfoState> emit,
   ) {
-    final idCardIage = IdCardImage.dirty(event.idCardImage);
+    final subCity = SubCity.dirty(event.country);
     emit(state.copyWith(
-      idCardIage: idCardIage,
+      subCity: subCity,
       status: Formz.validate([
         state.houseNumber,
-        // state.familySize,
+        state.familySize,
         state.city,
-        state.idCardIage,
-        idCardIage
+        subCity,
       ]),
     ));
   }
@@ -114,12 +96,11 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     if (state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       try {
-        employerRepositroy.updateAddressInfo(
-          houseNumber: state.houseNumber.value,
-          city: state.city.value,
-          // familySize: state.familySize.value,
-          idCardImage: state.idCardIage.value,
-        );
+        employerRepositroy.updateAddressInformation(
+            houseNumber: int.parse(state.houseNumber.value),
+            city: state.city.value,
+            subCity: state.subCity.value,
+            familySize: int.parse(state.familySize.value));
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));

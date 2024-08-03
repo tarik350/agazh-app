@@ -14,7 +14,7 @@ class UserAuthDetailRepository {
     _authDetail = _authDetail?.copyWith(phoneNumber: phoneNumber);
   }
 
-  void setUserRole({required SelectedRole role}) {
+  void setUserRole({required UserRole role}) {
     _authDetail ??= UserAuthDetail.empty();
     _authDetail = _authDetail?.copyWith(role: role);
   }
@@ -24,11 +24,11 @@ class UserAuthDetailRepository {
     _authDetail = _authDetail?.copyWith(password: password);
   }
 
-  SelectedRole getUserRole() {
+  UserRole getUserRole() {
     if (_authDetail != null) {
       return _authDetail!.role;
     } else {
-      return SelectedRole.unknown;
+      return UserRole.none;
     }
   }
 }

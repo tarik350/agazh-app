@@ -4,11 +4,13 @@ class CustomButton extends StatelessWidget {
   final Function()? onTap;
   final String lable;
   final Color backgroundColor;
+  final double? padding;
 
   const CustomButton(
       {super.key,
       required this.onTap,
       required this.lable,
+      this.padding,
       this.backgroundColor = Colors.black});
 
   @override
@@ -29,8 +31,8 @@ class CustomButton extends StatelessWidget {
       })).copyWith(),
       onPressed: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20.0,
+        padding: EdgeInsets.symmetric(
+          vertical: padding ?? 20.0,
         ),
         child: Center(
           child: Text(

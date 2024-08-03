@@ -2,31 +2,29 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobile_app/data/repository/auth_detail_repository.dart';
+import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
-import 'package:mobile_app/flow_builder_screen.dart';
-
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/FullName.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/family_size.dart';
+import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/firestore_service.dart';
 
 part 'personal_info_event.dart';
 part 'personal_info_state.dart';
 
 class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
-  final EmployerRepositroy employerRepositroy;
-  final UserAuthDetailRepository userAuthDetailRepository;
+  final EmployerRepository employerRepositroy;
+  final EmployeeRepository employeeRepository;
+  final _auth = FirebaseAuth.instance;
   final FirebaseService _firebaseService = FirebaseService();
 
   PersonalInfoBloc(
-      {required this.employerRepositroy,
-      required this.userAuthDetailRepository})
+      {required this.employerRepositroy, required this.employeeRepository})
       : super(const PersonalInfoState()) {
     on<FullNameChanged>(_onNameChanged);
-    on<FamilySizeChanged>(_onFamilySizeChanged);
     on<FormSubmitted>(_onFormSubmitted);
     on<IdCardChanged>(_onIdCardChanged);
     on<ProfilePictureChanged>(_onProfilePictureChanged);
@@ -39,28 +37,9 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     final name = FullName.dirty(event.name);
     emit(state.copyWith(
       fullName: name,
-      status: Formz.validate([name, state.familySize]),
+      status: Formz.validate([name]),
     ));
   }
-
-  FutureOr<void> _onFamilySizeChanged(
-      FamilySizeChanged event, Emitter<PersonalInfoState> emit) {
-    final familySize = FamilySize.dirty(event.familySize);
-    emit(state.copyWith(
-        familySize: familySize,
-        status: Formz.validate([state.fullName, familySize])));
-  }
-
-  // void _onPhoneNumberChanged(
-  //   PhoneNumberChanged event,
-  //   Emitter<PersonalInfoState> emit,
-  // ) {
-  //   final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
-  //   emit(state.copyWith(
-  //     phoneNumber: phoneNumber,
-  //     status: Formz.validate([state.email, state.name, phoneNumber]),
-  //   ));
-  // }
 
   FutureOr<void> _onIdCardChanged(
       IdCardChanged event, Emitter<PersonalInfoState> emit) async {
@@ -91,8 +70,9 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
             profilePicturePathString: response));
       } else {}
     } catch (e) {
-      emit(
-          state.copyWith(profilePictureUploadStatus: ImageUploadStatus.failed));
+      emit(state.copyWith(
+          profilePictureUploadStatus: ImageUploadStatus.failed,
+          errorMessage: "Error uploading profile picture"));
     }
   }
 
@@ -102,22 +82,34 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
   ) async {
     if (state.status.isValidated) {
       if (state.idCardUploadStatus != ImageUploadStatus.completed) {
-        emit(state.copyWith(idCardUploadStatus: ImageUploadStatus.notUploaded));
-        //return statemetn here expcutoin should stop here
-        // return;
+        emit(state.copyWith(
+            idCardUploadStatus: ImageUploadStatus.notUploaded,
+            errorMessage: "Id card must be uploaded"));
+
+        return;
       }
 
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
 
       try {
-        employerRepositroy.updatePersonalInfo(
-            userAuthDetail: userAuthDetailRepository.getUserAuthDetail(),
-            fullName: state.fullName.value,
-            idCardPathString: state.idCardPathString);
+        if (event.role == UserRole.employer) {
+          employerRepositroy.updatePersonalInfo(
+              fullName: state.fullName.value,
+              idCardImagePath: state.idCardPathString,
+              id: _auth.currentUser!.uid,
+              profilePicturePath: state.profilePicturePathString);
+        } else {
+          employeeRepository.updatePersonalInfo(
+              fullName: state.fullName.value,
+              idCardImagePath: state.idCardPathString,
+              profilePicturePath: state.profilePicturePathString,
+              id: _auth.currentUser!.uid);
+        }
 
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
-      } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      } catch (e) {
+        emit(state.copyWith(
+            status: FormzStatus.submissionFailure, errorMessage: e.toString()));
       }
     }
   }

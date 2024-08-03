@@ -15,14 +15,6 @@ class FullNameChanged extends PersonalInfoEvent {
   List<Object> get props => [name];
 }
 
-class FamilySizeChanged extends PersonalInfoEvent {
-  final String familySize;
-
-  const FamilySizeChanged(this.familySize);
-  @override
-  List<Object> get props => [familySize];
-}
-
 class IdCardChanged extends PersonalInfoEvent {
   final Uint8List file;
   final String path;
@@ -43,4 +35,8 @@ class ProfilePictureChanged extends PersonalInfoEvent {
   List<Object> get props => [file, path];
 }
 
-class FormSubmitted extends PersonalInfoEvent {}
+class FormSubmitted extends PersonalInfoEvent {
+  final UserRole role;
+
+  const FormSubmitted(this.role);
+}

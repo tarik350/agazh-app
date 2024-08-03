@@ -22,4 +22,8 @@ class PhoneNumberChanged extends RegisterEvent {
 //   List<Object> get props => [password];
 // }
 
-class RegisterFormSubmitted extends RegisterEvent {}
+class RegisterFormSubmitted extends RegisterEvent {
+  final UserRole role;
+
+  const RegisterFormSubmitted(this.role);
+}

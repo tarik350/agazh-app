@@ -1,1 +1,1 @@
-enum SelectedRole { employer, employee, unknown }
+enum UserRole { employer, employee, none }

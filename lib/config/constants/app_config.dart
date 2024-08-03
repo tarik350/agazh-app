@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
@@ -12,5 +13,35 @@ class AppConfig {
         color: color ?? AppColors.whiteColor,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(30.r), topLeft: Radius.circular(30.r)));
+  }
+
+  static void getMassenger(BuildContext context, String? message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(message ?? "Unknown error occured")),
+      );
+  }
+
+  static Widget getProgressIndicatorNormal({Color? color}) {
+    return Center(
+        child: SizedBox(
+            width: 10.0.w,
+            height: 10.0.h,
+            child: CircularProgressIndicator(
+              color: color ?? AppColors.primaryColor,
+            )));
+  }
+
+  static Widget getProgresIndicator(
+      DownloadProgress downloadProgress, Color? color) {
+    return Center(
+        child: SizedBox(
+            width: 10.0.w,
+            height: 10.0.h,
+            child: CircularProgressIndicator(
+              value: downloadProgress.progress,
+              color: color ?? AppColors.primaryColor,
+            )));
   }
 }
