@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String searchString = '';
   @override
   Widget build(BuildContext context) {
-    final user = context.read<EmployerRepository>().getUser();
+    // final user = context.read<EmployerRepository>().getUser();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -178,8 +178,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const EmployeeLoadingSkeleton();
                     }
                     if (snapshot.hasData) {
-                      //todo list of employees
-                      print(snapshot.data);
                       if (snapshot.data!.isEmpty) {
                         return Center(
                           child: Text(

@@ -18,9 +18,10 @@ class EmployeeProfileList extends StatelessWidget {
     return ListView.builder(
       itemCount: users.length,
       itemBuilder: (context, index) {
-        var user = users[index];
+        Employee user = users[index];
         return GestureDetector(
           onTap: () {
+            print(user);
             context.router.push(EmployeeDetailRoute(employee: user));
           },
           child: Padding(
