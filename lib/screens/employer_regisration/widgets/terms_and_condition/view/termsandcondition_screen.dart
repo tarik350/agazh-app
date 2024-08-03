@@ -103,8 +103,8 @@ class _PasswordInput extends StatelessWidget {
     return BlocBuilder<TermsandconditionCubit, TermsAndConditionState>(
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "Password",
-            obscureText: true,
+            hintText: "PIN",
+            obscureText: false,
             onChanged: (value) =>
                 context.read<TermsandconditionCubit>().onPasswordChanged(value),
             keyString: "login_PasswordInput_textfield",

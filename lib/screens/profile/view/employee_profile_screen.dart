@@ -438,7 +438,7 @@ class ProfileTextField extends StatelessWidget {
           filled: true,
           // hintText: hintText,
           // errorText: errorText,
-          hintText: labelText,
+          labelText: labelText,
           hintStyle: TextStyle(color: Colors.grey.shade500)),
 
       // decoration: InputDecoration(

@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     fullNameController = TextEditingController(text: widget.employer.fullName);
     familySizeController =
-        TextEditingController(text: widget.employer.toString());
+        TextEditingController(text: widget.employer.familySize.toString());
     cityController = TextEditingController(text: widget.employer.city);
     subCityController = TextEditingController(text: widget.employer.subCity);
     houseNumberController =
@@ -558,7 +558,7 @@ class ProfileTextField extends StatelessWidget {
           filled: true,
           // hintText: hintText,
           // errorText: errorText,
-          hintText: labelText,
+          labelText: labelText,
           hintStyle: TextStyle(color: Colors.grey.shade500)),
 
       // decoration: InputDecoration(

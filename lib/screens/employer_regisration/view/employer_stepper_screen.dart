@@ -20,7 +20,7 @@ class EmployerStepperScreen extends StatelessWidget {
         child: BlocProvider<EmployerRegistrationCubit>(
           create: (_) => EmployerRegistrationCubit(3),
           child: GradientBackgroundContainer(
-              showNavButton: true,
+              showNavButton: false,
               title: Container(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 12.h),
                 child: Column(
