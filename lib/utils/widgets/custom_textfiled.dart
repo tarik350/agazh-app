@@ -12,11 +12,13 @@ class CustomTextfield extends StatelessWidget {
   final TextInputType inputType;
   final String? initialValue;
   final Widget? suffix;
+  final int? maxLines;
 
   const CustomTextfield(
       {super.key,
       // required this.controller,
       this.initialValue,
+      this.maxLines,
       required this.hintText,
       required this.obscureText,
       required this.onChanged,
@@ -28,6 +30,7 @@ class CustomTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       initialValue: initialValue,
       obscureText: obscureText,
       key: Key(keyString),

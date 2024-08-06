@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/billing_address.dart';
-
-import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/city.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/familly_size.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/house_number.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/personal_info.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/special_location.dart';
 
 part 'address_info_event.dart';
 part 'address_info_state.dart';
@@ -22,6 +20,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     on<FamilySizeChanged>(_onFamilySizeChanged);
     on<CityChanged>(_onCityChanged);
     on<SubCityChanged>(_onSubcityChanged);
+    on<SpecialLocaionChanged>(_onSpecialLocaionChanged);
     on<FormSubmitted>(_onFormSubmitted);
   }
 
@@ -89,6 +88,20 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     ));
   }
 
+  FutureOr<void> _onSpecialLocaionChanged(
+      SpecialLocaionChanged event, Emitter<AddressInfoState> emit) {
+    final specialLocaion = SpecialLocaion.dirty(event.specialLocaion);
+    emit(state.copyWith(
+        specialLocation: specialLocaion,
+        status: Formz.validate([
+          specialLocaion,
+          state.city,
+          state.subCity,
+          state.familySize,
+          state.houseNumber
+        ])));
+  }
+
   void _onFormSubmitted(
     FormSubmitted event,
     Emitter<AddressInfoState> emit,
@@ -100,6 +113,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
             houseNumber: int.parse(state.houseNumber.value),
             city: state.city.value,
             subCity: state.subCity.value,
+            specialLocaion: state.specialLocation.value,
             familySize: int.parse(state.familySize.value));
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {

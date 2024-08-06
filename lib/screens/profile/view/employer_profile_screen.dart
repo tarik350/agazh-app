@@ -36,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController subCityController;
   late TextEditingController houseNumberController;
   late TextEditingController passwordController;
+  late TextEditingController specialLocationController;
 
   @override
   void initState() {
@@ -48,6 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     houseNumberController =
         TextEditingController(text: widget.employer.houseNumber.toString());
     passwordController = TextEditingController(text: widget.employer.password);
+    specialLocationController =
+        TextEditingController(text: widget.employer.specialLocation);
   }
 
   String idCardPath = '';
@@ -302,6 +305,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ProfileTextField(
                 controller: subCityController,
                 labelText: 'Sub City',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProfileTextField(
+                controller: specialLocationController,
+                labelText: 'Special Location Description',
               ),
               SizedBox(
                 height: 12.h,

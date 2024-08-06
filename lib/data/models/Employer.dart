@@ -13,6 +13,7 @@ class Employer extends Equatable {
   final String profilePicturePath;
   final String phone;
   final String password;
+  final String specialLocation;
 
   const Employer(
       {this.fullName = '',
@@ -25,6 +26,7 @@ class Employer extends Equatable {
       this.idCardImagePath = '',
       this.profilePicturePath = '',
       this.phone = '',
+      this.specialLocation = '',
       this.password = ''});
 
   factory Employer.fromDocument(DocumentSnapshot doc) {
@@ -41,6 +43,7 @@ class Employer extends Equatable {
       idCardImagePath: data['idCardImagePath'] ?? '',
       profilePicturePath: data['profilePicturePath'] ?? '',
       phone: data['phone'] ?? '',
+      specialLocation: data['phone'] ?? '',
       password: data['password'] ?? '',
     );
   }
@@ -57,6 +60,7 @@ class Employer extends Equatable {
       idCardImagePath: json['idCardImagePath'] ?? '',
       profilePicturePath: json['profilePicturePath'] ?? '',
       phone: json['phone'] ?? '',
+      specialLocation: json['specialLocation'] ?? '',
       password: json['password'] ?? '',
     );
   }
@@ -73,6 +77,7 @@ class Employer extends Equatable {
       'idCardImagePath': idCardImagePath,
       'profilePicturePath': profilePicturePath,
       'phone': phone,
+      'specialLocation': specialLocation,
       'password': password
     };
   }
@@ -88,6 +93,7 @@ class Employer extends Equatable {
       String? idCardImagePath,
       String? profilePicturePath,
       String? phone,
+      String? specialLocation,
       String? password}) {
     return Employer(
         fullName: fullName ?? this.fullName,
@@ -100,6 +106,7 @@ class Employer extends Equatable {
         idCardImagePath: idCardImagePath ?? this.idCardImagePath,
         profilePicturePath: profilePicturePath ?? this.profilePicturePath,
         phone: phone ?? this.phone,
+        specialLocation: specialLocation ?? this.specialLocation,
         password: password ?? this.password);
   }
 
@@ -115,6 +122,7 @@ class Employer extends Equatable {
         idCardImagePath,
         profilePicturePath,
         phone,
+        specialLocation,
         password
       ];
 }

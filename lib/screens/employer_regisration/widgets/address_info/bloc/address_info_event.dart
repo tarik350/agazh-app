@@ -47,4 +47,11 @@ class IdCardChanged extends AddressInfoEvent {
   List<Object> get props => [idCardImage];
 }
 
+class SpecialLocaionChanged extends AddressInfoEvent {
+  final String specialLocaion;
+  const SpecialLocaionChanged(this.specialLocaion);
+  @override
+  List<Object> get props => [specialLocaion];
+}
+
 class FormSubmitted extends AddressInfoEvent {}

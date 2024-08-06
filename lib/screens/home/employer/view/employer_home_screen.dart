@@ -30,7 +30,7 @@ class _HomeScreenState extends State<EmployerHomeScreen> {
             Container(
               padding: EdgeInsets.all(12.h),
               width: double.infinity,
-              // height: 150.h,
+              height: 150.h,
               decoration: const BoxDecoration(color: AppColors.primaryColor),
               child: Column(
                 children: [
@@ -112,55 +112,55 @@ class _HomeScreenState extends State<EmployerHomeScreen> {
                           }),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: 20.w, right: 20.w, top: 30.h, bottom: 20.h),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        // setState(() {
-                        //   searchString = value;
-                        // });
-                      },
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        prefixIconConstraints:
-                            BoxConstraints(maxWidth: 50.h, minWidth: 40.h),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.cancel_outlined),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.h,
-                            horizontal: 20.w), // Adjust vertical padding
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        errorStyle:
-                            const TextStyle(fontWeight: FontWeight.w300),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          borderSide: const BorderSide(color: Colors.blue),
-                        ),
-                        fillColor: AppColors.whiteColor,
-                        filled: true,
-                        hintText: "Type Employee Name",
-                        hintStyle: TextStyle(
-                          color: Colors.grey.shade500,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //       left: 20.w, right: 20.w, top: 30.h, bottom: 20.h),
+                  //   child: TextFormField(
+                  //     onChanged: (value) {
+                  //       // setState(() {
+                  //       //   searchString = value;
+                  //       // });
+                  //     },
+                  //     decoration: InputDecoration(
+                  //       prefixIcon: const Icon(Icons.search),
+                  //       prefixIconConstraints:
+                  //           BoxConstraints(maxWidth: 50.h, minWidth: 40.h),
+                  //       suffixIcon: IconButton(
+                  //         onPressed: () {},
+                  //         icon: const Icon(Icons.cancel_outlined),
+                  //       ),
+                  //       contentPadding: EdgeInsets.symmetric(
+                  //           vertical: 10.h,
+                  //           horizontal: 20.w), // Adjust vertical padding
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(0),
+                  //         borderSide: const BorderSide(color: Colors.grey),
+                  //       ),
+                  //       errorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(0),
+                  //         borderSide: const BorderSide(color: Colors.red),
+                  //       ),
+                  //       focusedErrorBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(0),
+                  //         borderSide: const BorderSide(color: Colors.red),
+                  //       ),
+                  //       errorStyle:
+                  //           const TextStyle(fontWeight: FontWeight.w300),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(0),
+                  //         borderSide: const BorderSide(color: Colors.blue),
+                  //       ),
+                  //       fillColor: AppColors.whiteColor,
+                  //       filled: true,
+                  //       hintText: "Type Employee Name",
+                  //       hintStyle: TextStyle(
+                  //         color: Colors.grey.shade500,
+                  //         fontSize: 12.sp,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             ),

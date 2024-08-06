@@ -31,6 +31,7 @@ class EmployerRepository {
   void updateAddressInformation({
     required String city,
     required String subCity,
+    required String specialLocaion,
     required int houseNumber,
     required int familySize,
   }) {
@@ -38,6 +39,7 @@ class EmployerRepository {
       city: city,
       subCity: subCity,
       houseNumber: houseNumber,
+      specialLocation: specialLocaion,
       familySize: familySize,
     );
   }

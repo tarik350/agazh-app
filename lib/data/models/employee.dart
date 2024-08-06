@@ -101,6 +101,7 @@ class Employee extends Equatable {
 
   factory Employee.fromDocument(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+
     return Employee(
         fullName: data['fullName'] ?? '',
         id: doc.id,
@@ -109,8 +110,6 @@ class Employee extends Equatable {
         city: data['city'] ?? '',
         subCity: data['subCity'] ?? '',
         houseNumber: data['houseNumber'] ?? 0,
-        // workStatus:
-        //     WorkStatusExtension.fromString(data['workStatus'] ?? 'fullTime'),
         totalRating: data['totalRating'] ?? 0.0,
         password: data['password'] ?? '',
         phone: data['phone'] ?? '',
@@ -118,9 +117,23 @@ class Employee extends Equatable {
             ? JobStatusEnum.fullTime
             : JobStatusEnum.partTime,
         role: data['role'] ?? 'employee',
-        age: data['age'] != null ? int.parse(data['age']) : 0,
+        age: getAge(data['age']),
         religion: data['religion'] ?? '',
         workType: data['workType'] ?? '');
+  }
+
+  static int getAge(dynamic age) {
+    if (age == null) {
+      return 0;
+    }
+    switch (age.runtimeType) {
+      case String:
+        return int.parse(age);
+      case int:
+        return age;
+      default:
+        return 0;
+    }
   }
 
   Employee copyWith(

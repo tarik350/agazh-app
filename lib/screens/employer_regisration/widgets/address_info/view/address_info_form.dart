@@ -31,6 +31,8 @@ class AddressInfoForm extends StatelessWidget {
           const SizedBox(height: 12.0),
           _SubCityInput(),
           const SizedBox(height: 12.0),
+          _SpecialLocaionInput(),
+          const SizedBox(height: 12.0),
           _HouseNumberInput(),
           const SizedBox(height: 12.0),
           // _HouseNumberInput(),
@@ -131,6 +133,30 @@ class _SubCityInput extends StatelessWidget {
             inputType: TextInputType.text,
             errorText:
                 state.subCity.invalid ? state.subCity.error?.message : null);
+      },
+    );
+  }
+}
+
+class _SpecialLocaionInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddressInfoBloc, AddressInfoState>(
+      buildWhen: (previous, current) =>
+          previous.specialLocation != current.specialLocation,
+      builder: (context, state) {
+        return CustomTextfield(
+            maxLines: 3,
+            hintText: "Special Locaion Description",
+            obscureText: false,
+            onChanged: (value) => context
+                .read<AddressInfoBloc>()
+                .add(SpecialLocaionChanged(value)),
+            keyString: "specialLocaion_specialLocaionInput_textField",
+            inputType: TextInputType.text,
+            errorText: state.specialLocation.invalid
+                ? state.specialLocation.error?.message
+                : null);
       },
     );
   }

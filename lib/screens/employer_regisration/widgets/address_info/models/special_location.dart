@@ -1,0 +1,18 @@
+import 'package:formz/formz.dart';
+
+enum SpecialLocaionValidationError {
+  required('This field can\'t be empty. Please provide information.');
+
+  final String message;
+  const SpecialLocaionValidationError(this.message);
+}
+
+class SpecialLocaion extends FormzInput<String, SpecialLocaionValidationError> {
+  const SpecialLocaion.pure() : super.pure('');
+  const SpecialLocaion.dirty([String value = '']) : super.dirty(value);
+
+  @override
+  SpecialLocaionValidationError? validator(String value) {
+    return value.isNotEmpty ? null : SpecialLocaionValidationError.required;
+  }
+}
