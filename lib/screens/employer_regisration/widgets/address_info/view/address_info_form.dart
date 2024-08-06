@@ -24,33 +24,35 @@ class AddressInfoForm extends StatelessWidget {
             );
         }
       },
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          _CityInput(),
-          const SizedBox(height: 12.0),
-          _SubCityInput(),
-          const SizedBox(height: 12.0),
-          _SpecialLocaionInput(),
-          const SizedBox(height: 12.0),
-          _HouseNumberInput(),
-          const SizedBox(height: 12.0),
-          // _HouseNumberInput(),
-          // // const SizedBox(height: 12.0),
-          // _FamilySizeInput(),
-          // const SizedBox(height: 12.0),
-          //replace this with image uploader vierw
-          _FamilySizeInput(),
-          const SizedBox(height: 12.0),
-          Row(
-            children: [
-              Expanded(child: _SubmitButton()),
-              const SizedBox(width: 8.0),
-              Expanded(child: _CancelButton()),
-            ],
-          ),
-        ],
-      )),
+      child: Expanded(
+        child: SingleChildScrollView(
+            child: Column(
+          children: [
+            _CityInput(),
+            const SizedBox(height: 12.0),
+            _SubCityInput(),
+            const SizedBox(height: 12.0),
+            _SpecialLocaionInput(),
+            const SizedBox(height: 12.0),
+            _HouseNumberInput(),
+            const SizedBox(height: 12.0),
+            // _HouseNumberInput(),
+            // // const SizedBox(height: 12.0),
+            // _FamilySizeInput(),
+            // const SizedBox(height: 12.0),
+            //replace this with image uploader vierw
+            _FamilySizeInput(),
+            const SizedBox(height: 12.0),
+            Row(
+              children: [
+                Expanded(child: _SubmitButton()),
+                const SizedBox(width: 8.0),
+                Expanded(child: _CancelButton()),
+              ],
+            ),
+          ],
+        )),
+      ),
     );
   }
 }
