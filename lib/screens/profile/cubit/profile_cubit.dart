@@ -51,10 +51,13 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> uploadProfilePicture(
-      {required Uint8List file, required String path}) async {
+      {required Uint8List file,
+      required String path,
+      required String id}) async {
     emit(ProfilePicutureUploading());
     try {
-      final response = await _firebaseService.uploadImgeToStorage(path, file);
+      final response =
+          await _firebaseService.uploadImgeToStorage(path, file, fileName: id);
       if (response.isNotEmpty) {
         emit(ProfilePictureUploaded(response));
       }

@@ -7,18 +7,18 @@ import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
-import 'package:mobile_app/screens/home/widgets/employee_list_view.dart';
+import 'package:mobile_app/screens/home/employer/widgets/employee_list_view.dart';
 import 'package:mobile_app/utils/widgets/employee_loading_shimmer.dart';
 
 @RoutePage()
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class EmployerHomeScreen extends StatefulWidget {
+  const EmployerHomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<EmployerHomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<EmployerHomeScreen> {
   String searchString = '';
   @override
   Widget build(BuildContext context) {

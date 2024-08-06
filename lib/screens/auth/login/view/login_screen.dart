@@ -71,50 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-                    return DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        value: state.userRole == UserRole.none
-                            ? null
-                            : state.userRole.name,
-                        onChanged: (String? value) => context
-                            .read<LoginBloc>()
-                            .add(SelectedRoleChange(value!)),
-                        buttonStyleData: ButtonStyleData(
-                            padding: EdgeInsets.zero,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(
-                                    width: 1.w,
-                                    color:
-                                        AppColors.primaryColor.withOpacity(.3)))
-
-                            // padding: EdgeInsets.symmetric(horizontal: 16),
-                            // height: 40,
-                            // width: 140,
-                            ),
-                        isExpanded: true,
-                        hint: Text(
-                          'Select Your Role',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).hintColor,
-                          ),
-                        ),
-                        items: [UserRole.employer.name, UserRole.employee.name]
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    );
-                  }),
                   SizedBox(
                     height: 12.h,
                   ),
@@ -182,7 +138,7 @@ class _PasswordInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "Password",
+            hintText: "PIN",
             obscureText: false,
             onChanged: (value) =>
                 context.read<LoginBloc>().add(PasswordChanged(value)),
@@ -223,8 +179,7 @@ class _LoginButton extends StatelessWidget {
               onTap:
                   //validated and is not in progress validated && is not in progress
                   state.status.isValidated &&
-                          !state.status.isSubmissionInProgress &&
-                          state.userRole != UserRole.none
+                          !state.status.isSubmissionInProgress
                       ? () =>
                           context.read<LoginBloc>().add(LoginFormSubmitted())
                       : null,

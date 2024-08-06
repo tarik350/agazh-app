@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/view/emplyee_demograpy_screen.dart';
+import 'package:mobile_app/screens/employee/widgets/other_detail/view/employee_other_detail_screen.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/view/personal_info_page.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/view/termsandcondition_screen.dart';
@@ -21,7 +22,7 @@ class EmplyeeStepper extends StatelessWidget {
           child: Column(
             children: [
               EasyStepper(
-                stepRadius: 30.r,
+                stepRadius: 20.r,
                 // internalPadding: 50,
                 lineStyle: LineStyle(
                     activeLineColor: AppColors.primaryColor,
@@ -63,6 +64,12 @@ class EmplyeeStepper extends StatelessWidget {
                       ),
                       topTitle: true,
                       title: "Demography"),
+                  EasyStep(
+                      icon: Icon(
+                        Icons.policy,
+                      ),
+                      topTitle: true,
+                      title: "Demography"),
                   // EasyStep(icon: Icon(Icons.ondemand_video)),
                 ],
               ),
@@ -72,8 +79,10 @@ class EmplyeeStepper extends StatelessWidget {
               state.activeStepperIndex == 0
                   ? const PersonalInfoScreen()
                   : state.activeStepperIndex == 1
-                      ? const EmployeeDemographyScreen()
-                      : const TermsAndConditionScreen()
+                      ? const EmployeeOtherDetailScreen()
+                      : state.activeStepperIndex == 2
+                          ? const EmployeeDemographyScreen()
+                          : const TermsAndConditionScreen()
             ],
           ),
         );

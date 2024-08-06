@@ -168,4 +168,81 @@ class EmployerRepository {
       print('Error updating employer profile: $e');
     }
   }
+
+  Future<void> addRating(
+      {required String employeeId,
+      required String employerId,
+      required String feedback,
+      required double rating}) async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Add the rating to the ratings collection
+    await firestore.collection("employee_ratings").add({
+      'employeeId': employeeId,
+      'employerId': employerId,
+      'rating': rating,
+      'feedback': feedback,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    // Update the employee's total rating
+    await _updateEmployeeRating(employeeId);
+  }
+
+  Future<void> _updateEmployeeRating(String employeeId) async {
+    // Get all ratings for the employee
+    QuerySnapshot ratingsSnapshot = await _firestore
+        .collection("employee_ratings")
+        .where('employeeId', isEqualTo: employeeId)
+        .get();
+
+    // Calculate the average rating
+    double totalRating = 0;
+    for (var doc in ratingsSnapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      totalRating += data['rating'];
+    }
+
+    double averageRating = totalRating / ratingsSnapshot.docs.length;
+
+    // Update the employee's document with the new average rating
+    await _firestore.collection('employee').doc(employeeId).update({
+      'totalRating': averageRating,
+    });
+  }
+
+  Future<void> requestEmployee(
+      {required String employerId, required String employeeId}) async {
+    await FirebaseFirestore.instance.collection('requests').add({
+      'employerId': employerId,
+      'employeeId': employeeId,
+      'status': 'pending',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<bool> hasRating(String employeeId, String employerId) async {
+    var querySnapshot = await _firestore
+        .collection("employee_ratings")
+        .where('employeeId', isEqualTo: employeeId)
+        .where('employerId', isEqualTo: employerId)
+        .get();
+
+    return querySnapshot
+        .docs.isNotEmpty; // Returns true if any documents match the query
+  }
+
+  Future<bool> hasRequest(
+      {required String employerId, required String employeeId}) async {
+    var querySnapshot = await _firestore
+        .collection('requests')
+        .where('employerId', isEqualTo: employerId)
+        .where('employeeId', isEqualTo: employeeId)
+        .where('status',
+            isEqualTo: 'pending') // Optional: Only check for pending requests
+        .get();
+
+    return querySnapshot
+        .docs.isNotEmpty; // Returns true if any documents match the query
+  }
 }

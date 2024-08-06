@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
-import 'package:mobile_app/screens/employee/view/emplyee_stepper.dart';
+import 'package:mobile_app/screens/employee/view/employee_stepper.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/view/employer_stepper.dart';
 import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
@@ -19,7 +19,7 @@ class EmployeeStepperScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: BlocProvider<EmployerRegistrationCubit>(
-          create: (_) => EmployerRegistrationCubit(3),
+          create: (_) => EmployerRegistrationCubit(4),
           child: GradientBackgroundContainer(
               showNavButton: false,
               title: Container(

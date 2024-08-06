@@ -9,8 +9,8 @@ import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/firebase_options.dart';
 import 'package:mobile_app/screens/auth/login/bloc/login_bloc.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
-import 'package:mobile_app/screens/home/employee/cubit/employee_cubit.dart';
-import 'package:mobile_app/screens/profile/view/cubit/profile_cubit.dart';
+import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
+
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/setting/bloc/setting_bloc.dart';
 

@@ -1,10 +1,10 @@
 part of 'employee_bloc.dart';
 
-sealed class EmployeeState extends Equatable {
-  const EmployeeState();
-  
+sealed class EmployerState extends Equatable {
+  const EmployerState();
+
   @override
   List<Object> get props => [];
 }
 
-final class EmployeeInitial extends EmployeeState {}
+final class EmployeeInitial extends EmployerState {}

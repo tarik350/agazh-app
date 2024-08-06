@@ -45,13 +45,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginFormSubmitted event, Emitter<LoginState> emit) async {
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      final user = await _authService.lookupUser(
-          state.phoneNumber.value,
-          state.password.value,
-          state.userRole == UserRole.employer
-              ? "employers"
-              : UserRole.employee.name);
-      if (user == null) {
+      final employee = await _authService.lookupUser(
+          state.phoneNumber.value, state.password.value, "employee");
+      final employer = await _authService.lookupUser(
+          state.phoneNumber.value, state.password.value, "employers");
+      if (employee == null && employer == null) {
         throw UserDoesNotExist();
       }
       final String? verificationId =
@@ -60,6 +58,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (verificationId != null) {
         emit(state.copyWith(
             status: FormzStatus.submissionSuccess,
+            userRole: employee != null ? UserRole.employee : UserRole.employer,
             verificationId: verificationId));
       } else {
         throw VerificationIdNotReceivedException();

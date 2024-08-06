@@ -8,7 +8,7 @@ import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
-import 'package:mobile_app/screens/home/widgets/employee_request_list_view.dart';
+import 'package:mobile_app/screens/home/employer/widgets/employer_request_list_view.dart';
 import 'package:mobile_app/utils/widgets/employee_loading_shimmer.dart';
 import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
 
@@ -81,7 +81,7 @@ class EmployerRequestScreen extends StatelessWidget {
                       ));
                     }
 
-                    return EmployeeRequestList(
+                    return EmployerRequestList(
                       requests: state.requests!,
                     );
                   }

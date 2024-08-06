@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/Employer.dart';
-import 'package:mobile_app/screens/profile/view/cubit/profile_cubit.dart';
+import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
@@ -144,7 +144,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                             if (context.mounted) {
                               context.read<ProfileCubit>().uploadProfilePicture(
-                                  file: image, path: "profilePics");
+                                  file: image,
+                                  path: "profilePics",
+                                  id: widget.employer.id);
                             }
                           },
                           icon: ClipRRect(

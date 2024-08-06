@@ -13,11 +13,11 @@ import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
 
 // employee_request_list.dart
-class EmployeeRequestList extends StatelessWidget {
+class EmployerRequestList extends StatelessWidget {
   final List<Map<String, dynamic>> requests;
   final auth = FirebaseAuth.instance;
 
-  EmployeeRequestList({super.key, required this.requests});
+  EmployerRequestList({super.key, required this.requests});
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class EmployeeRequestList extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Timestamp: $formattedDate',
+                              'Time: $formattedDate',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],

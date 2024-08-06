@@ -151,7 +151,7 @@ class AuthService {
         throw RoleCanNotBeNoneException();
       }
       final String collectionName =
-          role == UserRole.employee ? "employees" : "employers";
+          role == UserRole.employee ? "employee" : "employers";
 
       CollectionReference employerCollection =
           FirebaseFirestore.instance.collection(collectionName);

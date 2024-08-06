@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/employee.dart';
-import 'package:mobile_app/screens/profile/view/cubit/profile_cubit.dart';
+import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
+import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
+import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
@@ -37,6 +40,12 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   late TextEditingController subCityController;
   late TextEditingController houseNumberController;
   late TextEditingController passwordController;
+  late TextEditingController ageController;
+  late TextEditingController religionController;
+  String idCardPath = '';
+  String profilePath = '';
+  late String workType;
+  late String jobStatus;
 
   @override
   void initState() {
@@ -48,10 +57,13 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     houseNumberController =
         TextEditingController(text: widget.employee.houseNumber.toString());
     passwordController = TextEditingController(text: widget.employee.password);
+    religionController = TextEditingController(text: widget.employee.religion);
+    ageController = TextEditingController(text: widget.employee.age.toString());
+    workType = widget.employee.workType;
+    jobStatus = widget.employee.jobStatus == JobStatusEnum.partTime
+        ? "partTime"
+        : "fullTime";
   }
-
-  String idCardPath = '';
-  String profilePath = '';
 
   void _updateProfile() {
     final updatedFields = <String, dynamic>{};
@@ -75,8 +87,20 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     if (profilePath.isNotEmpty) {
       updatedFields['profilePicturePath'] = profilePath;
     }
+    if (workType.isNotEmpty) {
+      updatedFields['workType'] = workType;
+    }
+    if (jobStatus.isNotEmpty) {
+      updatedFields['jobstatus'] = jobStatus;
+    }
     if (passwordController.text.isNotEmpty) {
       updatedFields['password'] = passwordController.text;
+    }
+    if (ageController.text.isNotEmpty) {
+      updatedFields['age'] = ageController.text;
+    }
+    if (religionController.text.isNotEmpty) {
+      updatedFields['religion'] = religionController.text;
     }
 
     try {
@@ -142,7 +166,9 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
 
                             if (context.mounted) {
                               context.read<ProfileCubit>().uploadProfilePicture(
-                                  file: image, path: "profilePics");
+                                  file: image,
+                                  path: "profilePics",
+                                  id: widget.employee.id);
                             }
                           },
                           icon: ClipRRect(
@@ -272,6 +298,95 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               SizedBox(
                 height: 12.h,
               ),
+              DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  value: workType.isNotEmpty ? workType : null,
+                  onChanged: (value) => setState(() {
+                    workType = value!;
+                  }),
+                  buttonStyleData: ButtonStyleData(
+                      padding: EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                              width: 1.w,
+                              color: AppColors.primaryColor.withOpacity(.3)))
+
+                      // padding: EdgeInsets.symmetric(horizontal: 16),
+                      // height: 40,
+                      // width: 140,
+                      ),
+                  isExpanded: true,
+                  hint: Text(
+                    'Select Work Type',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).hintColor,
+                    ),
+                  ),
+                  items: [
+                    "Kitchen Staff",
+                    "Cleaner",
+                    "Full Time Housekeeper",
+                    "Part Time Housekeeper",
+                    "Nanny"
+                  ]
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+              SizedBox(
+                height: 18.h,
+              ),
+              DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  value: jobStatus.isEmpty
+                      ? null
+                      : jobStatus == 'partTime'
+                          ? "Part Time"
+                          : "Full Time",
+                  onChanged: (String? value) => setState(() {
+                    jobStatus = value == 'Part Time' ? "partTime" : "fullTime";
+                  }),
+                  buttonStyleData: ButtonStyleData(
+                      padding: EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                              width: 1.w,
+                              color: AppColors.primaryColor.withOpacity(.3)))),
+                  isExpanded: true,
+                  hint: Text(
+                    'Select Job status',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).hintColor,
+                    ),
+                  ),
+                  items: ["Part Time", "Full Time"]
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+              SizedBox(
+                height: 18.h,
+              ),
               ProfileTextField(
                 controller: fullNameController,
                 labelText: 'Full Name',
@@ -299,6 +414,26 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                 controller: subCityController,
                 labelText: 'Sub City',
               ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProfileTextField(
+                controller: ageController,
+                labelText: 'Age',
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ProfileTextField(
+                controller: religionController,
+                labelText: 'Religion',
+              ),
+
+              SizedBox(
+                height: 12.h,
+              ),
+              //work type
+
               SizedBox(
                 height: 12.h,
               ),
@@ -353,96 +488,6 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class EditProfileShimmer extends StatelessWidget {
-  const EditProfileShimmer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(
-        children: [
-          Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          ...List.generate(5, (index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  color: Colors.white,
-                ),
-              ),
-            );
-          }),
-        ],
-      ),
-    );
-  }
-}
-
-class ProfileTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final TextInputType? keyboardType;
-
-  const ProfileTextField(
-      {super.key,
-      required this.controller,
-      required this.labelText,
-      this.keyboardType});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          errorStyle: const TextStyle(fontWeight: FontWeight.w300),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
-          fillColor: AppColors.primaryColor.withOpacity(.1),
-          filled: true,
-          // hintText: hintText,
-          // errorText: errorText,
-          labelText: labelText,
-          hintStyle: TextStyle(color: Colors.grey.shade500)),
-
-      // decoration: InputDecoration(
-      // ),
     );
   }
 }

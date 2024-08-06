@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/register/models/Password.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/pin.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 
 part 'termsandcondition_state.dart';
@@ -19,10 +20,10 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       if (role == UserRole.employee) {
-        employeeRepository.updatePassword(state.password.value);
+        employeeRepository.updatePassword(state.pin.value);
         await employeeRepository.saveEmployee();
       } else {
-        employerRepositroy.updatePassword(password: state.password.value);
+        employerRepositroy.updatePassword(password: state.pin.value);
         await employerRepositroy.saveEmployer();
       }
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
@@ -32,10 +33,9 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
     }
   }
 
-  void onPasswordChanged(String p) {
-    final password = Password.dirty(p);
-    emit(
-        state.copyWith(password: password, status: Formz.validate([password])));
+  void onPinChanged(String p) {
+    final pin = PIN.dirty(p);
+    emit(state.copyWith(pin: pin, status: Formz.validate([pin])));
   }
 
   void onCheckBoxChange(bool isChecked) {

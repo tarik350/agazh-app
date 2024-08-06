@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Employer extends Equatable {
@@ -26,20 +27,23 @@ class Employer extends Equatable {
       this.phone = '',
       this.password = ''});
 
-  @override
-  List<Object?> get props => [
-        fullName,
-        id,
-        familySize,
-        role,
-        city,
-        subCity,
-        houseNumber,
-        idCardImagePath,
-        profilePicturePath,
-        phone,
-        password
-      ];
+  factory Employer.fromDocument(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return Employer(
+      fullName: data['fullName'] ?? '',
+      id: data['id'] ?? '',
+      familySize: data['familySize'] ?? 0,
+      role: data['role'] ?? '',
+      city: data['city'] ?? '',
+      subCity: data['subCity'] ?? '',
+      houseNumber: data['houseNumber'] ?? 0,
+      idCardImagePath: data['idCardImagePath'] ?? '',
+      profilePicturePath: data['profilePicturePath'] ?? '',
+      phone: data['phone'] ?? '',
+      password: data['password'] ?? '',
+    );
+  }
 
   factory Employer.fromJson(Map<String, dynamic> json) {
     return Employer(
@@ -98,4 +102,19 @@ class Employer extends Equatable {
         phone: phone ?? this.phone,
         password: password ?? this.password);
   }
+
+  @override
+  List<Object?> get props => [
+        fullName,
+        id,
+        familySize,
+        role,
+        city,
+        subCity,
+        houseNumber,
+        idCardImagePath,
+        profilePicturePath,
+        phone,
+        password
+      ];
 }

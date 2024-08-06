@@ -1,38 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 
-class CustomTextfield extends StatelessWidget {
-  // final controller;
-  final String hintText;
-  final bool obscureText;
-  final Function(dynamic) onChanged;
-  final String keyString;
-  final String? errorText;
-  final TextInputType inputType;
-  final String? initialValue;
-  final Widget? suffix;
+class ProfileTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
+  final TextInputType? keyboardType;
 
-  const CustomTextfield(
+  const ProfileTextField(
       {super.key,
-      // required this.controller,
-      this.initialValue,
-      required this.hintText,
-      required this.obscureText,
-      required this.onChanged,
-      required this.keyString,
-      required this.inputType,
-      required this.errorText,
-      this.suffix});
+      required this.controller,
+      required this.labelText,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: initialValue,
-      obscureText: obscureText,
-      key: Key(keyString),
-      onChanged: onChanged,
-      keyboardType: TextInputType.emailAddress,
+      controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -49,10 +33,13 @@ class CustomTextfield extends StatelessWidget {
           ),
           fillColor: AppColors.primaryColor.withOpacity(.1),
           filled: true,
-          hintText: hintText,
-          errorMaxLines: 3,
-          errorText: errorText,
+          // hintText: hintText,
+          // errorText: errorText,
+          labelText: labelText,
           hintStyle: TextStyle(color: Colors.grey.shade500)),
+
+      // decoration: InputDecoration(
+      // ),
     );
   }
 }

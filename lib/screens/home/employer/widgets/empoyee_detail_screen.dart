@@ -1,21 +1,22 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
-import 'package:mobile_app/screens/home/employee/cubit/employee_cubit.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/rating_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
-import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
+
+import '../cubit/employer_cubit.dart';
 
 @RoutePage()
 class EmployeeDetailScreen extends StatelessWidget {
@@ -27,8 +28,10 @@ class EmployeeDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
-        create: (context) => EmployeeCubit(context.read<EmployeeRepository>()),
+        create: (context) => EmployerCubit(
+            employerRepository: context.read<EmployerRepository>()),
         child: SafeArea(
           child: GradientBackgroundContainer(
             showNavButton: true,
@@ -48,14 +51,40 @@ class EmployeeDetailScreen extends StatelessWidget {
                           NetworkImage(employee.profilePicturePath),
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      employee.fullName,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          employee.fullName,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        RatingBar.builder(
+                          itemSize: 15,
+                          initialRating: employee.totalRating.toDouble(),
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          ignoreGestures: true,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 12,
+                          ),
+                          onRatingUpdate: (rating) {
+                            // setState(() {
+                            //   this.rating = rating;
+                            // });
+                          },
+                        )
+                      ],
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 25.h),
                     Text(
                       '${employee.city}, ${employee.subCity}',
                       style: TextStyle(
@@ -83,17 +112,47 @@ class EmployeeDetailScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.phone,
-                          color: Color(0xFF222262),
+                        const Text(
+                          'Age :',
+                          style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.bold),
                         ),
+                        // const Icon(
+                        //   Icons.calendar_month,
+                        //   color: Color(0xFF222262),
+                        // ),
                         const SizedBox(width: 8),
                         Text(
-                          employee.phone,
+                          employee.age.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Color(0xFF222262),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Religion :',
+                          style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        // const Icon(
+                        //   Icons.calendar_month,
+                        //   color: Color(0xFF222262),
+                        // ),
+                        const SizedBox(width: 8),
+                        Text(
+                          employee.religion,
                           style: const TextStyle(
                             fontSize: 18,
                             color: Color(0xFF222262),
@@ -106,7 +165,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Expanded(
-                          child: BlocBuilder<EmployeeCubit, EmployeeState>(
+                          child: BlocBuilder<EmployerCubit, EmployerState>(
                               builder: (context, state) {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -128,7 +187,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                                       FormzStatus.submissionInProgress
                                   ? null
                                   : () => context
-                                      .read<EmployeeCubit>()
+                                      .read<EmployerCubit>()
                                       .requestForEmployee(
                                           fullName: employee.fullName,
                                           employeeId: employee.id,
@@ -160,7 +219,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                             //           FormzStatus.submissionInProgress
                             //       ? null
                             //       : () => context
-                            //           .read<EmployeeCubit>()
+                            //           .read<EmployerCubit>()
                             //           .requestForEmployee(
                             //               employeeId: employee.id,
                             //               employerId: auth.currentUser!.uid),
@@ -172,7 +231,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                         SizedBox(
                           width: 12.w,
                         ),
-                        BlocConsumer<EmployeeCubit, EmployeeState>(
+                        BlocConsumer<EmployerCubit, EmployerState>(
                             listener: (context, state) {
                           if (state.requestStatus ==
                               FormzStatus.submissionSuccess) {
@@ -211,19 +270,20 @@ class EmployeeDetailScreen extends StatelessWidget {
                             onPressed: () async {
                               try {
                                 context
-                                    .read<EmployeeCubit>()
+                                    .read<EmployerCubit>()
                                     .setRating(employee.totalRating.toDouble());
-                                final rating = await showDialog(
+                                final response = await showDialog(
                                   context: context,
                                   builder: (context) => RatingDialog(
                                     initialRating:
                                         employee.totalRating.toDouble(),
                                   ),
                                 );
-                                context.read<EmployeeCubit>().updateRating(
-                                    rating: rating,
+                                context.read<EmployerCubit>().updateRating(
+                                    rating: response['rating'],
                                     employeeId: employee.id,
-                                    employerId: auth.currentUser!.uid);
+                                    employerId: auth.currentUser!.uid,
+                                    feedback: response['feedback']);
                               } catch (e) {
                                 print(e);
                               }
@@ -259,7 +319,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                           //           initialRating: employee.totalRating,
                           //         ),
                           //       );
-                          //       context.read<EmployeeCubit>().updateRating(
+                          //       context.read<EmployerCubit>().updateRating(
                           //           employeeId: employee.id,
                           //           employerId: auth.currentUser!.uid);
                           //     } catch (e) {

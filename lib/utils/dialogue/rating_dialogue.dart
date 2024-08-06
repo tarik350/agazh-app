@@ -4,8 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
-import 'package:mobile_app/screens/home/employee/cubit/employee_cubit.dart';
-import 'package:mobile_app/services/init_service.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
+import 'package:mobile_app/screens/home/employer/cubit/employer_cubit.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 
 class RatingDialog extends StatefulWidget {
@@ -21,6 +21,8 @@ class RatingDialog extends StatefulWidget {
 
 class _RatingDialogState extends State<RatingDialog> {
   late double _rating;
+  final TextEditingController _messageController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -31,22 +33,25 @@ class _RatingDialogState extends State<RatingDialog> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EmployeeCubit(context.read<EmployeeRepository>()),
+      create: (context) =>
+          EmployerCubit(employerRepository: context.read<EmployerRepository>()),
       child: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Rate this user',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20.0),
-              RatingBar.builder(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Rate this user',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20.0),
+                RatingBar.builder(
                   itemSize: 30,
                   initialRating: _rating,
                   minRating: 0,
@@ -55,30 +60,46 @@ class _RatingDialogState extends State<RatingDialog> {
                   itemCount: 5,
                   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
                   onRatingUpdate: (rating) {
                     setState(() {
                       _rating = rating;
                     });
-                  }),
-              const SizedBox(height: 20.0),
-
-              CustomButton(
-                padding: 12.h,
-                onTap: () => Navigator.pop(context, _rating),
-                lable: "Submit",
-                backgroundColor: AppColors.primaryColor,
-              )
-              // ElevatedButton(
-              //   onPressed: () {
-              //     // Handle the rating submission logic here
-              //     Navigator.pop(context, _rating);
-              //   },
-              //   child: const Text('Submit'),
-              // ),
-            ],
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                TextFormField(
+                  controller: _messageController,
+                  decoration: const InputDecoration(
+                    labelText: 'Feedback',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 3,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a feedback';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                CustomButton(
+                  padding: 12.h,
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.pop(context, {
+                        'rating': _rating,
+                        'feedback': _messageController.text
+                      });
+                    }
+                  },
+                  backgroundColor: AppColors.primaryColor,
+                  lable: "Submit",
+                ),
+              ],
+            ),
           ),
         ),
       ),

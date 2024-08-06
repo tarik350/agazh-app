@@ -29,6 +29,12 @@ class EmployeeRepository {
     );
   }
 
+  void updateOtherDetails(
+      {required int age, required String religion, required String workType}) {
+    _employee = (_employee ?? const Employee())
+        .copyWith(age: age, religion: religion, workType: workType);
+  }
+
   void updatePersonalInfo(
       {required String fullName,
       required String idCardImagePath,
@@ -120,81 +126,6 @@ class EmployeeRepository {
 
   //rating
 
-  Future<void> addRating(
-      {required String employeeId,
-      required String employerId,
-      required double rating}) async {
-    final firestore = FirebaseFirestore.instance;
-
-    // Add the rating to the ratings collection
-    await firestore.collection('ratings').add({
-      'employeeId': employeeId,
-      'employerId': employerId,
-      'rating': rating,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-
-    // Update the employee's total rating
-    await _updateEmployeeRating(employeeId);
-  }
-
-  Future<void> _updateEmployeeRating(String employeeId) async {
-    // Get all ratings for the employee
-    QuerySnapshot ratingsSnapshot = await _firestore
-        .collection('ratings')
-        .where('employeeId', isEqualTo: employeeId)
-        .get();
-
-    // Calculate the average rating
-    double totalRating = 0;
-    for (var doc in ratingsSnapshot.docs) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      totalRating += data['rating'];
-    }
-
-    double averageRating = totalRating / ratingsSnapshot.docs.length;
-
-    // Update the employee's document with the new average rating
-    await _firestore.collection('employee').doc(employeeId).update({
-      'totalRating': averageRating,
-    });
-  }
-
-  Future<void> requestEmployee(
-      {required String employerId, required String employeeId}) async {
-    await FirebaseFirestore.instance.collection('requests').add({
-      'employerId': employerId,
-      'employeeId': employeeId,
-      'status': 'pending',
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-  }
-
-  Future<bool> hasRating(String employeeId, String employerId) async {
-    var querySnapshot = await _firestore
-        .collection('ratings')
-        .where('employeeId', isEqualTo: employeeId)
-        .where('employerId', isEqualTo: employerId)
-        .get();
-
-    return querySnapshot
-        .docs.isNotEmpty; // Returns true if any documents match the query
-  }
-
-  Future<bool> hasRequest(
-      {required String employerId, required String employeeId}) async {
-    var querySnapshot = await _firestore
-        .collection('requests')
-        .where('employerId', isEqualTo: employerId)
-        .where('employeeId', isEqualTo: employeeId)
-        .where('status',
-            isEqualTo: 'pending') // Optional: Only check for pending requests
-        .get();
-
-    return querySnapshot
-        .docs.isNotEmpty; // Returns true if any documents match the query
-  }
-
   Future<void> updateEmployeeProfile(
       {required String employeeId,
       required Map<String, dynamic> updatedFields}) async {
@@ -205,6 +136,97 @@ class EmployeeRepository {
           .update(updatedFields);
     } catch (e) {
       print('Error updating employer profile: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getEmployeeRequests() async {
+    try {
+      String employeeId = _auth.currentUser?.uid ?? '';
+
+      if (employeeId.isEmpty) {
+        throw Exception('No user is currently logged in.');
+      }
+
+      QuerySnapshot requestSnapshot = await _firestore
+          .collection('requests')
+          .where('employeeId', isEqualTo: employeeId)
+          .get();
+
+      if (requestSnapshot.docs.isEmpty) {
+        return null;
+      }
+
+      List<Map<String, dynamic>> result = [];
+
+      for (var doc in requestSnapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        String employerId = data['employerId'];
+
+        DocumentSnapshot employerSnapshot =
+            await _firestore.collection('employers').doc(employerId).get();
+
+        if (employerSnapshot.exists) {
+          var employerData = employerSnapshot.data() as Map<String, dynamic>;
+          Employer employer = Employer.fromJson(employerData);
+
+          result.add({
+            'status': data['status'],
+            'employer': employer,
+            'timestamp': data['timestamp'],
+          });
+        }
+      }
+
+      return result.isEmpty ? null : result;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getEmployeeRatingsWithEmployers() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        return null;
+      }
+
+      final uid = user.uid;
+
+      // Query employee_ratingss where employeeId is the current user's UID
+      final ratingsQuerySnapshot = await _firestore
+          .collection('employee_ratings')
+          .where('employeeId', isEqualTo: uid)
+          .get();
+
+      if (ratingsQuerySnapshot.docs.isEmpty) {
+        return null; // No ratings found
+      }
+
+      List<Map<String, dynamic>> ratingsWithEmployers = [];
+
+      for (var ratingDoc in ratingsQuerySnapshot.docs) {
+        final ratingData = ratingDoc.data();
+        final employerId = ratingData['employerId'];
+
+        // Fetch the associated employer from the employers collection
+        final employerDoc =
+            await _firestore.collection('employers').doc(employerId).get();
+
+        if (employerDoc.exists) {
+          final empoyer = Employer.fromDocument(employerDoc);
+          ratingsWithEmployers.add({
+            'employer': empoyer,
+            'rating': ratingData['rating'],
+            'feedback': ratingData['feedback'],
+          });
+        }
+      }
+
+      return ratingsWithEmployers;
+    } catch (e) {
+      print('Error fetching employee ratings with employers: $e');
+      return null;
     }
   }
 }

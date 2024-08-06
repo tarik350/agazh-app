@@ -25,33 +25,33 @@ class TermsAndConditionState extends Equatable {
   final bool isChecked;
 
   final String? errorMessage;
-  final Password password;
+  final PIN pin;
   final FormzStatus status;
 
   const TermsAndConditionState({
     this.isChecked = false,
     this.errorMessage,
+    this.pin = const PIN.pure(),
     this.status = FormzStatus.pure,
-    this.password = const Password.pure(),
   });
   TermsAndConditionState copyWith(
       {bool? isChecked,
       UserSubmissionStatus? userSubmissionStatus,
-      Password? password,
+      PIN? pin,
       FormzStatus? status,
       String? errorMessage}) {
     return TermsAndConditionState(
       isChecked: isChecked ?? this.isChecked,
       errorMessage: errorMessage,
       status: status ?? this.status,
-      password: password ?? this.password,
+      pin: pin ?? this.pin,
     );
   }
 
   @override
   List<Object> get props => [
         isChecked,
-        password,
+        pin,
         status,
       ];
 }

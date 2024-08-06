@@ -106,11 +106,10 @@ class _PasswordInput extends StatelessWidget {
             hintText: "PIN",
             obscureText: false,
             onChanged: (value) =>
-                context.read<TermsandconditionCubit>().onPasswordChanged(value),
+                context.read<TermsandconditionCubit>().onPinChanged(value),
             keyString: "login_PasswordInput_textfield",
             inputType: TextInputType.number,
-            errorText:
-                state.password.invalid ? state.password.error!.message : null);
+            errorText: state.pin.invalid ? state.pin.error!.message : null);
       },
     );
   }

@@ -26,32 +26,26 @@ class EmplyeeDemographyForm extends StatelessWidget {
         // }
       },
       child: SingleChildScrollView(
-          child: Column(
-        children: [
-          const _JobStatusDropDown(),
-          const SizedBox(height: 12.0),
-          _CityInput(),
-          const SizedBox(height: 12.0),
-          _SubCityInput(),
-          const SizedBox(height: 12.0),
-          _HouseNumberInput(),
-          const SizedBox(height: 12.0),
-          // _HouseNumberInput(),
-          // // const SizedBox(height: 12.0),
-          // _FamilySizeInput(),
-          // const SizedBox(height: 12.0),
-          //replace this with image uploader vierw
-          // _FamilySizeInput(),
-          const SizedBox(height: 12.0),
-          Row(
-            children: [
-              Expanded(child: _SubmitButton()),
-              const SizedBox(width: 8.0),
-              Expanded(child: _CancelButton()),
-            ],
-          ),
-        ],
-      )),
+        child: Column(
+          children: [
+            const _JobStatusDropDown(),
+            const SizedBox(height: 12.0),
+            _CityInput(),
+            const SizedBox(height: 12.0),
+            _SubCityInput(),
+            const SizedBox(height: 12.0),
+            _HouseNumberInput(),
+            const SizedBox(height: 12.0),
+            Row(
+              children: [
+                Expanded(child: _SubmitButton()),
+                const SizedBox(width: 8.0),
+                Expanded(child: _CancelButton()),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -78,27 +72,6 @@ class _HouseNumberInput extends StatelessWidget {
     );
   }
 }
-
-// class _FamilySizeInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<EmployeeDemographyBloc, EmployeeDemographyState>(
-//       buildWhen: (previous, current) =>
-//           previous.familySize != current.familySize,
-//       builder: (context, state) {
-//         return CustomTextfield(
-//             hintText: "Family Size",
-//             obscureText: false,
-//             onChanged: (familySize) => context
-//                 .read<EmployeeDemographyBloc>()
-//                 .add(FamilySizeChanged(familySize)),
-//             keyString: "billingAddressForm_apartmentInput_textField",
-//             inputType: TextInputType.text,
-//             errorText: null);
-//       },
-//     );
-//   }
-// }
 
 class _CityInput extends StatelessWidget {
   @override

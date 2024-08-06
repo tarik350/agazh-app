@@ -35,7 +35,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
       status: Formz.validate([
         houseNumber,
         state.houseNumber,
-        // state.familySize,
+        state.familySize,
         state.city,
       ]),
     ));
@@ -49,7 +49,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     emit(state.copyWith(
       familySize: familySize,
       status: Formz.validate([
-        state.familySize,
+        state.subCity,
         familySize,
         state.city,
         state.houseNumber,

@@ -7,7 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: HomeRoute.page),
+        AutoRoute(
+          page: EmployerHomeRoute.page,
+        ),
         AutoRoute(
             page: SiraAppRoute.page, initial: true, guards: [AuthGuard()]),
         AutoRoute(page: ProfileRoute.page),
@@ -34,7 +36,8 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: EmployerStepperRoute.page),
         AutoRoute(page: EmployeeStepperRoute.page),
         AutoRoute(page: EmployeeDetailRoute.page),
-        AutoRoute(page: EmployerRequestRoute.page)
+        AutoRoute(page: EmployerRequestRoute.page),
+        AutoRoute(page: EmployeeFeedbackRoute.page)
       ];
 }
 

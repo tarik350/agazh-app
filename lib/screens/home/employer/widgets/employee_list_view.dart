@@ -60,57 +60,69 @@ class EmployeeProfileList extends StatelessWidget {
                       // ),
                     ),
                     const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          user.fullName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: AppColors.primaryColor,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.fullName,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              '${user.city}, ${user.subCity}',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[700],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: AppColors.primaryColor,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        RatingBar.builder(
-                          itemSize: 15,
-                          initialRating: user.totalRating.toDouble(),
-                          minRating: 0,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          ignoreGestures: true,
-                          itemPadding:
-                              const EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 12,
+                              Expanded(
+                                child: Text(
+                                  '${user.city ?? 'No City'}, ${user.subCity ?? 'No Subcity'}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[700],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              // Text(
+                              //   '${user.city}, ${user.subCity}',
+                              //   style: TextStyle(
+                              //     fontSize: 18,
+                              //     color: Colors.grey[700],
+                              //   ),
+                              // ),
+                            ],
                           ),
-                          onRatingUpdate: (rating) {
-                            // setState(() {
-                            //   this.rating = rating;
-                            // });
-                          },
-                        )
-                      ],
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          RatingBar.builder(
+                            itemSize: 15,
+                            initialRating: user.totalRating.toDouble(),
+                            minRating: 0,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            ignoreGestures: true,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 12,
+                            ),
+                            onRatingUpdate: (rating) {
+                              // setState(() {
+                              //   this.rating = rating;
+                              // });
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

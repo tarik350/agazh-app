@@ -19,16 +19,15 @@ class EmployeeDemographyState extends Equatable {
   final JobStatusEnum jobStatus;
   final SubCity subCity;
   final String? errorMessage;
-
-  EmployeeDemographyState copyWith({
-    HouseNumber? houseNumber,
-    FamilySize? familySize,
-    City? city,
-    SubCity? subCity,
-    JobStatusEnum? jobStatus,
-    String? errorMessage,
-    FormzStatus? status,
-  }) {
+  EmployeeDemographyState copyWith(
+      {HouseNumber? houseNumber,
+      FamilySize? familySize,
+      City? city,
+      SubCity? subCity,
+      JobStatusEnum? jobStatus,
+      String? errorMessage,
+      FormzStatus? status,
+      String? workType}) {
     return EmployeeDemographyState(
         houseNumber: houseNumber ?? this.houseNumber,
         familySize: familySize ?? this.familySize,

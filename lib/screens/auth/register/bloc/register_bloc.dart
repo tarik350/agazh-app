@@ -31,9 +31,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       RegisterFormSubmitted event, Emitter<RegisterState> emit) async {
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      final isUserExist = await _authService.checkUserExists(
-          state.phoneNumber.value, event.role);
-      if (isUserExist) {
+      final isEmplyerExist = await _authService.checkUserExists(
+          state.phoneNumber.value, UserRole.employer);
+      final isEmployeeExist = await _authService.checkUserExists(
+          state.phoneNumber.value, UserRole.employee);
+
+      if (isEmplyerExist || isEmployeeExist) {
         throw UserAlreadyExistException();
       }
 
