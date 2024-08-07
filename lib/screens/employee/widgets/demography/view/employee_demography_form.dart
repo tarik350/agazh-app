@@ -1,8 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
+import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
@@ -58,7 +60,7 @@ class _HouseNumberInput extends StatelessWidget {
           previous.houseNumber != current.houseNumber,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: 'House Number',
+            hintText: 'house_number',
             obscureText: false,
             onChanged: (houseNumber) => context
                 .read<EmployeeDemographyBloc>()
@@ -80,7 +82,7 @@ class _CityInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.city != current.city,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "City",
+            hintText: "city",
             obscureText: false,
             onChanged: (city) =>
                 context.read<EmployeeDemographyBloc>().add(CityChanged(city)),
@@ -99,7 +101,7 @@ class _SubCityInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.subCity != current.subCity,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "Sub City",
+            hintText: "sub_city",
             obscureText: false,
             onChanged: (subCity) => context
                 .read<EmployeeDemographyBloc>()
@@ -173,8 +175,9 @@ class _SubmitButton extends StatelessWidget {
               ? () =>
                   context.read<EmployeeDemographyBloc>().add(FormSubmitted())
               : null,
-          lable:
-              state.status.isSubmissionInProgress ? "Proceeding..." : "Proceed",
+          lable: state.status.isSubmissionInProgress
+              ? "loading".tr()
+              : "proceed".tr(),
           backgroundColor: Colors.black,
         );
       },
@@ -195,7 +198,7 @@ class _CancelButton extends StatelessWidget {
                     const Key('billingAddressForm_cancelButton_elevatedButton'),
                 onTap: () =>
                     context.read<EmployerRegistrationCubit>().stepCancelled(),
-                lable: "Cancel",
+                lable: "cancel".tr(),
                 backgroundColor: Colors.red,
               );
       },
@@ -234,7 +237,7 @@ class _JobStatusDropDown extends StatelessWidget {
               ),
           isExpanded: true,
           hint: Text(
-            'Select Job status',
+            'demography.select_job_status'.tr(),
             style: TextStyle(
               fontSize: 14,
               color: Theme.of(context).hintColor,
@@ -244,7 +247,7 @@ class _JobStatusDropDown extends StatelessWidget {
               .map((item) => DropdownMenuItem<String>(
                     value: item,
                     child: Text(
-                      item,
+                      "demography.${AppConfig.toSnakeCase(item)}".tr(),
                       style: const TextStyle(
                         fontSize: 14,
                       ),

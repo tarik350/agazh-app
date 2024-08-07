@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/screens/auth/register/models/Password.dart';
@@ -50,9 +52,35 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       } else {
         throw VerificationIdNotReceivedException();
       }
-    } on UserAlreadyExistException catch (e) {
+    } on UserAlreadyExistException catch (_) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.message));
+          status: FormzStatus.submissionFailure,
+          errorMessage: "errors.user_already_exists".tr()));
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'invalid-phone-number':
+          errorMessage = "phone_number_invalid".tr();
+          break;
+        case 'network-request-failed':
+          errorMessage = "errors.network_request_failed".tr();
+          break;
+        case 'too-many-requests':
+          errorMessage = "errors.too_many_requests".tr();
+          break;
+        case 'quota-exceeded':
+          errorMessage = "errors.quota_exceeded".tr();
+          break;
+        default:
+          errorMessage = "errors.unknown_error".tr();
+          break;
+      }
+      emit(state.copyWith(
+          status: FormzStatus.submissionFailure, errorMessage: errorMessage));
+    } on VerificationIdNotReceivedException catch (_) {
+      final errorMessage = "verification_id_not_received".tr();
+      emit(state.copyWith(
+          status: FormzStatus.submissionFailure, errorMessage: errorMessage));
     } catch (e) {
       emit(state.copyWith(
           status: FormzStatus.submissionFailure, errorMessage: e.toString()));

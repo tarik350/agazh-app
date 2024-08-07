@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +32,7 @@ class EmployerRequestScreen extends StatelessWidget {
                 FadeInUp(
                     duration: const Duration(milliseconds: 1000),
                     child: Text(
-                      "Requested Employees",
+                      "my_request_title".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
@@ -44,7 +45,7 @@ class EmployerRequestScreen extends StatelessWidget {
                 FadeInUp(
                     duration: const Duration(milliseconds: 1300),
                     child: Text(
-                      "You can follow up your employee requests in here. Here are all the requests you have made so far",
+                      "my_request_subtitle".tr(),
                       style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     )),
               ],
@@ -72,7 +73,7 @@ class EmployerRequestScreen extends StatelessWidget {
                     if (state.requests == null || state.requests!.isEmpty) {
                       return Center(
                           child: Text(
-                        "No request yet",
+                        "no_request_yet".tr(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

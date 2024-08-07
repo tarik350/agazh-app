@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
@@ -52,9 +53,9 @@ class CustomTextfield extends StatelessWidget {
           ),
           fillColor: AppColors.primaryColor.withOpacity(.1),
           filled: true,
-          hintText: hintText,
+          hintText: hintText.tr(),
           errorMaxLines: 3,
-          errorText: errorText,
+          errorText: errorText?.tr(),
           hintStyle: TextStyle(color: Colors.grey.shade500)),
     );
   }

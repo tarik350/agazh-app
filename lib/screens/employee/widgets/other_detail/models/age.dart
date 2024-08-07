@@ -1,8 +1,8 @@
 import 'package:formz/formz.dart';
 
 enum AgeValidator {
-  required('This field is required. Please fill up!'),
-  invalid("Invalid Age value");
+  required('required'),
+  invalid("other_detail.invalid_age_value");
 
   final String message;
   const AgeValidator(this.message);

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -140,7 +141,7 @@ class EmployerRequestList extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                status.toUpperCase(),
+                                tr(status.toLowerCase()),
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -149,7 +150,8 @@ class EmployerRequestList extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Time: $formattedDate',
+                              // 'Time: $formattedDate',
+                              "time".tr(args: [formattedDate]),
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
@@ -175,12 +177,11 @@ class EmployerRequestList extends StatelessWidget {
                       if (state.requestDeleteStatus ==
                           FormzStatus.submissionSuccess) {
                         showSuccessDialog(
-                            context, "Request Deleted successfully");
+                            context, "delete_success_message".tr());
                       }
                       if (state.requestDeleteStatus ==
                           FormzStatus.submissionFailure) {
-                        showErrorDialog(
-                            context, "Error while deleting a request");
+                        showErrorDialog(context, "delete_request_message".tr());
                       }
                     },
                     builder: (context, state) {
@@ -199,9 +200,9 @@ class EmployerRequestList extends StatelessWidget {
                         child: isDeleting
                             ? AppConfig.getProgressIndicatorNormal(
                                 color: AppColors.whiteColor)
-                            : const Text(
-                                'Delete Request',
-                                style: TextStyle(
+                            : Text(
+                                'delete_request'.tr(),
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),

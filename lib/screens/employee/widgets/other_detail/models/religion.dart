@@ -1,8 +1,7 @@
 import 'package:formz/formz.dart';
 
 enum ReligionValidator {
-  required('This field is required. Please fill up!');
-  // invalid("Invalid House number value");
+  required('required');
 
   final String message;
   const ReligionValidator(this.message);

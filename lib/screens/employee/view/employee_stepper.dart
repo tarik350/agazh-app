@@ -60,7 +60,7 @@ class EmplyeeStepper extends StatelessWidget {
                       title: "Demography"),
                   EasyStep(
                       icon: Icon(
-                        Icons.policy,
+                        Icons.assignment,
                       ),
                       topTitle: true,
                       title: "Demography"),

@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => LoginBloc()),
           BlocProvider(
             create: (context) => HomeBloc(
+                employeeRepository: context.read<EmployeeRepository>(),
                 employerRepository: context.read<EmployerRepository>()),
           ),
           BlocProvider(
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          key: UniqueKey(),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: const [Locale('en', 'US'), Locale('am', 'ET')],

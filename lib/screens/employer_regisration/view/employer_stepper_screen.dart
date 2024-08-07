@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +30,7 @@ class EmployerStepperScreen extends StatelessWidget {
                     FadeInUp(
                         duration: const Duration(milliseconds: 1000),
                         child: Text(
-                          "Registering Employer.",
+                          "employer_stepper_title".tr(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               color: Colors.white,
@@ -42,7 +43,7 @@ class EmployerStepperScreen extends StatelessWidget {
                     FadeInUp(
                         duration: const Duration(milliseconds: 1300),
                         child: Text(
-                          "Please provide the requested information on each page.",
+                          "stepper_subtitle".tr(),
                           style:
                               TextStyle(color: Colors.white, fontSize: 14.sp),
                         )),

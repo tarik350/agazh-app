@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +27,7 @@ class RegisterForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text(message ?? "Unknown error occured")),
+              SnackBar(content: Text(message ?? "unknown_error".tr())),
             );
         }
         if (state.status.isSubmissionSuccess) {
@@ -82,7 +83,7 @@ class _PhoneNumberInput extends StatelessWidget {
             inputType: TextInputType.phone,
             onChanged: (phone) =>
                 context.read<RegisterBloc>().add(PhoneNumberChanged(phone)),
-            hintText: 'Phone',
+            hintText: 'phone_number',
             keyString: 'registerForm_phoneNumberInput_textField',
             errorText: state.phoneNumber.invalid
                 ? state.phoneNumber.error!.message
@@ -106,15 +107,15 @@ class _SubmitButton extends StatelessWidget {
               ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted(
                   context.read<RoleCubit>().state.userRole))
               : null,
-          lable:
-              state.status.isSubmissionInProgress ? "Loading..." : "Regsiter",
+          lable: state.status.isSubmissionInProgress
+              ? "loading".tr()
+              : "register".tr(),
           backgroundColor: AppColors.primaryColor,
         );
       },
     );
   }
 }
-
 
 // class _PasswordInput extends StatelessWidget {
 //   const _PasswordInput({super.key});

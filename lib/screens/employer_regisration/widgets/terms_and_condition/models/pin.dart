@@ -2,7 +2,7 @@ import 'package:formz/formz.dart';
 
 enum PINValdiatorError {
   required("required"),
-  invalid("PIN can only contain numbers and can only contain numbers");
+  invalid("invalid_pin");
 
   final String message;
 

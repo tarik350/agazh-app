@@ -23,3 +23,10 @@ class DeleteEmployeeRequest extends HomeEvent {
 }
 
 class GetEmployeeRequest extends HomeEvent {}
+
+class GetEmployee extends HomeEvent {
+  final String? filter;
+  final String? name;
+
+  const GetEmployee({this.filter, this.name});
+}

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,8 +30,7 @@ class TermsAndConditionScreen extends StatelessWidget {
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
-                    content:
-                        Text(state.errorMessage ?? 'Something went wrong!')),
+                    content: Text(state.errorMessage ?? 'unknown_error').tr()),
               );
           } else if (state.status.isSubmissionSuccess) {
             context.router.push(SiraAppRoute());
@@ -66,9 +66,8 @@ class TermsAndConditionScreen extends StatelessWidget {
                     SizedBox(
                       width: 5.w,
                     ),
-                    const Expanded(
-                      child: Text(
-                          "By Checking this checkbox you agree with our Terms and conditions."),
+                    Expanded(
+                      child: Text("terms_and_condition_message".tr()),
                     )
                   ],
                 ),
@@ -82,8 +81,8 @@ class TermsAndConditionScreen extends StatelessWidget {
                           .saveUser(context.read<RoleCubit>().state.userRole)
                       : null,
                   lable: state.status.isSubmissionInProgress
-                      ? "Loading..."
-                      : "Save",
+                      ? "loading".tr()
+                      : "save".tr(),
                   backgroundColor: AppColors.primaryColor,
                 ),
               ],
@@ -103,7 +102,7 @@ class _PasswordInput extends StatelessWidget {
     return BlocBuilder<TermsandconditionCubit, TermsAndConditionState>(
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "PIN",
+            hintText: "pin".tr(),
             obscureText: false,
             onChanged: (value) =>
                 context.read<TermsandconditionCubit>().onPinChanged(value),

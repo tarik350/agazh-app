@@ -44,4 +44,11 @@ class AppConfig {
               color: color ?? AppColors.primaryColor,
             )));
   }
+
+  static String toSnakeCase(String input) {
+    input = input.trim();
+    String snakeCase = input.replaceAll(RegExp(r'\s+'), '_').toLowerCase();
+
+    return snakeCase;
+  }
 }

@@ -55,12 +55,30 @@ class EmployeeRepository {
     _employee = (_employee ?? const Employee()).copyWith(password: password);
   }
 
-  Future<List<Employee>?> fetchEmployeesOrderedByRating() async {
+  Future<List<Employee>?> fetchEmployeesOrderedByRating(
+      {String? workTypeFilter, String? name}) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('employee')
-          .orderBy('totalRating', descending: true)
-          .get();
+      // Start with a CollectionReference
+      CollectionReference collection = _firestore.collection('employee');
+
+      // Initialize the query from the collection reference
+      Query query = collection;
+
+      if (name != null && name.isNotEmpty) {
+        query = query
+            .orderBy('fullName')
+            .orderBy('totalRating', descending: true)
+            .where('fullName', isGreaterThanOrEqualTo: name)
+            .where('fullName', isLessThanOrEqualTo: '$name\uf8ff');
+      } else {
+        query = query.orderBy('totalRating', descending: true);
+      }
+
+      if (workTypeFilter != null && workTypeFilter.isNotEmpty) {
+        query = query.where('workType', isEqualTo: workTypeFilter);
+      }
+
+      QuerySnapshot querySnapshot = await query.get();
 
       final employees =
           querySnapshot.docs.map((doc) => Employee.fromDocument(doc)).toList();

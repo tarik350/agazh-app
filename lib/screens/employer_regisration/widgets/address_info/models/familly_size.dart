@@ -1,8 +1,8 @@
 import 'package:formz/formz.dart';
 
 enum FamilySizeValidator {
-  required('Family can\'t be empty.'),
-  invalid('Please provide a valid family size.');
+  required('required'),
+  invalid('invalid_family_size');
 
   final String message;
   const FamilySizeValidator(this.message);

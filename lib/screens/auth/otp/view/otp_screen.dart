@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +46,7 @@ class OtpScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Verify Your Phone Number',
+                    'otp_title'.tr(),
                     style: TextStyle(
                         color: AppColors.whiteColor,
                         fontSize: 24.sp,
@@ -56,8 +57,7 @@ class OtpScreen extends StatelessWidget {
                   ),
                   RichText(
                     text: TextSpan(
-                      text:
-                          'We have sent an OTP SMS message to the phone number ',
+                      text: 'otp_subtitle'.tr(),
                       style: TextStyle(
                         color: AppColors.whiteColor,
                         fontWeight: FontWeight.normal,
@@ -70,9 +70,8 @@ class OtpScreen extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18.h),
                         ),
-                        const TextSpan(
-                          text:
-                              ' you provided please verify by providing the code.',
+                        TextSpan(
+                          text: 'otp_subtitle_trailing'.tr(),
                         ),
                       ],
                     ),
@@ -148,8 +147,10 @@ class OtpScreen extends StatelessWidget {
 
                               if (state.otpSubmissionStatus ==
                                   OtpStatus.submissionFailure) {
-                                AppConfig.getMassenger(context,
-                                    "Failed To verify otp.Please try again!");
+                                if (context.mounted) {
+                                  AppConfig.getMassenger(context,
+                                      "otp_verification_failed_message".tr());
+                                }
                               }
                               // final role =
                               //     context.read<RoleCubit>().state.userRole !=
@@ -281,8 +282,8 @@ class OtpScreen extends StatelessWidget {
                                   : null,
                               lable: state.otpSubmissionStatus ==
                                       OtpStatus.submissionInProgress
-                                  ? "Loading..."
-                                  : "Submit",
+                                  ? "loading".tr()
+                                  : "submit".tr(),
                               backgroundColor: AppColors.primaryColor,
                             ),
                             Center(
@@ -298,7 +299,7 @@ class OtpScreen extends StatelessWidget {
                                       : () {
                                           context.read<OtpCubit>().resendOtp();
                                         },
-                                  child: const Text('Resend OTP')),
+                                  child: Text('resend_otp'.tr())),
                             ),
                           ],
                         );

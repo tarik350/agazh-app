@@ -1,8 +1,8 @@
 import 'package:formz/formz.dart';
 
 enum HouseNumberValidator {
-  required('This field is required. Please fill up!'),
-  invalid("Invalid House number value");
+  required('required'),
+  invalid("invalid_house_number");
 
   final String message;
   const HouseNumberValidator(this.message);

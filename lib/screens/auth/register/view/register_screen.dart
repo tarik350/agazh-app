@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,7 @@ class RegisterScreen extends StatelessWidget {
                     FadeInUp(
                         duration: const Duration(milliseconds: 1000),
                         child: Text(
-                          "Please Enter Your Phone Number",
+                          "register_title".tr(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               color: Colors.white,
@@ -43,7 +44,7 @@ class RegisterScreen extends StatelessWidget {
                     FadeInUp(
                         duration: const Duration(milliseconds: 1300),
                         child: Text(
-                          "Phone Number should start with (+251)",
+                          "register_subtitle".tr(),
                           style:
                               TextStyle(color: Colors.white, fontSize: 14.sp),
                         )),

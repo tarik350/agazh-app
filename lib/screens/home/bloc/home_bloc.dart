@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
+
+import '../../../data/models/employee.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -11,10 +14,13 @@ part 'home_state.dart';
 // home_bloc.dart
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final EmployerRepository employerRepository;
+  final EmployeeRepository employeeRepository;
 
-  HomeBloc({required this.employerRepository}) : super(const HomeState()) {
+  HomeBloc({required this.employerRepository, required this.employeeRepository})
+      : super(const HomeState()) {
     on<DeleteEmployeeRequest>(_onDeleteEmployeeRequest);
     on<GetEmployeeRequest>(_onGetEmployeeRequest);
+    on<GetEmployee>(_onGetEmployee);
   }
 
   Future<void> _onDeleteEmployeeRequest(
@@ -52,6 +58,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           requestGetStatus: FormzStatus.submissionSuccess, requests: requests));
     } catch (e) {
       emit(state.copyWith(requestGetStatus: FormzStatus.submissionFailure));
+    }
+  }
+
+  FutureOr<void> _onGetEmployee(
+      GetEmployee event, Emitter<HomeState> emit) async {
+    emit(GetEmployeeLoading());
+    try {
+      final response = await employeeRepository.fetchEmployeesOrderedByRating(
+          workTypeFilter: event.filter, name: event.name);
+      if (response == null || response.isEmpty) {
+        if (event.filter == null || event.filter!.isEmpty) {
+          emit(GetEmployeeEmpty());
+        } else {
+          emit(GetEmployeeEmptyForFilter(event.filter!));
+        }
+      } else {
+        emit(GetEmployeeLoaded(response));
+      }
+    } catch (e) {
+      emit(GetEmployeeError("Error While Loading employees: ${e.toString()}"));
     }
   }
 }

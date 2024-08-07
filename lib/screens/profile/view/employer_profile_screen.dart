@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           centerTitle: true,
           title: Text(
-            "Profile",
+            "profile".tr(),
             style: TextStyle(
               color: AppColors.primaryColor,
               fontSize: 23.sp,
@@ -259,9 +260,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           size: 30.h,
                                           color: AppColors.primaryColor,
                                         ),
-                                        const Text(
-                                          "Update ID",
-                                          style: TextStyle(
+                                        Text(
+                                          "upload_id".tr(),
+                                          style: const TextStyle(
                                               color: AppColors.primaryColor,
                                               fontWeight: FontWeight.bold),
                                         )
@@ -281,7 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ProfileTextField(
                 controller: fullNameController,
-                labelText: 'Full Name',
+                labelText: 'full_name',
                 keyboardType: TextInputType.text,
               ),
               SizedBox(
@@ -289,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ProfileTextField(
                 controller: familySizeController,
-                labelText: 'Family Size',
+                labelText: 'family_size',
                 keyboardType: TextInputType.number,
               ),
               SizedBox(
@@ -297,35 +298,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               ProfileTextField(
                 controller: cityController,
-                labelText: 'City',
+                labelText: 'city',
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
                 controller: subCityController,
-                labelText: 'Sub City',
+                labelText: 'sub_city',
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
                 controller: specialLocationController,
-                labelText: 'Special Location Description',
+                labelText: 'special_location',
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
                 controller: houseNumberController,
-                labelText: 'House Number',
+                labelText: 'house_number',
                 keyboardType: TextInputType.number,
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
-                  controller: passwordController, labelText: 'Password'),
+                  controller: passwordController, labelText: 'pin'),
               const SizedBox(height: 20),
               BlocBuilder<ProfileCubit, ProfileState>(
                 builder: (context, state) {
@@ -351,8 +352,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: state is ProfileUpdating
                               ? AppConfig.getProgressIndicatorNormal(
                                   color: AppColors.whiteColor)
-                              : const Text(
-                                  'Update',
+                              : Text(
+                                  'update'.tr(),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -570,7 +571,7 @@ class ProfileTextField extends StatelessWidget {
           filled: true,
           // hintText: hintText,
           // errorText: errorText,
-          labelText: labelText,
+          labelText: labelText.tr(),
           hintStyle: TextStyle(color: Colors.grey.shade500)),
 
       // decoration: InputDecoration(

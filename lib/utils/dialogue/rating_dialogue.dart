@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -46,8 +47,8 @@ class _RatingDialogState extends State<RatingDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Rate this user',
+                Text(
+                  'rate_title'.tr(),
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20.0),
@@ -72,14 +73,14 @@ class _RatingDialogState extends State<RatingDialog> {
                 const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _messageController,
-                  decoration: const InputDecoration(
-                    labelText: 'Feedback',
+                  decoration: InputDecoration(
+                    labelText: 'feedback'.tr(),
                     border: OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a feedback';
+                      return 'feedback_error_message'.tr();
                     }
                     return null;
                   },
@@ -96,7 +97,7 @@ class _RatingDialogState extends State<RatingDialog> {
                     }
                   },
                   backgroundColor: AppColors.primaryColor,
-                  lable: "Submit",
+                  lable: "submit".tr(),
                 ),
               ],
             ),

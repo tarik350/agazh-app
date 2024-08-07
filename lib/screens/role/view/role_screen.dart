@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,11 +29,12 @@ class RoleScreen extends StatelessWidget {
             // padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 FadeInUp(
                     duration: const Duration(milliseconds: 1000),
                     child: Text(
-                      "Please Select A Role",
+                      "role_title".tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
@@ -45,7 +47,7 @@ class RoleScreen extends StatelessWidget {
                 FadeInUp(
                     duration: const Duration(milliseconds: 1300),
                     child: Text(
-                      "Please select a one role from provided alternatives",
+                      "role_subtitle".tr(),
                       style: TextStyle(color: Colors.white, fontSize: 14.sp),
                     )),
               ],
@@ -69,7 +71,7 @@ class RoleScreen extends StatelessWidget {
                             return Column(
                               children: [
                                 _RoleButton(
-                                  title: "Employee",
+                                  title: "employee".tr(),
                                   isSelected:
                                       state.userRole == UserRole.employee,
                                   onTab: () => context
@@ -82,7 +84,7 @@ class RoleScreen extends StatelessWidget {
                                 _RoleButton(
                                   isSelected:
                                       state.userRole == UserRole.employer,
-                                  title: "Employer",
+                                  title: "employer".tr(),
                                   onTab: () => context
                                       .read<RoleCubit>()
                                       .updateSelectedRole(UserRole.employer),
@@ -116,7 +118,7 @@ class RoleScreen extends StatelessWidget {
                                     ? () =>
                                         context.read<RoleCubit>().setUserRole()
                                     : null,
-                                lable: "Submit",
+                                lable: "submit".tr(),
                                 backgroundColor: AppColors.primaryColor);
                           },
                         )

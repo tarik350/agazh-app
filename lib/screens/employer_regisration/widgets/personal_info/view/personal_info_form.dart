@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,7 @@ class PersonalInfoForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                  content: Text(state.errorMessage ?? 'Something went wrong!')),
+                  content: Text(state.errorMessage ?? 'unknown_error'.tr())),
             );
         }
         if (state.idCardUploadStatus == ImageUploadStatus.notUploaded) {
@@ -35,8 +36,8 @@ class PersonalInfoForm extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                  content:
-                      Text(state.errorMessage ?? "Id card is not uploaded")),
+                  content: Text(state.errorMessage ??
+                      "idcard_upload_error_message".tr())),
             );
         }
         // if (state.profilePictureUploadStatus == ImageUploadStatus.completed) {
@@ -51,7 +52,7 @@ class PersonalInfoForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text("Error ")),
+              SnackBar(content: Text("idcard_upload_error_message".tr())),
             );
         }
       },
@@ -102,7 +103,7 @@ class _FullNameInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.fullName != current.fullName,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "Full Name",
+            hintText: "full_name".tr(),
             obscureText: false,
             onChanged: (name) =>
                 context.read<PersonalInfoBloc>().add(FullNameChanged(name)),
@@ -133,8 +134,9 @@ class _SubmitButton extends StatelessWidget {
                   .read<PersonalInfoBloc>()
                   .add(FormSubmitted(context.read<RoleCubit>().state.userRole))
               : null,
-          lable:
-              state.status.isSubmissionInProgress ? "Proceeding..." : "Proceed",
+          lable: state.status.isSubmissionInProgress
+              ? "loading".tr()
+              : "proceed".tr(),
           backgroundColor: AppColors.primaryColor,
         );
       },
@@ -177,9 +179,9 @@ class _ImageUploaderButton extends StatelessWidget {
                                 size: 30.h,
                                 color: AppColors.primaryColor,
                               ),
-                              const Text(
-                                "Upload ID",
-                                style: TextStyle(
+                              Text(
+                                "upload_id".tr(),
+                                style: const TextStyle(
                                     color: AppColors.primaryColor,
                                     fontWeight: FontWeight.bold),
                               )
@@ -204,7 +206,7 @@ class _ImageUploaderButton extends StatelessWidget {
                   ),
                   state.idCardUploadStatus == ImageUploadStatus.completed
                       ? Text(
-                          "Image uploaded successfully",
+                          "idcard_upload_success_message".tr(),
                           style: TextStyle(
                               color: AppColors.succesColor,
                               fontWeight: FontWeight.bold,

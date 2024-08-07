@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
@@ -65,11 +66,11 @@ class _SiraAppScreenState extends State<SiraAppScreen> {
                 onTap: (value) {
                   context.read<AppCubit>().changeView(value);
                 },
-                items: const [
+                items: [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: "Home"),
+                      icon: Icon(Icons.home), label: "home".tr()),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.settings), label: "Setting"),
+                      icon: Icon(Icons.settings), label: "setting".tr()),
                 ],
               );
             },

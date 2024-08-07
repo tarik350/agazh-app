@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,7 +14,15 @@ class LanguageSelectionDialog extends StatefulWidget {
 }
 
 class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
-  String _selectedLanguage = 'English'; // Default language
+  late String _selectedLanguage;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Safe to access context-related information here
+    _selectedLanguage =
+        context.locale == Locale('am', 'ET') ? "Amharic" : "English";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +42,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
             },
           ),
           RadioListTile<String>(
-            title: const Text('Amharic'),
+            title: const Text('amharic').tr(),
             value: 'Amharic',
             groupValue: _selectedLanguage,
             onChanged: (value) {

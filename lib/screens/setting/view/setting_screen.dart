@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +60,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           SettingsSection(
                             title: Center(
                               child: Text(
-                                'Settings',
+                                'setting'.tr(),
                                 style: TextStyle(
                                     color: AppColors.primaryColor,
                                     fontSize: 22.sp,
@@ -82,10 +83,17 @@ class _SettingScreenState extends State<SettingScreen> {
                                     setState(() {
                                       language = selectedLanguage;
                                     });
+                                    if (language.toLowerCase() == "amharic") {
+                                      context
+                                          .setLocale(const Locale('am', 'ET'));
+                                    } else {
+                                      context
+                                          .setLocale(const Locale('en', 'US'));
+                                    }
                                   }
                                 },
                                 leading: const Icon(Icons.language),
-                                title: const Text("Language"),
+                                title: Text("language".tr()),
                                 description: Text(language),
                               ),
                               if (role == 'employer')
@@ -98,8 +106,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                           .push(const EmployerRequestRoute());
                                     },
                                     leading: const Icon(Icons.people),
-                                    title: const Text(
-                                      "My Requests",
+                                    title: Text(
+                                      "my_request_title".tr(),
                                     )),
                             ],
                           ),
@@ -135,7 +143,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               context.read<SettingBloc>().add(LogoutEvent());
                             }
                           },
-                    lable: "Logout",
+                    lable: "logout".tr(),
                     backgroundColor: AppColors.primaryColor,
                   ),
                 );

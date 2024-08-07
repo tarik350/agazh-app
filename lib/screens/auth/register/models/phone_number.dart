@@ -1,8 +1,8 @@
 import 'package:formz/formz.dart';
 
 enum PhoneNumberValidationError {
-  required('Phone Number can\'t be empty.'),
-  invalid('The phone number is invalid.');
+  required('required'),
+  invalid('phone_number_invalid');
 
   final String message;
   const PhoneNumberValidationError(this.message);

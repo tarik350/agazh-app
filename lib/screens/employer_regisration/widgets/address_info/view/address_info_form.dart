@@ -1,9 +1,7 @@
-import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/bloc/address_info_bloc.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
@@ -20,7 +18,7 @@ class AddressInfoForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Something went wrong!')),
+              SnackBar(content: Text('unknown_error'.tr())),
             );
         }
       },
@@ -65,7 +63,7 @@ class _HouseNumberInput extends StatelessWidget {
           previous.houseNumber != current.houseNumber,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: 'House Number',
+            hintText: 'house_number',
             obscureText: false,
             onChanged: (houseNumber) => context
                 .read<AddressInfoBloc>()
@@ -108,7 +106,7 @@ class _CityInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.city != current.city,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "City",
+            hintText: "city",
             obscureText: false,
             onChanged: (city) =>
                 context.read<AddressInfoBloc>().add(CityChanged(city)),
@@ -127,7 +125,7 @@ class _SubCityInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.subCity != current.subCity,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "Sub City",
+            hintText: "sub_city",
             obscureText: false,
             onChanged: (subCity) =>
                 context.read<AddressInfoBloc>().add(SubCityChanged(subCity)),
@@ -149,7 +147,7 @@ class _SpecialLocaionInput extends StatelessWidget {
       builder: (context, state) {
         return CustomTextfield(
             maxLines: 3,
-            hintText: "Special Locaion Description",
+            hintText: "special_location",
             obscureText: false,
             onChanged: (value) => context
                 .read<AddressInfoBloc>()
@@ -192,7 +190,7 @@ class _FamilySizeInput extends StatelessWidget {
           previous.familySize != current.familySize,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "Family Size",
+            hintText: "family_size",
             obscureText: false,
             onChanged: (name) =>
                 context.read<AddressInfoBloc>().add(FamilySizeChanged(name)),
@@ -222,8 +220,9 @@ class _SubmitButton extends StatelessWidget {
           onTap: state.status.isValidated
               ? () => context.read<AddressInfoBloc>().add(FormSubmitted())
               : null,
-          lable:
-              state.status.isSubmissionInProgress ? "Proceeding..." : "Proceed",
+          lable: state.status.isSubmissionInProgress
+              ? "loading".tr()
+              : "proceed".tr(),
           backgroundColor: Colors.black,
         );
       },
@@ -244,7 +243,7 @@ class _CancelButton extends StatelessWidget {
                     const Key('billingAddressForm_cancelButton_elevatedButton'),
                 onTap: () =>
                     context.read<EmployerRegistrationCubit>().stepCancelled(),
-                lable: "Cancel",
+                lable: "cancel".tr(),
                 backgroundColor: Colors.red,
               );
       },

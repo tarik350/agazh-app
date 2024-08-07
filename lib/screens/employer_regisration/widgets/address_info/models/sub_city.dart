@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 
 enum SubCityValidator {
-  required('This field can\'t be empty. Please provide information.');
+  required('required');
 
   final String message;
   const SubCityValidator(this.message);

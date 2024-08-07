@@ -1,10 +1,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/foundation.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
+import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/screens/employee/widgets/other_detail/bloc/employee_other_detail_bloc.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
@@ -46,7 +47,7 @@ class _ReligionInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.religion != current.religion,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: 'Religion',
+            hintText: 'other_detail.religion',
             obscureText: false,
             onChanged: (religion) => context
                 .read<EmployeeOtherDetailBloc>()
@@ -67,7 +68,7 @@ class _AgeInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.age != current.age,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: 'Age',
+            hintText: 'other_detail.age',
             obscureText: false,
             onChanged: (age) =>
                 context.read<EmployeeOtherDetailBloc>().add(AgeChanged(age)),
@@ -106,7 +107,7 @@ class _WorkTypeDropDown extends StatelessWidget {
               ),
           isExpanded: true,
           hint: Text(
-            'Select Work Type',
+            'other_detail.select_work_type'.tr(),
             style: TextStyle(
               fontSize: 14,
               color: Theme.of(context).hintColor,
@@ -122,7 +123,7 @@ class _WorkTypeDropDown extends StatelessWidget {
               .map((item) => DropdownMenuItem<String>(
                     value: item,
                     child: Text(
-                      item,
+                      "other_detail.${AppConfig.toSnakeCase(item)}".tr(),
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -156,8 +157,9 @@ class _SubmitButton extends StatelessWidget {
               ? () =>
                   context.read<EmployeeOtherDetailBloc>().add(FormSubmitted())
               : null,
-          lable:
-              state.status.isSubmissionInProgress ? "Proceeding..." : "Proceed",
+          lable: state.status.isSubmissionInProgress
+              ? "loading".tr()
+              : "proceed".tr(),
           backgroundColor: Colors.black,
         );
       },

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,11 +103,12 @@ class EmployeeDetailScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          employee.jobStatus == JobStatusEnum.fullTime
-                              ? 'Full Time'
-                              : 'Part Time',
+                          tr(employee.jobStatus == JobStatusEnum.fullTime
+                              ? 'demography.full_time'
+                              : 'demography.part_time'),
                           style: const TextStyle(
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                             color: Color(0xFF222262),
                           ),
                         ),
@@ -116,9 +118,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Age :',
-                          style: TextStyle(
+                        Text(
+                          "${"other_detail.age".tr()} :",
+                          style: const TextStyle(
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.bold),
                         ),
@@ -131,6 +133,35 @@ class EmployeeDetailScreen extends StatelessWidget {
                           employee.age.toString(),
                           style: const TextStyle(
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF222262),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${'profession'.tr()} :",
+                          style: const TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        // const Icon(
+                        //   Icons.calendar_month,
+                        //   color: Color(0xFF222262),
+                        // ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "other_detail.${AppConfig.toSnakeCase(employee.workType)}"
+                              .tr(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                             color: Color(0xFF222262),
                           ),
                         ),
@@ -140,9 +171,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Religion :',
-                          style: TextStyle(
+                        Text(
+                          "${'other_detail.religion'.tr()} :",
+                          style: const TextStyle(
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.bold),
                         ),
@@ -155,6 +186,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                           employee.religion,
                           style: const TextStyle(
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                             color: Color(0xFF222262),
                           ),
                         ),
@@ -207,9 +239,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                                           ),
                                         ),
                                       )
-                                    : const Text(
-                                        "Send Request",
-                                        style: TextStyle(
+                                    : Text(
+                                        "send_request".tr(),
+                                        style: const TextStyle(
                                             color: AppColors.whiteColor),
                                       ),
                               ),
@@ -302,9 +334,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                                         ),
                                       ),
                                     )
-                                  : const Text(
-                                      "Rate",
-                                      style: TextStyle(
+                                  : Text(
+                                      "rate".tr(),
+                                      style: const TextStyle(
                                           color: AppColors.whiteColor),
                                     ),
                             ),

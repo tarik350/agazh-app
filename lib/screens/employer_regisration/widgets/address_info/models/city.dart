@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 
 enum CityValidationError {
-  required('This field can\'t be empty. Please provide information.');
+  required('required');
 
   final String message;
   const CityValidationError(this.message);

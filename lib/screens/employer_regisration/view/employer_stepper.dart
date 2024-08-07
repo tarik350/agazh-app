@@ -40,28 +40,28 @@ class EmployerStepper extends StatelessWidget {
                 },
                 steps: const [
                   EasyStep(
-                      icon: Icon(Icons.person),
-                      finishIcon: Icon(
-                        Icons.check_circle,
-                        color: AppColors.succesColor,
-                      ),
-                      title: "Personal information"),
+                    icon: Icon(Icons.person),
+                    finishIcon: Icon(
+                      Icons.check_circle,
+                      color: AppColors.succesColor,
+                    ),
+                  ),
                   EasyStep(
-                      icon: Icon(
-                        Icons.location_on_rounded,
-                      ),
-                      finishIcon: Icon(
-                        Icons.check_circle,
-                        color: AppColors.succesColor,
-                      ),
-                      topTitle: true,
-                      title: "Demography"),
+                    icon: Icon(
+                      Icons.location_on_rounded,
+                    ),
+                    finishIcon: Icon(
+                      Icons.check_circle,
+                      color: AppColors.succesColor,
+                    ),
+                    topTitle: true,
+                  ),
                   EasyStep(
-                      icon: Icon(
-                        Icons.policy,
-                      ),
-                      topTitle: true,
-                      title: "Demography"),
+                    icon: Icon(
+                      Icons.policy,
+                    ),
+                    topTitle: true,
+                  ),
                   // EasyStep(icon: Icon(Icons.ondemand_video)),
                 ],
               ),
