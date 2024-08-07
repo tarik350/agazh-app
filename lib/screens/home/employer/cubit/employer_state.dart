@@ -30,3 +30,7 @@ class EmployerState extends Equatable {
         status,
       ];
 }
+
+class RequestErrorState extends EmployerState {}
+
+class RatingErrorState extends EmployerState {}

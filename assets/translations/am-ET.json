@@ -73,6 +73,7 @@
 
   "logout": "ውጣ",
   "amharic": "አማርኛ",
+  "english": "English",
   "home": "ዋና ገፅ",
   "setting": "ሴቲንግ",
   "type_employee_name": "የተቀጣሪ ስም ያስገቡ",
@@ -95,8 +96,17 @@
   "rate": "ደረጃ ይስጡ",
   "feedback": "ግብረ መልስ",
   "feedback_error_message": "እባኮ ግብረ መልስ ይፃፉ",
-  "rate_title" : "ለዚህ ተቀጣሪ ደረጃ ይስጡት።",
-  "profession": "ሞያ"
-
-
+  "rate_title": "ለዚህ ተቀጣሪ ደረጃ ይስጡት።",
+  "profession": "ሞያ",
+  "job_requests": "የሥራ ጥያቄዎች",
+  "no_job_requests": "እስካሁን ምንም የስራ ጥያቄ የለም።",
+  "welcome_onboard": "እንኳን በደህና መጡ",
+  "request_fetch_error": "የሥራ ጥያቄዎችን ለማግኘት ችግር አጋጥሞል",
+  "success": "ተሳክቷል",
+  "error": "አልተሳካም",
+  "ok": "እሺ",
+  "employee_request_success_message": "የስራ ጥያቄ ለ {} ተልኳል። ጥያቄውን ካየን በህዋላ እናሳውቆታለን።እናመሰግናለን::",
+  "rating_success_message": "ግብረ መልሶ ተመዝግቧል",
+  "reating_error_message": "ለ {} ከዚ ፊት ግብረ መልስ ፅፈዋል",
+  "request_error_message": "ለ {} ከዚ ፊት የስራ ጥያቄ ለከዋል"
 }

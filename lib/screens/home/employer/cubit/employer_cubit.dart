@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:formz/formz.dart';
+import 'package:mobile_app/data/models/Employer.dart';
 import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
@@ -17,6 +19,7 @@ class EmployerCubit extends Cubit<EmployerState> {
       {required double rating,
       required String feedback,
       required String employeeId,
+      required String name,
       required String employerId}) async {
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
@@ -32,9 +35,10 @@ class EmployerCubit extends Cubit<EmployerState> {
           employerId: employerId,
           rating: rating);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on RatingAlreadyAddedException catch (r) {
+    } on RatingAlreadyAddedException catch (_) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: r.message));
+          status: FormzStatus.submissionFailure,
+          errorMessage: "reating_error_message".tr(args: [name])));
     } catch (e) {
       emit(state.copyWith(
           status: FormzStatus.submissionFailure, errorMessage: e.toString()));
@@ -55,8 +59,7 @@ class EmployerCubit extends Cubit<EmployerState> {
       bool alreadyRequested = await employerRepository.hasRequest(
           employerId: employerId, employeeId: employeeId);
       if (alreadyRequested) {
-        throw RequestAlreadySent(
-            'You have already sent a request for $fullName');
+        throw RequestAlreadySent('request_error_message'.tr(args: [fullName]));
       }
       await employerRepository.requestEmployee(
           employeeId: employeeId, employerId: employerId);

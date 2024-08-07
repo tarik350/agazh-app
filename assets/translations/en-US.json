@@ -69,10 +69,10 @@
   "filter": "Filter",
   "clear_filter": "Clear Filter",
 
-
   "my_request": "My Request",
   "logout": "Logout",
   "amharic": "Amharic",
+  "english": "English",
   "home": "Home",
   "setting": "Setting",
   "type_employee_name": "Type Employee Name",
@@ -95,7 +95,18 @@
   "send_request": "Send Request",
   "rate": "Rate",
   "feedback": "Feedback",
-  "rate_title" : "Rate this user",
+  "rate_title": "Rate this user",
   "profession": "Profession",
-  "feedback_error_message": "Please enter a feedback"
+  "feedback_error_message": "Please enter a feedback",
+  "job_requests": "Job Requests",
+  "no_job_requests": "No job requests yet.",
+  "welcome_onboard": "Welcome Onboard",
+  "request_fetch_error": "Error while fetching requests",
+  "success": "Success",
+  "error": "Error",
+  "ok": "OK",
+  "employee_request_success_message": "Request has been made for {}. You will be updated after admin reviews your request, Thank You",
+  "rating_success_message": "Rating successfully added",
+  "reating_error_message": "You have already added rating for {}",
+  "request_error_message": "You have already sent a request for {}"
 }

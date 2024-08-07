@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -112,7 +113,6 @@ class EmployeeHomeScreen extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        //todo -> navigate to feedback screen
                                         context.router.push(
                                             const EmployeeFeedbackRoute());
                                       },
@@ -137,7 +137,7 @@ class EmployeeHomeScreen extends StatelessWidget {
                                         child: Column(
                                           children: [
                                             Text(
-                                              "Feedback",
+                                              "feedback".tr(),
                                               style: TextStyle(
                                                   color: AppColors.whiteColor,
                                                   fontSize: 14.sp,
@@ -201,7 +201,7 @@ class EmployeeHomeScreen extends StatelessWidget {
                           padding: EdgeInsets.all(28.w),
                           child: Center(
                               child: Text(
-                            "Error while fetching requests",
+                            "request_fetch_error".tr(),
                             style: TextStyle(color: Colors.red.shade800),
                           )),
                         );
@@ -210,14 +210,14 @@ class EmployeeHomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Welcome Onboard",
+                              "welcome_onboard".tr(),
                               style: TextStyle(
                                   color: AppColors.primaryColor,
                                   fontSize: 22.sp,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "No job requests yet",
+                              "no_job_requests".tr(),
                               style: TextStyle(
                                   color: AppColors.primaryColor,
                                   fontSize: 22.sp,
@@ -241,7 +241,7 @@ class EmployeeHomeScreen extends StatelessWidget {
                                     width: 4.w,
                                   ),
                                   Text(
-                                    "Job Requests",
+                                    "job_requests".tr(),
                                     style: TextStyle(
                                         color: AppColors.primaryColor,
                                         fontWeight: FontWeight.bold,

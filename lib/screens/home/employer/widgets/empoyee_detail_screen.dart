@@ -246,17 +246,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                                       ),
                               ),
                             );
-                            // return CustomButton(
-                            //   onTap: state.requestStatus ==
-                            //           FormzStatus.submissionInProgress
-                            //       ? null
-                            //       : () => context
-                            //           .read<EmployerCubit>()
-                            //           .requestForEmployee(
-                            //               employeeId: employee.id,
-                            //               employerId: auth.currentUser!.uid),
-                            //   lable: "Request",
-                            //   backgroundColor: AppColors.primaryColor,
+
                             // );
                           }),
                         ),
@@ -267,8 +257,11 @@ class EmployeeDetailScreen extends StatelessWidget {
                             listener: (context, state) {
                           if (state.requestStatus ==
                               FormzStatus.submissionSuccess) {
-                            showSuccessDialog(context,
-                                "Request has been made for ${employee.fullName}. You will be updated after admin reviews your request, Thank You");
+                            showSuccessDialog(
+                                context,
+                                // "Request has been made for ${employee.fullName}. You will be updated after admin reviews your request, Thank You"
+                                "employee_request_success_message"
+                                    .tr(args: [employee.fullName]));
                           }
 
                           if (state.status == FormzStatus.submissionFailure ||
@@ -277,11 +270,11 @@ class EmployeeDetailScreen extends StatelessWidget {
                             showErrorDialog(
                                 context,
                                 state.errorMessage ??
-                                    "Unknown error has occured while adding rating");
+                                    "rating_error_message".tr());
                           }
                           if (state.status == FormzStatus.submissionSuccess) {
                             showSuccessDialog(
-                                context, "Rating successfully added");
+                                context, "rating_success_message".tr());
                           }
                         }, builder: (context, state) {
                           return ElevatedButton(
@@ -311,14 +304,15 @@ class EmployeeDetailScreen extends StatelessWidget {
                                         employee.totalRating.toDouble(),
                                   ),
                                 );
-                                context.read<EmployerCubit>().updateRating(
-                                    rating: response['rating'],
-                                    employeeId: employee.id,
-                                    employerId: auth.currentUser!.uid,
-                                    feedback: response['feedback']);
-                              } catch (e) {
-                                print(e);
-                              }
+                                if (context.mounted) {
+                                  context.read<EmployerCubit>().updateRating(
+                                      rating: response['rating'],
+                                      employeeId: employee.id,
+                                      employerId: auth.currentUser!.uid,
+                                      feedback: response['feedback'],
+                                      name: employee.fullName);
+                                }
+                              } catch (e) {}
                             },
                             child: Container(
                               padding:
@@ -341,51 +335,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                                     ),
                             ),
                           );
-                          // return CustomButton(
-                          //   onTap: () async {
-                          //     try {
-                          //       final auth = FirebaseAuth.instance;
-                          //       final rating = await showDialog(
-                          //         context: context,
-                          //         builder: (context) => RatingDialog(
-                          //           initialRating: employee.totalRating,
-                          //         ),
-                          //       );
-                          //       context.read<EmployerCubit>().updateRating(
-                          //           employeeId: employee.id,
-                          //           employerId: auth.currentUser!.uid);
-                          //     } catch (e) {
-                          //       print(e);
-                          //     }
-                          //   },
-                          //   lable: "Rate",
-                          //   backgroundColor: AppColors.primaryColor,
-                          // );
                         }),
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     // Handle request employee action
-                        //   },
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: const Color(0xFF222262),
-                        //     padding: const EdgeInsets.symmetric(
-                        //         horizontal: 32, vertical: 12),
-                        //     textStyle: const TextStyle(fontSize: 18),
-                        //   ),
-                        //   child: const Text('Request'),
-                        // ),
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     // Handle open rating dialog action
-                        //   },
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: const Color(0xFF222262),
-                        //     padding: const EdgeInsets.symmetric(
-                        //         horizontal: 32, vertical: 12),
-                        //     textStyle: const TextStyle(fontSize: 18),
-                        //   ),
-                        //   child: const Text('Rate'),
-                        // ),
                       ],
                     ),
                     const SizedBox(height: 16),

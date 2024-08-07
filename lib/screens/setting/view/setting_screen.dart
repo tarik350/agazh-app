@@ -23,13 +23,19 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   bool showOption = false;
-  String language = "English";
+  late String language;
   late Future<String?> _roleFuture;
 
   @override
   void initState() {
     super.initState();
     _roleFuture = _getRole();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    language = context.locale == Locale('en', "US") ? "English" : "Amharic";
   }
 
   Future<String?> _getRole() async {
@@ -83,18 +89,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                     setState(() {
                                       language = selectedLanguage;
                                     });
-                                    if (language.toLowerCase() == "amharic") {
-                                      context
-                                          .setLocale(const Locale('am', 'ET'));
-                                    } else {
-                                      context
-                                          .setLocale(const Locale('en', 'US'));
+                                    if (context.mounted) {
+                                      if (language.toLowerCase() == "amharic") {
+                                        context.setLocale(
+                                            const Locale('am', 'ET'));
+                                      } else {
+                                        context.setLocale(
+                                            const Locale('en', 'US'));
+                                      }
                                     }
                                   }
                                 },
                                 leading: const Icon(Icons.language),
                                 title: Text("language".tr()),
-                                description: Text(language),
+                                description: Text(language.toLowerCase().tr()),
                               ),
                               if (role == 'employer')
                                 SettingsTile(

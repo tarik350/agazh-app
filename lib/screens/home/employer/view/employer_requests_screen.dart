@@ -57,12 +57,8 @@ class EmployerRequestScreen extends StatelessWidget {
               padding: EdgeInsets.all(12.sp),
               decoration:
                   AppConfig.getInsideScreenDecoration(AppColors.whiteColor),
-              child: BlocConsumer<HomeBloc, HomeState>(
-                listener: (BuildContext context, HomeState state) {},
+              child: BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
-                  //todo
-                  //get request in progress -> show shimmer
-                  //
                   if (state.requestGetStatus ==
                       FormzStatus.submissionInProgress) {
                     return const EmployeeLoadingSkeleton();
@@ -87,18 +83,6 @@ class EmployerRequestScreen extends StatelessWidget {
                     );
                   }
                   return Container();
-                  // if (snapshot.hasData) {
-                  //   if (snapshot.data!.isNotEmpty) {
-                  //   } else {}
-                  // }
-                  // if (snapshot.connectionState == ConnectionState.waiting) {
-                  // }
-                  // if (snapshot.hasError) {
-                  //   //todo => show error view
-                  //   print('error');
-                  // }
-
-                  // );
                 },
               ),
             ),

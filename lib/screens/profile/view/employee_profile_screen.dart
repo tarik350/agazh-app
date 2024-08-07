@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,7 +122,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
           ),
           centerTitle: true,
           title: Text(
-            "Profile",
+            "profile".tr(),
             style: TextStyle(
               color: AppColors.primaryColor,
               fontSize: 23.sp,
@@ -278,9 +279,9 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                                           size: 30.h,
                                           color: AppColors.primaryColor,
                                         ),
-                                        const Text(
-                                          "Update ID",
-                                          style: TextStyle(
+                                        Text(
+                                          "upload_id".tr(),
+                                          style: const TextStyle(
                                               color: AppColors.primaryColor,
                                               fontWeight: FontWeight.bold),
                                         )
@@ -318,7 +319,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       ),
                   isExpanded: true,
                   hint: Text(
-                    'Select Work Type',
+                    'other_detail.select_work_type'.tr(),
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).hintColor,
@@ -334,7 +335,8 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       .map((item) => DropdownMenuItem<String>(
                             value: item,
                             child: Text(
-                              item,
+                              "other_detail.${AppConfig.toSnakeCase(item)}"
+                                  .tr(),
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
@@ -365,7 +367,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                               color: AppColors.primaryColor.withOpacity(.3)))),
                   isExpanded: true,
                   hint: Text(
-                    'Select Job status',
+                    'demography.select_job_status'.tr(),
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).hintColor,
@@ -375,7 +377,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       .map((item) => DropdownMenuItem<String>(
                             value: item,
                             child: Text(
-                              item,
+                              "demography.${AppConfig.toSnakeCase(item)}".tr(),
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
@@ -389,7 +391,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               ),
               ProfileTextField(
                 controller: fullNameController,
-                labelText: 'Full Name',
+                labelText: 'full_name',
                 keyboardType: TextInputType.text,
               ),
               SizedBox(
@@ -405,28 +407,28 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               ),
               ProfileTextField(
                 controller: cityController,
-                labelText: 'City',
+                labelText: 'city',
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
                 controller: subCityController,
-                labelText: 'Sub City',
+                labelText: 'sub_city',
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
                 controller: ageController,
-                labelText: 'Age',
+                labelText: 'other_detail.age',
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
                 controller: religionController,
-                labelText: 'Religion',
+                labelText: 'other_detail.religion',
               ),
 
               SizedBox(
@@ -439,14 +441,14 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               ),
               ProfileTextField(
                 controller: houseNumberController,
-                labelText: 'House Number',
+                labelText: 'house_number',
                 keyboardType: TextInputType.number,
               ),
               SizedBox(
                 height: 12.h,
               ),
               ProfileTextField(
-                  controller: passwordController, labelText: 'Password'),
+                  controller: passwordController, labelText: 'pin'),
               const SizedBox(height: 20),
               BlocBuilder<ProfileCubit, ProfileState>(
                 builder: (context, state) {
@@ -472,8 +474,8 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                           child: state is ProfileUpdating
                               ? AppConfig.getProgressIndicatorNormal(
                                   color: AppColors.whiteColor)
-                              : const Text(
-                                  'Update',
+                              : Text(
+                                  'update'.tr(),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

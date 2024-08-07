@@ -20,126 +20,129 @@ class EmployeeProfileList extends StatelessWidget {
       itemCount: users.length,
       itemBuilder: (context, index) {
         Employee user = users[index];
-        return GestureDetector(
-          onTap: () {
-            context.router.push(EmployeeDetailRoute(employee: user));
-          },
-          child: Card(
-            elevation: 5,
-            shadowColor: Colors.grey.withOpacity(0.5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: CachedNetworkImage(
-                        // width: 100,
-                        // height: 100,
-                        fit: BoxFit.cover,
-                        imageUrl: user.profilePicturePath,
-                        progressIndicatorBuilder: (context, _, progress) =>
-                            AppConfig.getProgresIndicator(
-                                progress, AppColors.primaryColor),
-                        errorWidget: (context, _, err) => Container(),
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 6.h),
+          child: GestureDetector(
+            onTap: () {
+              context.router.push(EmployeeDetailRoute(employee: user));
+            },
+            child: Card(
+              elevation: 5,
+              shadowColor: Colors.grey.withOpacity(0.5),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: CachedNetworkImage(
+                          // width: 100,
+                          // height: 100,
+                          fit: BoxFit.cover,
+                          imageUrl: user.profilePicturePath,
+                          progressIndicatorBuilder: (context, _, progress) =>
+                              AppConfig.getProgresIndicator(
+                                  progress, AppColors.primaryColor),
+                          errorWidget: (context, _, err) => Container(),
+                        ),
+                      ),
+                      // child: Image.network(
+                      //   user.profilePicturePath,
+                      //   width: 100,
+                      //   height: 100,
+                      //   fit: BoxFit.cover,
+                      // ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.fullName,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: AppColors.primaryColor,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  '${user.city ?? 'No City'}, ${user.subCity ?? 'No Subcity'}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[700],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              // Text(
+                              //   '${user.city}, ${user.subCity}',
+                              //   style: TextStyle(
+                              //     fontSize: 18,
+                              //     color: Colors.grey[700],
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w, vertical: 2.h),
+                              decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  borderRadius: BorderRadius.circular(12.r)),
+                              child: Text(
+                                "other_detail.${AppConfig.toSnakeCase(user.workType)}"
+                                    .tr(),
+                                style: TextStyle(
+                                    color: AppColors.whiteColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12.sp),
+                              )),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          RatingBar.builder(
+                            itemSize: 15,
+                            initialRating: user.totalRating.toDouble(),
+                            minRating: 0,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            ignoreGestures: true,
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 12,
+                            ),
+                            onRatingUpdate: (rating) {
+                              // setState(() {
+                              //   this.rating = rating;
+                              // });
+                            },
+                          )
+                        ],
                       ),
                     ),
-                    // child: Image.network(
-                    //   user.profilePicturePath,
-                    //   width: 100,
-                    //   height: 100,
-                    //   fit: BoxFit.cover,
-                    // ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          user.fullName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: AppColors.primaryColor,
-                            ),
-                            Expanded(
-                              child: Text(
-                                '${user.city ?? 'No City'}, ${user.subCity ?? 'No Subcity'}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[700],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            // Text(
-                            //   '${user.city}, ${user.subCity}',
-                            //   style: TextStyle(
-                            //     fontSize: 18,
-                            //     color: Colors.grey[700],
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12.w, vertical: 2.h),
-                            decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
-                                borderRadius: BorderRadius.circular(12.r)),
-                            child: Text(
-                              "other_detail.${AppConfig.toSnakeCase(user.workType)}"
-                                  .tr(),
-                              style: TextStyle(
-                                  color: AppColors.whiteColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12.sp),
-                            )),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        RatingBar.builder(
-                          itemSize: 15,
-                          initialRating: user.totalRating.toDouble(),
-                          minRating: 0,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          ignoreGestures: true,
-                          itemPadding:
-                              const EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 12,
-                          ),
-                          onRatingUpdate: (rating) {
-                            // setState(() {
-                            //   this.rating = rating;
-                            // });
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

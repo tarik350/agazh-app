@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 void showSuccessDialog(BuildContext context, String message) {
@@ -20,8 +21,8 @@ void showSuccessDialog(BuildContext context, String message) {
               size: 60,
             ),
             const SizedBox(height: 16.0),
-            const Text(
-              'Success',
+            Text(
+              'success'.tr(),
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
@@ -48,8 +49,8 @@ void showSuccessDialog(BuildContext context, String message) {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                'OK',
+              child: Text(
+                'ok'.tr(),
                 style: TextStyle(color: Colors.white),
               ),
             ),
