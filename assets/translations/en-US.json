@@ -108,5 +108,8 @@
   "employee_request_success_message": "Request has been made for {}. You will be updated after admin reviews your request, Thank You",
   "rating_success_message": "Rating successfully added",
   "reating_error_message": "You have already added rating for {}",
-  "request_error_message": "You have already sent a request for {}"
+  "request_error_message": "You have already sent a request for {}",
+  "profile_success_message": "Profile Information updated Successfully",
+  "profile_error_message": "Error while uploading profile information",
+  "profile_picture_success_message": "Profile picture uploaded successfully"
 }

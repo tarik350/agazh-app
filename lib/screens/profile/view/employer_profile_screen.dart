@@ -193,29 +193,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               BlocConsumer<ProfileCubit, ProfileState>(
                 listener: (context, state) {
                   if (state is ProfileUpdated) {
-                    showSuccessDialog(
-                        context, "Profile Information updated Successfully");
+                    showSuccessDialog(context, "profile_success_message".tr());
                   }
                   if (state is ProfileUpdateError) {
-                    showErrorDialog(context,
-                        "Error while uploading profile information: ${state.message} ");
+                    showErrorDialog(context, "profile_error_message".tr());
                   }
                   if (state is IdCardUploaded) {
                     setState(() {
                       idCardPath = state.path;
                     });
-                    showSuccessDialog(context, "Id Card uploaded successfully");
+                    showSuccessDialog(
+                        context, "idcard_upload_success_message".tr());
                   }
 
                   if (state is ImageUploadError) {
-                    showErrorDialog(context, state.message);
+                    showErrorDialog(
+                        context, "idcard_upload_error_message".tr());
                   }
                   if (state is ProfilePictureUploaded) {
                     setState(() {
                       profilePath = state.path;
                     });
                     showSuccessDialog(
-                        context, "Profile picture uploaded successfully");
+                        context, "profile_picture_success_message".tr());
                   }
                 },
                 builder: (context, state) {
@@ -354,7 +354,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: AppColors.whiteColor)
                               : Text(
                                   'update'.tr(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,

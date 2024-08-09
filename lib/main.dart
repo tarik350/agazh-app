@@ -10,10 +10,8 @@ import 'package:mobile_app/firebase_options.dart';
 import 'package:mobile_app/screens/auth/login/bloc/login_bloc.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
 import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
-
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/setting/bloc/setting_bloc.dart';
-
 import 'config/routes/app_routes.dart';
 
 void main() async {

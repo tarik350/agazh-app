@@ -28,8 +28,8 @@
   "full_name": "ሙሉ ስም",
   "upload_id": "መታወቅያ ይላኩ",
   "proceed": "ቀጥል",
-  "idcard_upload_error_message": "አይዲ ሲላክ ችግር አጋጥሟል",
-  "idcard_upload_success_message": "ምስሉ በስኬት ተልኳል",
+  "idcard_upload_error_message": "መታወቅያ ምስል ሲላክ ችግር አጋጥሟል",
+  "idcard_upload_success_message": "የመታወቂያ ምስል በተሳካ ሁኔታ ተሻሽሏል",
   "required": "አስገዳጅ",
   "phone_number_invalid": "የተሳሳተ ስልክ ቁጥር አስገብተዋል",
 
@@ -108,5 +108,8 @@
   "employee_request_success_message": "የስራ ጥያቄ ለ {} ተልኳል። ጥያቄውን ካየን በህዋላ እናሳውቆታለን።እናመሰግናለን::",
   "rating_success_message": "ግብረ መልሶ ተመዝግቧል",
   "reating_error_message": "ለ {} ከዚ ፊት ግብረ መልስ ፅፈዋል",
-  "request_error_message": "ለ {} ከዚ ፊት የስራ ጥያቄ ለከዋል"
+  "request_error_message": "ለ {} ከዚ ፊት የስራ ጥያቄ ለከዋል",
+  "profile_success_message": "የግል መረጃ ተሻሽሏል",
+  "profile_error_message": "የግል መረጃ በማሻሻል ላይ ችግር አጋጥሞል",
+  "profile_picture_success_message": "የግል ምስል በተሳካ ሁኔታ ተሻሽሏል"
 }

@@ -57,7 +57,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
         CustomButton(
           padding: 12.h,
           onTap: () => Navigator.of(context).pop(_selectedLanguage),
-          lable: "Submit",
+          lable: "submit".tr(),
           backgroundColor: AppColors.primaryColor,
         )
         // ElevatedButton(

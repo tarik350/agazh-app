@@ -215,12 +215,29 @@ class EmployerRepository {
 
   Future<void> requestEmployee(
       {required String employerId, required String employeeId}) async {
-    await FirebaseFirestore.instance.collection('requests').add({
-      'employerId': employerId,
-      'employeeId': employeeId,
-      'status': 'pending',
-      'timestamp': FieldValue.serverTimestamp(),
-    });
+    try {
+      DocumentReference docRef =
+          await FirebaseFirestore.instance.collection('requests').add({
+        'employerId': employerId,
+        'employeeId': employeeId,
+        'status': 'pending',
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      await docRef.update({
+        'id': docRef.id,
+      });
+    } catch (e) {
+      //todo handle error of request creation
+      rethrow;
+    }
+
+    // await FirebaseFirestore.instance.collection('requests').add({
+    //   'employerId': employerId,
+    //   'employeeId': employeeId,
+    //   'status': 'pending',
+    //   'timestamp': FieldValue.serverTimestamp(),
+    // });
   }
 
   Future<bool> hasRating(String employeeId, String employerId) async {
