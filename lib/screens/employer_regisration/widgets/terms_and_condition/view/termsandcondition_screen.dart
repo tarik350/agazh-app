@@ -33,7 +33,7 @@ class TermsAndConditionScreen extends StatelessWidget {
                     content: Text(state.errorMessage ?? 'unknown_error').tr()),
               );
           } else if (state.status.isSubmissionSuccess) {
-            context.router.push(const SiraAppRoute());
+            context.router.replace(const SiraAppRoute());
           }
         },
         builder: (context, state) {
