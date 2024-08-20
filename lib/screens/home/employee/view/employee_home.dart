@@ -47,9 +47,8 @@ class EmployeeHomeScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     GestureDetector(
-                                      onTap: () => context.router.push(
-                                          EmployeeProfileRoute(
-                                              employee: snapshot.data!)),
+                                      onTap: () => context.router
+                                          .push(const EmployeeProfileRoute()),
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -89,25 +88,34 @@ class EmployeeHomeScreen extends StatelessWidget {
                                           SizedBox(
                                             width: 12.w,
                                           ),
-                                          Column(
-                                            // mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: snapshot.data!.fullName
-                                                .split(' ')
-                                                .map((String value) => Text(
-                                                      value,
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .whiteColor,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 14.sp),
-                                                    ))
-                                                .toList(),
+                                          Text(
+                                            "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                color: AppColors.whiteColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14.sp),
                                           ),
+                                          //todo old code review the changes
+                                          // Column(
+                                          //   // mainAxisAlignment: MainAxisAlignment.start,
+                                          //   crossAxisAlignment:
+                                          //       CrossAxisAlignment.start,
+                                          //   children: snapshot.data!.firstName
+                                          //       .split(' ')
+                                          //       .map((String value) => Text(
+                                          //             value,
+                                          //             textAlign:
+                                          //                 TextAlign.start,
+                                          //             style: TextStyle(
+                                          //                 color: AppColors
+                                          //                     .whiteColor,
+                                          //                 fontWeight:
+                                          //                     FontWeight.bold,
+                                          //                 fontSize: 14.sp),
+                                          //           ))
+                                          //       .toList(),
+                                          // ),
                                         ],
                                       ),
                                     ),

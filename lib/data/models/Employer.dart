@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/LastName.dart';
 
 class Employer extends Equatable {
-  final String fullName;
+  final String firstName;
+  final String lastName;
   final String id;
   final int familySize;
   final String role;
@@ -16,7 +18,8 @@ class Employer extends Equatable {
   final String specialLocation;
 
   const Employer(
-      {this.fullName = '',
+      {this.firstName = '',
+      this.lastName = '',
       this.id = '',
       this.familySize = 0,
       this.role = 'employer',
@@ -33,7 +36,8 @@ class Employer extends Equatable {
     final data = doc.data() as Map<String, dynamic>;
 
     return Employer(
-      fullName: data['fullName'] ?? '',
+      firstName: data['firstName'] ?? '',
+      lastName: data['lastName'] ?? '',
       id: data['id'] ?? '',
       familySize: data['familySize'] ?? 0,
       role: data['role'] ?? '',
@@ -50,7 +54,8 @@ class Employer extends Equatable {
 
   factory Employer.fromJson(Map<String, dynamic> json) {
     return Employer(
-      fullName: json['fullName'] ?? '',
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? '',
       id: json['id'] ?? '',
       familySize: json['familySize'] ?? 0,
       role: json['role'] ?? 'employer',
@@ -67,11 +72,12 @@ class Employer extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'fullName': fullName,
+      'firstName': firstName,
       'id': id,
       'familySize': familySize,
       'role': role,
       'city': city,
+      'lastName': lastName,
       'subCity': subCity,
       'houseNumber': houseNumber,
       'idCardImagePath': idCardImagePath,
@@ -83,7 +89,8 @@ class Employer extends Equatable {
   }
 
   Employer copyWith(
-      {String? fullName,
+      {String? firstName,
+      String? lastName,
       String? id,
       int? familySize,
       String? role,
@@ -96,7 +103,8 @@ class Employer extends Equatable {
       String? specialLocation,
       String? password}) {
     return Employer(
-        fullName: fullName ?? this.fullName,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
         id: id ?? this.id,
         familySize: familySize ?? this.familySize,
         role: role ?? this.role,
@@ -112,10 +120,11 @@ class Employer extends Equatable {
 
   @override
   List<Object?> get props => [
-        fullName,
+        firstName,
         id,
         familySize,
         role,
+        lastName,
         city,
         subCity,
         houseNumber,

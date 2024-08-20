@@ -30,6 +30,10 @@ class EmplyeeDemographyForm extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            _SalaryInput(),
+            const SizedBox(
+              height: 12,
+            ),
             const _JobStatusDropDown(),
             const SizedBox(height: 12.0),
             _CityInput(),
@@ -115,6 +119,43 @@ class _SubCityInput extends StatelessWidget {
   }
 }
 
+class _SalaryInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EmployeeDemographyBloc, EmployeeDemographyState>(
+      buildWhen: (previous, current) => previous.salary != current.salary,
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Selected Salary: ${state.salary.value} ETB',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Slider(
+              value: state.salary.value.toDouble(),
+              min: 0,
+              max: 10000,
+              divisions: 100,
+              label: '${state.salary.value}',
+              onChanged: (double newValue) {
+                context
+                    .read<EmployeeDemographyBloc>()
+                    .add(SalaryChanged(newValue.toInt()));
+              },
+            ),
+            if (state.salary.invalid)
+              Text(
+                state.salary.invalid ? state.salary.error!.message : "",
+                style: const TextStyle(color: Colors.red),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 // class _HouseNumberInput extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -168,10 +209,14 @@ class _SubmitButton extends StatelessWidget {
           context.read<EmployerRegistrationCubit>().stepContinued();
         }
       },
-      buildWhen: (previous, current) => previous.status != current.status,
+      buildWhen: (previous, current) =>
+          previous.status != current.status ||
+          previous.jobStatus != current.jobStatus,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated
+          onTap: state.status.isValidated &&
+                  state.jobStatus != JobStatusEnum.none &&
+                  state.status.isValid
               ? () =>
                   context.read<EmployeeDemographyBloc>().add(FormSubmitted())
               : null,

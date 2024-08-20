@@ -24,15 +24,12 @@ class EmployeeOtherDetailBloc
   FutureOr<void> _onAgeChanged(
       AgeChanged event, Emitter<EmployeeOtherDetailState> emit) {
     final age = Age.dirty(event.age);
-    emit(state.copyWith(
-        age: age, status: Formz.validate([age, state.religion])));
+    emit(state.copyWith(age: age, status: Formz.validate([age])));
   }
 
   FutureOr<void> _onReligionChanged(
       ReligionChanged event, Emitter<EmployeeOtherDetailState> emit) {
-    final religion = Religion.dirty(event.religion);
-    emit(state.copyWith(
-        religion: religion, status: Formz.validate([religion, state.age])));
+    emit(state.copyWith(religion: event.religion));
   }
 
   FutureOr<void> _onFormSubmitted(
@@ -43,7 +40,7 @@ class EmployeeOtherDetailBloc
       try {
         employeeRepository.updateOtherDetails(
             age: int.parse(state.age.value),
-            religion: state.religion.value,
+            religion: state.religion,
             workType: state.workType);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {

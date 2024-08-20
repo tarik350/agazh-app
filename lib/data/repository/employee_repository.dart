@@ -15,14 +15,15 @@ class EmployeeRepository {
     return _employee ?? const Employee();
   }
 
-  void updateDemographyInformation({
-    required String city,
-    required String subCity,
-    required int houseNumber,
-    required JobStatusEnum jobStatus,
-  }) {
+  void updateDemographyInformation(
+      {required String city,
+      required String subCity,
+      required int houseNumber,
+      required JobStatusEnum jobStatus,
+      required int salaray}) {
     _employee = (_employee ?? const Employee()).copyWith(
       city: city,
+      salary: salaray,
       subCity: subCity,
       houseNumber: houseNumber,
       jobStatus: jobStatus,
@@ -36,12 +37,14 @@ class EmployeeRepository {
   }
 
   void updatePersonalInfo(
-      {required String fullName,
+      {required String firstName,
+      required String lastName,
       required String idCardImagePath,
       required String profilePicturePath,
       required String id}) {
     _employee = (_employee ?? const Employee()).copyWith(
-        fullName: fullName,
+        firstName: firstName,
+        lastName: lastName,
         idCardImagePath: idCardImagePath,
         profilePicturePath: profilePicturePath,
         id: id);
@@ -66,10 +69,10 @@ class EmployeeRepository {
 
       if (name != null && name.isNotEmpty) {
         query = query
-            .orderBy('fullName')
+            .orderBy('firstNamee')
             .orderBy('totalRating', descending: true)
-            .where('fullName', isGreaterThanOrEqualTo: name)
-            .where('fullName', isLessThanOrEqualTo: '$name\uf8ff');
+            .where('firstNamee', isGreaterThanOrEqualTo: name)
+            .where('firstNamee', isLessThanOrEqualTo: '$name\uf8ff');
       } else {
         query = query.orderBy('totalRating', descending: true);
       }
@@ -131,8 +134,8 @@ class EmployeeRepository {
     try {
       QuerySnapshot snapshot = await _firestore
           .collection('employees')
-          .where('fullName', isGreaterThanOrEqualTo: query)
-          .where('fullName', isLessThanOrEqualTo: '$query\uf8ff')
+          .where('firstNamee', isGreaterThanOrEqualTo: query)
+          .where('firstNamee', isLessThanOrEqualTo: '$query\uf8ff')
           .get();
 
       return snapshot.docs.map((doc) => Employee.fromDocument(doc)).toList();

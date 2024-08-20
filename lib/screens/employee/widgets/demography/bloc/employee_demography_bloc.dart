@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
+import 'package:mobile_app/screens/employee/widgets/demography/models/salaray.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/city.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/familly_size.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/models/house_number.dart';
@@ -23,6 +24,7 @@ class EmployeeDemographyBloc
     on<SubCityChanged>(_onSubcityChanged);
     on<FormSubmitted>(_onFormSubmitted);
     on<JobStatusChanged>(_onJobStatusChangd);
+    on<SalaryChanged>(_onSalaryChanged);
   }
 
   void _onHouseNumberChanged(
@@ -34,6 +36,7 @@ class EmployeeDemographyBloc
       houseNumber: houseNumber,
       status: Formz.validate([
         houseNumber,
+        state.salary,
         state.subCity,
         state.city,
       ]),
@@ -52,6 +55,7 @@ class EmployeeDemographyBloc
       status: Formz.validate([
         state.subCity,
         state.city,
+        state.salary,
         state.houseNumber,
       ]),
     ));
@@ -66,6 +70,7 @@ class EmployeeDemographyBloc
       city: city,
       status: Formz.validate([
         city,
+        state.salary,
         state.subCity,
         state.houseNumber,
       ]),
@@ -79,12 +84,18 @@ class EmployeeDemographyBloc
     final subCity = SubCity.dirty(event.country);
     emit(state.copyWith(
       subCity: subCity,
-      status: Formz.validate([
-        state.houseNumber,
-        state.city,
-        subCity,
-      ]),
+      status: Formz.validate(
+          [state.houseNumber, state.city, subCity, state.salary]),
     ));
+  }
+
+  FutureOr<void> _onSalaryChanged(
+      SalaryChanged event, Emitter<EmployeeDemographyState> emit) {
+    final salary = Salary.dirty(event.salary);
+    emit(state.copyWith(
+        salary: salary,
+        status: Formz.validate(
+            [state.houseNumber, state.city, state.subCity, salary])));
   }
 
   void _onFormSubmitted(
@@ -105,6 +116,7 @@ class EmployeeDemographyBloc
         employeeRepository.updateDemographyInformation(
             houseNumber: int.parse(state.houseNumber.value),
             city: state.city.value,
+            salaray: state.salary.value,
             subCity: state.subCity.value,
             jobStatus: state.jobStatus);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));

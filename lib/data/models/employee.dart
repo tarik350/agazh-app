@@ -4,7 +4,9 @@ import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_dem
 import 'package:mobile_app/screens/role/enums/work_status.dart';
 
 class Employee extends Equatable {
-  final String fullName;
+  final String firstName;
+  final String lastName;
+
   final String id;
   final String profilePicturePath;
   final String idCardImagePath;
@@ -20,10 +22,13 @@ class Employee extends Equatable {
   final String workType;
   final int age;
   final String religion;
+  final int salary;
 
   const Employee(
-      {this.fullName = '',
+      {this.firstName = '',
+      this.lastName = '',
       this.id = '',
+      this.salary = 0,
       this.totalRating = 0.0,
       this.jobStatus = JobStatusEnum.none,
       this.profilePicturePath = '',
@@ -42,8 +47,10 @@ class Employee extends Equatable {
 
   @override
   List<Object?> get props => [
-        fullName,
+        firstName,
+        lastName,
         id,
+        salary,
         profilePicturePath,
         idCardImagePath,
         city,
@@ -61,8 +68,10 @@ class Employee extends Equatable {
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-        fullName: json['fullName'] ?? '',
+        firstName: json['firstName'] ?? '',
+        lastName: json['lastName'] ?? '',
         id: json['id'] ?? '',
+        salary: json['salary'] ?? 0,
         profilePicturePath: json['profilePicturePath'] ?? '',
         idCardImagePath: json['idCardImagePath'] ?? '',
         city: json['city'] ?? '',
@@ -80,8 +89,10 @@ class Employee extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'fullName': fullName,
+      'firstName': firstName,
+      'lastName': lastName,
       'id': id,
+      "salary": salary,
       'profilePicturePath': profilePicturePath,
       'idCardImagePath': idCardImagePath,
       'city': city,
@@ -103,8 +114,10 @@ class Employee extends Equatable {
     final data = doc.data() as Map<String, dynamic>;
 
     return Employee(
-        fullName: data['fullName'] ?? '',
+        firstName: data['firstName'] ?? '',
+        lastName: data['lastName'] ?? '',
         id: doc.id,
+        salary: data['salary'] ?? 0,
         profilePicturePath: data['profilePicturePath'] ?? '',
         idCardImagePath: data['idCardImagePath'] ?? '',
         city: data['city'] ?? '',
@@ -137,7 +150,8 @@ class Employee extends Equatable {
   }
 
   Employee copyWith(
-      {String? fullName,
+      {String? firstName,
+      String? lastName,
       String? id,
       String? profilePicturePath,
       String? idCardImagePath,
@@ -151,23 +165,27 @@ class Employee extends Equatable {
       String? role,
       JobStatusEnum? jobStatus,
       int? age,
+      int? salary,
       String? religion,
       String? workType}) {
     return Employee(
-        fullName: fullName ?? this.fullName,
-        id: id ?? this.id,
-        profilePicturePath: profilePicturePath ?? this.profilePicturePath,
-        idCardImagePath: idCardImagePath ?? this.idCardImagePath,
-        city: city ?? this.city,
-        subCity: subCity ?? this.subCity,
-        houseNumber: houseNumber ?? this.houseNumber,
-        totalRating: totalRating ?? this.totalRating,
-        password: password ?? this.password,
-        role: role ?? this.role,
-        phone: phone ?? this.phone,
-        jobStatus: jobStatus ?? this.jobStatus,
-        age: age ?? this.age,
-        religion: religion ?? this.religion,
-        workType: workType ?? this.workType);
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      id: id ?? this.id,
+      profilePicturePath: profilePicturePath ?? this.profilePicturePath,
+      idCardImagePath: idCardImagePath ?? this.idCardImagePath,
+      city: city ?? this.city,
+      subCity: subCity ?? this.subCity,
+      houseNumber: houseNumber ?? this.houseNumber,
+      totalRating: totalRating ?? this.totalRating,
+      password: password ?? this.password,
+      role: role ?? this.role,
+      phone: phone ?? this.phone,
+      jobStatus: jobStatus ?? this.jobStatus,
+      age: age ?? this.age,
+      religion: religion ?? this.religion,
+      workType: workType ?? this.workType,
+      salary: salary ?? this.salary,
+    );
   }
 }

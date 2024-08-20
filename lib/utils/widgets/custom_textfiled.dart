@@ -53,7 +53,7 @@ class CustomTextfield extends StatelessWidget {
           ),
           fillColor: AppColors.primaryColor.withOpacity(.1),
           filled: true,
-          hintText: hintText.tr(),
+          hintText: hintText,
           errorMaxLines: 3,
           errorText: errorText?.tr(),
           hintStyle: TextStyle(color: Colors.grey.shade500)),

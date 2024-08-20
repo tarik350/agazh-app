@@ -48,3 +48,9 @@ class IdCardChanged extends EmployeeDemographyEvent {
 }
 
 class FormSubmitted extends EmployeeDemographyEvent {}
+
+class SalaryChanged extends EmployeeDemographyEvent {
+  final int salary;
+
+  const SalaryChanged(this.salary);
+}

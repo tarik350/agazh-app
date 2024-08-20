@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/register/models/Password.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/confirm_pin.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/pin.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 
@@ -35,7 +36,24 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
 
   void onPinChanged(String p) {
     final pin = PIN.dirty(p);
-    emit(state.copyWith(pin: pin, status: Formz.validate([pin])));
+    final confirmPin = state.confirmPin.pure
+        ? state.confirmPin
+        : ConfirmPIN.dirty(password: p, value: state.confirmPin.value);
+
+    emit(state.copyWith(
+      pin: pin,
+      confirmPin: confirmPin, // Update confirm pin only if it's dirty
+      status: Formz.validate([pin, confirmPin]),
+    ));
+  }
+
+  void onConfirmPinChanged(String p) {
+    final confirmPin = ConfirmPIN.dirty(password: state.pin.value, value: p);
+
+    emit(state.copyWith(
+      confirmPin: confirmPin,
+      status: Formz.validate([state.pin, confirmPin]),
+    ));
   }
 
   void onCheckBoxChange(bool isChecked) {

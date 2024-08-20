@@ -17,12 +17,14 @@ class EmployerRepository {
   }
 
   void updatePersonalInfo(
-      {required String fullName,
+      {required String firstName,
+      required String lastName,
       required String idCardImagePath,
       required String profilePicturePath,
       required String id}) {
     _employer = (_employer ?? const Employer()).copyWith(
-        fullName: fullName,
+        firstName: firstName,
+        lastName: lastName,
         idCardImagePath: idCardImagePath,
         profilePicturePath: profilePicturePath,
         id: id);

@@ -12,8 +12,9 @@ class AppRouter extends $AppRouter {
         ),
         AutoRoute(
             page: SiraAppRoute.page, initial: true, guards: [AuthGuard()]),
-        AutoRoute(page: ProfileRoute.page),
+
         AutoRoute(page: EmployeeProfileRoute.page),
+        AutoRoute(page: EmployerProfileRoute.page),
         AutoRoute(
           page: LoginRoute.page,
         ),

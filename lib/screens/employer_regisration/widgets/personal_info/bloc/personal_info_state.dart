@@ -10,23 +10,26 @@ enum ImageUploadStatus {
 
 class PersonalInfoState extends Equatable {
   const PersonalInfoState(
-      {this.fullName = const FullName.pure(),
+      {this.firstName = const FirstName.pure(),
       this.idCardPathString = '',
       this.profilePicturePathString = '',
       this.profilePictureUploadStatus = ImageUploadStatus.pure,
       this.idCardUploadStatus = ImageUploadStatus.pure,
+      this.lastName = const LastName.pure(),
       this.status = FormzStatus.pure,
       this.errorMessage});
 
   final FormzStatus status;
-  final FullName fullName;
+  final FirstName firstName;
+  final LastName lastName;
   final String idCardPathString;
   final String profilePicturePathString;
   final ImageUploadStatus idCardUploadStatus;
   final ImageUploadStatus profilePictureUploadStatus;
   final String? errorMessage;
   PersonalInfoState copyWith({
-    FullName? fullName,
+    FirstName? firstName,
+    LastName? lastName,
     FormzStatus? status,
     String? idCardPathString,
     ImageUploadStatus? idCardUploadStatus,
@@ -35,20 +38,22 @@ class PersonalInfoState extends Equatable {
     String? errorMessage,
   }) {
     return PersonalInfoState(
-        fullName: fullName ?? this.fullName,
+        firstName: firstName ?? this.firstName,
         idCardUploadStatus: idCardUploadStatus ?? this.idCardUploadStatus,
         profilePictureUploadStatus:
             profilePictureUploadStatus ?? this.profilePictureUploadStatus,
         status: status ?? this.status,
         profilePicturePathString:
             profilePicturePathString ?? this.profilePicturePathString,
+        lastName: lastName ?? this.lastName,
         errorMessage: errorMessage,
         idCardPathString: idCardPathString ?? this.idCardPathString);
   }
 
   @override
   List<Object> get props => [
-        fullName,
+        firstName,
+        lastName,
         idCardUploadStatus,
         profilePicturePathString,
         profilePictureUploadStatus,

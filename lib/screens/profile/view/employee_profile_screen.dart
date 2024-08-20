@@ -13,9 +13,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/employee.dart';
+import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
 import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart';
+import 'package:mobile_app/screens/profile/widgets/profile_text_filed.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
@@ -25,9 +27,7 @@ import '../../../services/image_service.dart';
 
 @RoutePage()
 class EmployeeProfileScreen extends StatefulWidget {
-  final Employee employee;
-  const EmployeeProfileScreen({Key? key, required this.employee})
-      : super(key: key);
+  const EmployeeProfileScreen({Key? key}) : super(key: key);
 
   @override
   _EmployeeProfileScreenState createState() => _EmployeeProfileScreenState();
@@ -35,8 +35,8 @@ class EmployeeProfileScreen extends StatefulWidget {
 
 class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   final auth = FirebaseAuth.instance;
-  late TextEditingController fullNameController;
-  // late TextEditingController familySizeController;
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
   late TextEditingController cityController;
   late TextEditingController subCityController;
   late TextEditingController houseNumberController;
@@ -47,30 +47,42 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   String profilePath = '';
   late String workType;
   late String jobStatus;
+  late Employee employee;
 
   @override
   void initState() {
     super.initState();
-    fullNameController = TextEditingController(text: widget.employee.fullName);
+    getEmployee();
 
-    cityController = TextEditingController(text: widget.employee.city);
-    subCityController = TextEditingController(text: widget.employee.subCity);
+    firstNameController = TextEditingController(text: employee.firstName);
+    lastNameController = TextEditingController(text: employee.lastName);
+    cityController = TextEditingController(text: employee.city);
+    subCityController = TextEditingController(text: employee.subCity);
     houseNumberController =
-        TextEditingController(text: widget.employee.houseNumber.toString());
-    passwordController = TextEditingController(text: widget.employee.password);
-    religionController = TextEditingController(text: widget.employee.religion);
-    ageController = TextEditingController(text: widget.employee.age.toString());
-    workType = widget.employee.workType;
-    jobStatus = widget.employee.jobStatus == JobStatusEnum.partTime
-        ? "partTime"
-        : "fullTime";
+        TextEditingController(text: employee.houseNumber.toString());
+    passwordController = TextEditingController(text: employee.password);
+    religionController = TextEditingController(text: employee.religion);
+    ageController = TextEditingController(text: employee.age.toString());
+    workType = employee.workType;
+    jobStatus =
+        employee.jobStatus == JobStatusEnum.partTime ? "partTime" : "fullTime";
+  }
+
+  void getEmployee() async {
+    final employee =
+        await context.read<EmployeeRepository>().getEmployeeByCurrentUserUid();
+    this.employee = employee ?? const Employee();
+    return null;
   }
 
   void _updateProfile() {
     final updatedFields = <String, dynamic>{};
 
-    if (fullNameController.text.isNotEmpty) {
-      updatedFields['fullName'] = fullNameController.text;
+    if (firstNameController.text.isNotEmpty) {
+      updatedFields['firstName'] = firstNameController.text;
+    }
+    if (lastNameController.text.isNotEmpty) {
+      updatedFields['lastName'] = lastNameController.text;
     }
 
     if (cityController.text.isNotEmpty) {
@@ -144,7 +156,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       child: CachedNetworkImage(
                         imageUrl: profilePath.isNotEmpty
                             ? profilePath
-                            : widget.employee.profilePicturePath,
+                            : employee.profilePicturePath,
                         fit: BoxFit.cover,
                         errorWidget: (context, url, error) => Container(
                           color: AppColors.secondaryColor,
@@ -169,7 +181,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                               context.read<ProfileCubit>().uploadProfilePicture(
                                   file: image,
                                   path: "profilePics",
-                                  id: widget.employee.id);
+                                  id: employee.id);
                             }
                           },
                           icon: ClipRRect(
@@ -390,8 +402,18 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                 height: 18.h,
               ),
               ProfileTextField(
-                controller: fullNameController,
-                labelText: 'full_name',
+                controller: firstNameController,
+                labelText: 'firstname',
+                disabled: true,
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(
+                height: 18.h,
+              ),
+              ProfileTextField(
+                controller: lastNameController,
+                labelText: 'lastname',
+                disabled: true,
                 keyboardType: TextInputType.text,
               ),
               SizedBox(
@@ -459,8 +481,8 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8)))
                         .copyWith(backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>((states) {
-                      if (states.contains(MaterialState.disabled)) {
+                            WidgetStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(WidgetState.disabled)) {
                         return AppColors.primaryColor.withOpacity(.7);
                       } else {
                         return AppColors.primaryColor;

@@ -304,58 +304,63 @@ class EmployerHomeTitle extends StatelessWidget {
                       return const ProfileShimmer();
                     }
                     if (snapshot.hasData) {
-                      return GestureDetector(
-                        onTap: () => context.router
-                            .push(ProfileRoute(employer: snapshot.data!)),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 4.h),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100.r),
-                                child: SizedBox(
-                                  width: 35.w,
-                                  height: 35.w,
-                                  child: CachedNetworkImage(
-                                    imageUrl: snapshot.data!.profilePicturePath,
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      color: AppColors.secondaryColor,
-                                      child: const Icon(
-                                        Icons.person,
-                                        color: AppColors.primaryColor,
-                                      ),
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4.h),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100.r),
+                              child: SizedBox(
+                                width: 35.w,
+                                height: 35.w,
+                                child: CachedNetworkImage(
+                                  imageUrl: snapshot.data!.profilePicturePath,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    color: AppColors.secondaryColor,
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: AppColors.primaryColor,
                                     ),
                                   ),
-                                  // child: Image.network(
-                                  //   snapshot.data!.profilePicturePath,
-                                  //   fit: BoxFit.cover,
-                                  // ),
                                 ),
+                                // child: Image.network(
+                                //   snapshot.data!.profilePicturePath,
+                                //   fit: BoxFit.cover,
+                                // ),
                               ),
                             ),
-                            SizedBox(
-                              width: 12.w,
-                            ),
-                            Column(
-                              // mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: snapshot.data!.fullName
-                                  .split(' ')
-                                  .map((String value) => Text(
-                                        value,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            color: AppColors.whiteColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14.sp),
-                                      ))
-                                  .toList(),
-                            ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: 12.w,
+                          ),
+                          Text(
+                            "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: AppColors.whiteColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.sp),
+                          ),
+                          //todo old code below -> review changes
+                          // Column(
+                          //   // mainAxisAlignment: MainAxisAlignment.start,
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: snapshot.data!.fullName
+                          //       .split(' ')
+                          //       .map((String value) => Text(
+                          //             value,
+                          //             textAlign: TextAlign.start,
+                          //             style: TextStyle(
+                          //                 color: AppColors.whiteColor,
+                          //                 fontWeight: FontWeight.bold,
+                          //                 fontSize: 14.sp),
+                          //           ))
+                          //       .toList(),
+                          // ),
+                        ],
                       );
                     }
                     if (snapshot.hasError) {

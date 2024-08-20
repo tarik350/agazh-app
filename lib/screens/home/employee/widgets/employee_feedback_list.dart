@@ -22,7 +22,7 @@ class EmployeeFeedbackList extends StatelessWidget {
         final rating = ratingData['rating'];
         final feedback = ratingData['feedback'];
         final imageUrl = employer.profilePicturePath;
-        final name = employer.fullName;
+        final name = "${employer.firstName} ${employer.lastName}";
 
         return Container(
           margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),

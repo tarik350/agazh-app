@@ -7,9 +7,17 @@ abstract class PersonalInfoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FullNameChanged extends PersonalInfoEvent {
+class FirstNameChanged extends PersonalInfoEvent {
   final String name;
-  const FullNameChanged(this.name);
+  const FirstNameChanged(this.name);
+
+  @override
+  List<Object> get props => [name];
+}
+
+class LastNameChanged extends PersonalInfoEvent {
+  final String name;
+  const LastNameChanged(this.name);
 
   @override
   List<Object> get props => [name];

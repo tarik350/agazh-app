@@ -25,10 +25,14 @@ class EmployeeOtherDetailForm extends StatelessWidget {
           const SizedBox(
             height: 12,
           ),
-          _ReligionInput(),
+          const _ReligionDropdown(),
           const SizedBox(
             height: 12,
           ),
+          // _ReligionInput(),
+          // const SizedBox(
+          //   height: 12,
+          // ),
           _AgeInput(),
           const SizedBox(
             height: 12,
@@ -40,26 +44,26 @@ class EmployeeOtherDetailForm extends StatelessWidget {
   }
 }
 
-class _ReligionInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<EmployeeOtherDetailBloc, EmployeeOtherDetailState>(
-      buildWhen: (previous, current) => previous.religion != current.religion,
-      builder: (context, state) {
-        return CustomTextfield(
-            hintText: 'other_detail.religion',
-            obscureText: false,
-            onChanged: (religion) => context
-                .read<EmployeeOtherDetailBloc>()
-                .add(ReligionChanged(religion)),
-            keyString: "otherDetail_religionInput_textField",
-            inputType: TextInputType.text,
-            errorText:
-                state.religion.invalid ? state.religion.error?.message : null);
-      },
-    );
-  }
-}
+// class _ReligionInput extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<EmployeeOtherDetailBloc, EmployeeOtherDetailState>(
+//       buildWhen: (previous, current) => previous.religion != current.religion,
+//       builder: (context, state) {
+//         return CustomTextfield(
+//             hintText: 'other_detail.religion',
+//             obscureText: false,
+//             onChanged: (religion) => context
+//                 .read<EmployeeOtherDetailBloc>()
+//                 .add(ReligionChanged(religion)),
+//             keyString: "otherDetail_religionInput_textField",
+//             inputType: TextInputType.text,
+//             errorText:
+//                 state.religion.invalid ? state.religion.error?.message : null);
+//       },
+//     );
+//   }
+// }
 
 class _AgeInput extends StatelessWidget {
   @override
@@ -136,6 +140,56 @@ class _WorkTypeDropDown extends StatelessWidget {
   }
 }
 
+class _ReligionDropdown extends StatelessWidget {
+  const _ReligionDropdown({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EmployeeOtherDetailBloc, EmployeeOtherDetailState>(
+        builder: (context, state) {
+      return DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          value: state.religion.isEmpty ? null : state.religion,
+          onChanged: (value) => context
+              .read<EmployeeOtherDetailBloc>()
+              .add(ReligionChanged(value!)),
+          buttonStyleData: ButtonStyleData(
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                      width: 1.w,
+                      color: AppColors.primaryColor.withOpacity(.3)))
+
+              // padding: EdgeInsets.symmetric(horizontal: 16),
+              // height: 40,
+              // width: 140,
+              ),
+          isExpanded: true,
+          hint: Text(
+            'other_detail.religion'.tr(),
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).hintColor,
+            ),
+          ),
+          items: ["Orthodox", "Protestant", "Muslim", "Other"]
+              .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      "other_detail.${AppConfig.toSnakeCase(item)}".tr(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ))
+              .toList(),
+        ),
+      );
+    });
+  }
+}
+
 class _SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -150,10 +204,13 @@ class _SubmitButton extends StatelessWidget {
       },
       buildWhen: (previous, current) =>
           previous.status != current.status ||
-          previous.workType != current.workType,
+          previous.workType != current.workType ||
+          previous.religion != current.religion,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated && state.workType.isNotEmpty
+          onTap: state.status.isValidated &&
+                  state.workType.isNotEmpty &&
+                  state.religion.isNotEmpty
               ? () =>
                   context.read<EmployeeOtherDetailBloc>().add(FormSubmitted())
               : null,

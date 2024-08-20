@@ -5,5 +5,5 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/images/image2.png"
+  image_path: "assets/images/agazh_black.jpeg"
   min_sdk_android: 21 # android min sdk min:16, default 21

@@ -8,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/FullName.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/FirstName.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/LastName.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/firestore_service.dart';
 
@@ -24,20 +25,33 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
   PersonalInfoBloc(
       {required this.employerRepositroy, required this.employeeRepository})
       : super(const PersonalInfoState()) {
-    on<FullNameChanged>(_onNameChanged);
+    on<FirstNameChanged>(_onFirstNameChanged);
+    on<LastNameChanged>(_onLastNameChanged);
     on<FormSubmitted>(_onFormSubmitted);
     on<IdCardChanged>(_onIdCardChanged);
     on<ProfilePictureChanged>(_onProfilePictureChanged);
   }
 
-  void _onNameChanged(
-    FullNameChanged event,
+  void _onFirstNameChanged(
+    FirstNameChanged event,
     Emitter<PersonalInfoState> emit,
   ) {
-    final name = FullName.dirty(event.name);
+    final firstName = FirstName.dirty(event.name);
     emit(state.copyWith(
-      fullName: name,
-      status: Formz.validate([name]),
+      firstName: firstName,
+      status: Formz.validate([
+        firstName,
+        state.lastName,
+      ]),
+    ));
+  }
+
+  FutureOr<void> _onLastNameChanged(
+      LastNameChanged event, Emitter<PersonalInfoState> emit) {
+    final lastName = LastName.dirty(event.name);
+    emit(state.copyWith(
+      lastName: lastName,
+      status: Formz.validate([lastName, state.firstName]),
     ));
   }
 
@@ -94,13 +108,15 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
       try {
         if (event.role == UserRole.employer) {
           employerRepositroy.updatePersonalInfo(
-              fullName: state.fullName.value,
+              firstName: state.firstName.value,
+              lastName: state.lastName.value,
               idCardImagePath: state.idCardPathString,
               id: _auth.currentUser!.uid,
               profilePicturePath: state.profilePicturePathString);
         } else {
           employeeRepository.updatePersonalInfo(
-              fullName: state.fullName.value,
+              firstName: state.firstName.value,
+              lastName: state.lastName.value,
               idCardImagePath: state.idCardPathString,
               profilePicturePath: state.profilePicturePathString,
               id: _auth.currentUser!.uid);

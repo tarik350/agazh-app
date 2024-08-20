@@ -74,7 +74,7 @@ class EmployeeRequestList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                employer.fullName ?? 'No Name',
+                                "${employer.firstName} ${employer.lastName}",
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,

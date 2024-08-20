@@ -65,7 +65,7 @@ class EmployeeProfileList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            user.fullName,
+                            "${user.firstName} ${user.lastName}",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

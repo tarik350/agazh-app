@@ -33,7 +33,7 @@ class TermsAndConditionScreen extends StatelessWidget {
                     content: Text(state.errorMessage ?? 'unknown_error').tr()),
               );
           } else if (state.status.isSubmissionSuccess) {
-            context.router.push(SiraAppRoute());
+            context.router.push(const SiraAppRoute());
           }
         },
         builder: (context, state) {
@@ -43,6 +43,13 @@ class TermsAndConditionScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const _PasswordInput(),
+                SizedBox(
+                  height: 12.h,
+                ),
+                const _ConfirmPasswordInput(),
+                SizedBox(
+                  height: 10.h,
+                ),
                 Row(
                   children: [
                     Transform.scale(
@@ -109,6 +116,29 @@ class _PasswordInput extends StatelessWidget {
             keyString: "login_PasswordInput_textfield",
             inputType: TextInputType.number,
             errorText: state.pin.invalid ? state.pin.error!.message : null);
+      },
+    );
+  }
+}
+
+class _ConfirmPasswordInput extends StatelessWidget {
+  const _ConfirmPasswordInput();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TermsandconditionCubit, TermsAndConditionState>(
+      builder: (context, state) {
+        return CustomTextfield(
+            hintText: "confirm_pin".tr(),
+            obscureText: false,
+            onChanged: (value) => context
+                .read<TermsandconditionCubit>()
+                .onConfirmPinChanged(value),
+            keyString: "login_confirmPassword_textfield",
+            inputType: TextInputType.number,
+            errorText: state.confirmPin.invalid
+                ? state.confirmPin.error!.message
+                : null);
       },
     );
   }

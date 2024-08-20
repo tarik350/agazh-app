@@ -2,7 +2,8 @@ import 'package:formz/formz.dart';
 
 enum AgeValidator {
   required('required'),
-  invalid("other_detail.invalid_age_value");
+  invalid("other_detail.invalid_age_value"),
+  belowAge("other_detail.below_age_value");
 
   final String message;
   const AgeValidator(this.message);
@@ -18,7 +19,9 @@ class Age extends FormzInput<String, AgeValidator> {
     return value.isEmpty
         ? AgeValidator.required
         : _onlyNumbers.hasMatch(value)
-            ? null
+            ? int.parse(value) < 18
+                ? AgeValidator.belowAge
+                : null
             : AgeValidator.invalid;
   }
 }

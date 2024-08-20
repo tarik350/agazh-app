@@ -5,7 +5,8 @@
   "welcome": "እንኳን ደህና መጡ",
   "create_account": "ይመዝገቡ",
   "phone_number": "ስልክ ቁጥር",
-  "pin": "ቁልፍ",
+  "pin": "የሚስጥር ቁጥር",
+  "confirm_pin": "የሚስጥር ቁጥር አረጋግጥ",
   "loading": "ይጠብቁን...",
   "role_title": "እባኮ ሚናዎን ይምረጡ",
   "role_subtitle": "እባኮ ከቀረቡት የሚና ምርጫዎች አንዱን ይምረጡ",
@@ -25,7 +26,8 @@
   "employer_stepper_title": "ቀጣሪ በመመዝገብ ላይ.",
   "stepper_subtitle": "እባኮ እዚ ገጽ ላይ የተጠየቁትን መረጃዎች ያስገቡ",
   "employee_stepper_title": "ተቀጣሪ በመመዝገብ ላይ.",
-  "full_name": "ሙሉ ስም",
+  "firstname": "የእርሶ ስም",
+  "lastname": "የአባት ስም",
   "upload_id": "መታወቅያ ይላኩ",
   "proceed": "ቀጥል",
   "idcard_upload_error_message": "መታወቅያ ምስል ሲላክ ችግር አጋጥሟል",
@@ -44,6 +46,7 @@
   "save": "መዝግብ",
   "terms_and_condition_message": "ይህን ሳጥን በመጫን ደንብና ሁኔታዎችን ይስማሙ?",
   "invalid_pin": "እባኮ ለቁልፍ በብዛት 6 የሆኑ ቁጥሮችን ብቻ ይጠቀሙ",
+  "does_not_match": "የሚስጥር ቁጥር እና ማረጋገጫ ሚስጥር ቁጥር አስመሳሰሉም",
   "errors": {
     "network_request_failed": "የኔቶርክ ችግር አጋጥሟል። እባኮ ትንሽ ቆይተው ይሞክሩ።",
     "too_many_requests": "ብዙ ሙከራዎችን አርገዋል። እባኮ ትንሽ ቆይተው ይሞክሩ።",
@@ -61,7 +64,12 @@
     "full_time_housekeeper": "ቋሚ የቤት አጋዥ",
     "part_time_housekeeper": "ተመላላሽ የቤት አጋዥ",
     "invalid_age_value": "የተሳሳተ እድሜ አስገብተዋል",
-    "nanny": "ሞግዚት"
+    "nanny": "ሞግዚት",
+    "orthodox": "ኦርቶዶክስ",
+    "protestant": "ፕሮቴስታንት",
+    "muslim": "ሙስሊም",
+    "other": "ሌላ",
+    "below_age_value": "ከ18 አመት በላይ መሆን አለቦት"
   },
   "demography": {
     "part_time": "ጊዚያዊ",

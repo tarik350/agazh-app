@@ -9,7 +9,6 @@ import 'package:formz/formz.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/employee.dart';
-import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
@@ -56,7 +55,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          employee.fullName,
+                          "${employee.firstName} ${employee.lastName}",
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -207,9 +206,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(8)))
                                   .copyWith(backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
+                                      WidgetStateProperty.resolveWith<Color>(
                                           (states) {
-                                if (states.contains(MaterialState.disabled)) {
+                                if (states.contains(WidgetState.disabled)) {
                                   return AppColors.primaryColor.withOpacity(.7);
                                 } else {
                                   return AppColors.primaryColor;
@@ -221,7 +220,8 @@ class EmployeeDetailScreen extends StatelessWidget {
                                   : () => context
                                       .read<EmployerCubit>()
                                       .requestForEmployee(
-                                          fullName: employee.fullName,
+                                          fullName:
+                                              "${employee.firstName} ${employee.lastName}",
                                           employeeId: employee.id,
                                           employerId: auth.currentUser!.uid),
                               child: Container(
@@ -260,8 +260,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                             showSuccessDialog(
                                 context,
                                 // "Request has been made for ${employee.fullName}. You will be updated after admin reviews your request, Thank You"
-                                "employee_request_success_message"
-                                    .tr(args: [employee.fullName]));
+                                "employee_request_success_message".tr(args: [
+                                  "${employee.firstName} ${employee.lastName}"
+                                ]));
                           }
 
                           if (state.status == FormzStatus.submissionFailure ||
@@ -284,9 +285,9 @@ class EmployeeDetailScreen extends StatelessWidget {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8)))
                                 .copyWith(backgroundColor:
-                                    MaterialStateProperty.resolveWith<Color>(
+                                    WidgetStateProperty.resolveWith<Color>(
                                         (states) {
-                              if (states.contains(MaterialState.disabled)) {
+                              if (states.contains(WidgetState.disabled)) {
                                 return AppColors.primaryColor.withOpacity(.7);
                               } else {
                                 return AppColors.primaryColor;
@@ -310,7 +311,8 @@ class EmployeeDetailScreen extends StatelessWidget {
                                       employeeId: employee.id,
                                       employerId: auth.currentUser!.uid,
                                       feedback: response['feedback'],
-                                      name: employee.fullName);
+                                      name:
+                                          "${employee.firstName} ${employee.lastName}");
                                 }
                               } catch (e) {}
                             },

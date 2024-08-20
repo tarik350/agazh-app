@@ -11,31 +11,30 @@
 import 'package:auto_route/auto_route.dart' as _i16;
 import 'package:flutter/material.dart' as _i17;
 import 'package:mobile_app/data/models/employee.dart' as _i18;
-import 'package:mobile_app/data/models/Employer.dart' as _i20;
-import 'package:mobile_app/flow_builder_screen.dart' as _i9;
+import 'package:mobile_app/flow_builder_screen.dart' as _i10;
 import 'package:mobile_app/screens/app/view/sira_app.dart' as _i15;
-import 'package:mobile_app/screens/auth/login/view/login_screen.dart' as _i8;
-import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i11;
+import 'package:mobile_app/screens/auth/login/view/login_screen.dart' as _i9;
+import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i12;
 import 'package:mobile_app/screens/auth/register/view/register_screen.dart'
     as _i13;
 import 'package:mobile_app/screens/employee/view/employee_registration_screen.dart'
     as _i4;
 import 'package:mobile_app/screens/employer_regisration/view/employer_stepper_screen.dart'
-    as _i7;
+    as _i8;
 import 'package:mobile_app/screens/home/employee/view/employee_feedback_screen.dart'
     as _i2;
 import 'package:mobile_app/screens/home/employer/view/employer_home_screen.dart'
     as _i5;
 import 'package:mobile_app/screens/home/employer/view/employer_requests_screen.dart'
-    as _i6;
+    as _i7;
 import 'package:mobile_app/screens/home/employer/widgets/empoyee_detail_screen.dart'
     as _i1;
 import 'package:mobile_app/screens/onboarding/view/onboarding_screen.dart'
-    as _i10;
+    as _i11;
 import 'package:mobile_app/screens/profile/view/employee_profile_screen.dart'
     as _i3;
 import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart'
-    as _i12;
+    as _i6;
 import 'package:mobile_app/screens/role/enums/selected_role.dart' as _i19;
 import 'package:mobile_app/screens/role/view/role_screen.dart' as _i14;
 
@@ -61,13 +60,9 @@ abstract class $AppRouter extends _i16.RootStackRouter {
       );
     },
     EmployeeProfileRoute.name: (routeData) {
-      final args = routeData.argsAs<EmployeeProfileRouteArgs>();
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i3.EmployeeProfileScreen(
-          key: args.key,
-          employee: args.employee,
-        ),
+        child: const _i3.EmployeeProfileScreen(),
       );
     },
     EmployeeStepperRoute.name: (routeData) {
@@ -82,56 +77,52 @@ abstract class $AppRouter extends _i16.RootStackRouter {
         child: const _i5.EmployerHomeScreen(),
       );
     },
+    EmployerProfileRoute.name: (routeData) {
+      return _i16.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i6.EmployerProfileScreen(),
+      );
+    },
     EmployerRequestRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.EmployerRequestScreen(),
+        child: const _i7.EmployerRequestScreen(),
       );
     },
     EmployerStepperRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i7.EmployerStepperScreen(),
+        child: const _i8.EmployerStepperScreen(),
       );
     },
     LoginRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.LoginScreen(),
+        child: const _i9.LoginScreen(),
       );
     },
     MyFlowRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.MyFlowScreen(),
+        child: const _i10.MyFlowScreen(),
       );
     },
     OnboardingRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.OnboardingScreen(),
+        child: const _i11.OnboardingScreen(),
       );
     },
     OtpRoute.name: (routeData) {
       final args = routeData.argsAs<OtpRouteArgs>();
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.OtpScreen(
+        child: _i12.OtpScreen(
           key: args.key,
           verificationId: args.verificationId,
           route: args.route,
           userRole: args.userRole,
           phoneNumber: args.phoneNumber,
-        ),
-      );
-    },
-    ProfileRoute.name: (routeData) {
-      final args = routeData.argsAs<ProfileRouteArgs>();
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i12.ProfileScreen(
-          key: args.key,
-          employer: args.employer,
         ),
       );
     },
@@ -210,41 +201,16 @@ class EmployeeFeedbackRoute extends _i16.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.EmployeeProfileScreen]
-class EmployeeProfileRoute
-    extends _i16.PageRouteInfo<EmployeeProfileRouteArgs> {
-  EmployeeProfileRoute({
-    _i17.Key? key,
-    required _i18.Employee employee,
-    List<_i16.PageRouteInfo>? children,
-  }) : super(
+class EmployeeProfileRoute extends _i16.PageRouteInfo<void> {
+  const EmployeeProfileRoute({List<_i16.PageRouteInfo>? children})
+      : super(
           EmployeeProfileRoute.name,
-          args: EmployeeProfileRouteArgs(
-            key: key,
-            employee: employee,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'EmployeeProfileRoute';
 
-  static const _i16.PageInfo<EmployeeProfileRouteArgs> page =
-      _i16.PageInfo<EmployeeProfileRouteArgs>(name);
-}
-
-class EmployeeProfileRouteArgs {
-  const EmployeeProfileRouteArgs({
-    this.key,
-    required this.employee,
-  });
-
-  final _i17.Key? key;
-
-  final _i18.Employee employee;
-
-  @override
-  String toString() {
-    return 'EmployeeProfileRouteArgs{key: $key, employee: $employee}';
-  }
+  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
 }
 
 /// generated route for
@@ -276,7 +242,21 @@ class EmployerHomeRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.EmployerRequestScreen]
+/// [_i6.EmployerProfileScreen]
+class EmployerProfileRoute extends _i16.PageRouteInfo<void> {
+  const EmployerProfileRoute({List<_i16.PageRouteInfo>? children})
+      : super(
+          EmployerProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EmployerProfileRoute';
+
+  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i7.EmployerRequestScreen]
 class EmployerRequestRoute extends _i16.PageRouteInfo<void> {
   const EmployerRequestRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -290,7 +270,7 @@ class EmployerRequestRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.EmployerStepperScreen]
+/// [_i8.EmployerStepperScreen]
 class EmployerStepperRoute extends _i16.PageRouteInfo<void> {
   const EmployerStepperRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -304,7 +284,7 @@ class EmployerStepperRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.LoginScreen]
+/// [_i9.LoginScreen]
 class LoginRoute extends _i16.PageRouteInfo<void> {
   const LoginRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -318,7 +298,7 @@ class LoginRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.MyFlowScreen]
+/// [_i10.MyFlowScreen]
 class MyFlowRoute extends _i16.PageRouteInfo<void> {
   const MyFlowRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -332,7 +312,7 @@ class MyFlowRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.OnboardingScreen]
+/// [_i11.OnboardingScreen]
 class OnboardingRoute extends _i16.PageRouteInfo<void> {
   const OnboardingRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -346,7 +326,7 @@ class OnboardingRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.OtpScreen]
+/// [_i12.OtpScreen]
 class OtpRoute extends _i16.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     _i17.Key? key,
@@ -395,44 +375,6 @@ class OtpRouteArgs {
   @override
   String toString() {
     return 'OtpRouteArgs{key: $key, verificationId: $verificationId, route: $route, userRole: $userRole, phoneNumber: $phoneNumber}';
-  }
-}
-
-/// generated route for
-/// [_i12.ProfileScreen]
-class ProfileRoute extends _i16.PageRouteInfo<ProfileRouteArgs> {
-  ProfileRoute({
-    _i17.Key? key,
-    required _i20.Employer employer,
-    List<_i16.PageRouteInfo>? children,
-  }) : super(
-          ProfileRoute.name,
-          args: ProfileRouteArgs(
-            key: key,
-            employer: employer,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'ProfileRoute';
-
-  static const _i16.PageInfo<ProfileRouteArgs> page =
-      _i16.PageInfo<ProfileRouteArgs>(name);
-}
-
-class ProfileRouteArgs {
-  const ProfileRouteArgs({
-    this.key,
-    required this.employer,
-  });
-
-  final _i17.Key? key;
-
-  final _i20.Employer employer;
-
-  @override
-  String toString() {
-    return 'ProfileRouteArgs{key: $key, employer: $employer}';
   }
 }
 

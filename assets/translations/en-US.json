@@ -6,6 +6,7 @@
   "create_account": "Create an account",
   "phone_number": "Phone Number",
   "pin": "PIN",
+  "confirm_pin": "Confirm PIN",
   "loading": "Loading...",
   "role_title": "Please Select A Role",
   "role_subtitle": "Please select one role from provided alternatives",
@@ -25,7 +26,8 @@
   "employer_stepper_title": "Registering Employer.",
   "stepper_subtitle": "Please provide the requested information on each page.",
   "employee_stepper_title": "Registering Emplyee.",
-  "full_name": "Full Name",
+  "firstname": "First Name",
+  "lastname": "Last Name",
   "upload_id": "Uplaod ID",
   "proceed": "Procced",
   "idcard_upload_error_message": "Error uploading ID Card",
@@ -40,9 +42,10 @@
   "cancel": "Cancel",
   "invalid_house_number": "Invalid House number value",
   "invalid_family_size": "Invalid Family Size Value",
-  "save": "Save",
+  "save": "Finish",
   "terms_and_condition_message": "By Checking this checkbox you agree with our Terms and conditions.",
   "invalid_pin": "Please use 6 character long numbers for PIN",
+  "does_not_match": "Password and Confirm Password does not match",
   "errors": {
     "network_request_failed": "Network error. Please try again later.",
     "too_many_requests": "Too many requests. Please try again later.",
@@ -59,7 +62,12 @@
     "full_time_housekeeper": "Full Time Housekeeper",
     "part_time_housekeeper": "part Time Housekeeper",
     "nanny": "Nanny",
-    "invalid_age_value": "Invalid Age value"
+    "invalid_age_value": "Invalid Age value",
+    "orthodox": "Orhtodox",
+    "protestant": "Protestants",
+    "muslim": "Muslim",
+    "other": "Other",
+    "below_age_value": "You must 18 years old or older!"
   },
   "demography": {
     "part_time": "Part Time",

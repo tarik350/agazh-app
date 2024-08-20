@@ -60,7 +60,9 @@ class PersonalInfoForm extends StatelessWidget {
         children: [
           const _ProfilePictureUploader(),
           const SizedBox(height: 20.0),
-          _FullNameInput(),
+          _FirstNameInput(),
+          const SizedBox(height: 20.0),
+          _LastNameInput(),
           const SizedBox(height: 20.0),
           const _ImageUploaderButton(),
           const SizedBox(height: 20.0),
@@ -96,21 +98,42 @@ class PersonalInfoForm extends StatelessWidget {
 //   }
 // }
 
-class _FullNameInput extends StatelessWidget {
+class _FirstNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
-      buildWhen: (previous, current) => previous.fullName != current.fullName,
+      buildWhen: (previous, current) => previous.firstName != current.firstName,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: "full_name".tr(),
+            hintText: "firstname".tr(),
             obscureText: false,
             onChanged: (name) =>
-                context.read<PersonalInfoBloc>().add(FullNameChanged(name)),
-            keyString: 'personalInfoForm_FullNameInput_textField',
+                context.read<PersonalInfoBloc>().add(FirstNameChanged(name)),
+            keyString: 'personalInfoForm_FirstNameInput_textField',
+            inputType: TextInputType.name,
+            errorText: state.firstName.invalid
+                ? state.firstName.error!.message
+                : null);
+      },
+    );
+  }
+}
+
+class _LastNameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
+      buildWhen: (previous, current) => previous.lastName != current.lastName,
+      builder: (context, state) {
+        return CustomTextfield(
+            hintText: "lastname".tr(),
+            obscureText: false,
+            onChanged: (name) =>
+                context.read<PersonalInfoBloc>().add(LastNameChanged(name)),
+            keyString: 'personalInfoForm_LastNameInput_textField',
             inputType: TextInputType.name,
             errorText:
-                state.fullName.invalid ? state.fullName.error!.message : null);
+                state.lastName.invalid ? state.lastName.error!.message : null);
       },
     );
   }
