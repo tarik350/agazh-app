@@ -21,7 +21,7 @@ class RegisterState extends Equatable {
       FormzStatus? status,
       String? errorMessage,
       String? verificationId}) {
-    if (status == FormzStatus.submissionSuccess && verificationId == null) {
+    if (status == FormzStatus.success && verificationId == null) {
       throw VerificationIdNotReceivedException();
     }
 

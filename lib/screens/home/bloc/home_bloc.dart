@@ -38,7 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final requests = await employerRepository.getRequestsForEmployee();
 
       emit(state.copyWith(
-          requestDeleteStatus: FormzStatus.submissionSuccess,
+          requestDeleteStatus: FormzStatus.success,
           deletingRequestIndex: null,
           requests: requests));
     } catch (_) {
@@ -55,7 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       final requests = await employerRepository.getRequestsForEmployee();
       emit(state.copyWith(
-          requestGetStatus: FormzStatus.submissionSuccess, requests: requests));
+          requestGetStatus: FormzStatus.success, requests: requests));
     } catch (e) {
       emit(state.copyWith(requestGetStatus: FormzStatus.submissionFailure));
     }

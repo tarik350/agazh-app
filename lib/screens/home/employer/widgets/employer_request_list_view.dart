@@ -23,7 +23,7 @@ class EmployerRequestList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(listener: (context, state) {
-      if (state.requestDeleteStatus == FormzStatus.submissionSuccess) {
+      if (state.requestDeleteStatus == FormzStatus.success) {
         showSuccessDialog(context, "delete_success_message".tr());
       }
       if (state.requestDeleteStatus == FormzStatus.submissionFailure) {
@@ -212,7 +212,7 @@ class EmployerRequestList extends StatelessWidget {
 //
 // listener: (context, state) {
 // if (state.requestDeleteStatus ==
-// FormzStatus.submissionSuccess) {
+// FormzStatus.success) {
 // showSuccessDialog(
 // context, "delete_success_message".tr());
 // }

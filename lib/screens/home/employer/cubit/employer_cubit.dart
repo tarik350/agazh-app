@@ -34,7 +34,7 @@ class EmployerCubit extends Cubit<EmployerState> {
           employeeId: employeeId,
           employerId: employerId,
           rating: rating);
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      emit(state.copyWith(status: FormzStatus.success));
     } on RatingAlreadyAddedException catch (_) {
       emit(state.copyWith(
           status: FormzStatus.submissionFailure,
@@ -63,7 +63,7 @@ class EmployerCubit extends Cubit<EmployerState> {
       }
       await employerRepository.requestEmployee(
           employeeId: employeeId, employerId: employerId);
-      emit(state.copyWith(requestStatus: FormzStatus.submissionSuccess));
+      emit(state.copyWith(requestStatus: FormzStatus.success));
     } on RequestAlreadySent catch (e) {
       emit(state.copyWith(
           requestStatus: FormzStatus.submissionFailure,

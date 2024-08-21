@@ -27,7 +27,7 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
         employerRepositroy.updatePassword(password: state.pin.value);
         await employerRepositroy.saveEmployer();
       }
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      emit(state.copyWith(status: FormzStatus.success));
     } catch (e) {
       emit(state.copyWith(
           status: FormzStatus.submissionCanceled, errorMessage: e.toString()));

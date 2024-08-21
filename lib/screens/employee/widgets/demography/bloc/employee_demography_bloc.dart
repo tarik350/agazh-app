@@ -119,7 +119,7 @@ class EmployeeDemographyBloc
             salaray: state.salary.value,
             subCity: state.subCity.value,
             jobStatus: state.jobStatus);
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzStatus.success));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }

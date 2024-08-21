@@ -255,8 +255,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                         ),
                         BlocConsumer<EmployerCubit, EmployerState>(
                             listener: (context, state) {
-                          if (state.requestStatus ==
-                              FormzStatus.submissionSuccess) {
+                          if (state.requestStatus == FormzStatus.success) {
                             showSuccessDialog(
                                 context,
                                 // "Request has been made for ${employee.fullName}. You will be updated after admin reviews your request, Thank You"
@@ -273,7 +272,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                                 state.errorMessage ??
                                     "rating_error_message".tr());
                           }
-                          if (state.status == FormzStatus.submissionSuccess) {
+                          if (state.status == FormzStatus.success) {
                             showSuccessDialog(
                                 context, "rating_success_message".tr());
                           }

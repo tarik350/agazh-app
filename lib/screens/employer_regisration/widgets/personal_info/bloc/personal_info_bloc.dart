@@ -122,7 +122,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
               id: _auth.currentUser!.uid);
         }
 
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzStatus.success));
       } catch (e) {
         emit(state.copyWith(
             status: FormzStatus.submissionFailure, errorMessage: e.toString()));

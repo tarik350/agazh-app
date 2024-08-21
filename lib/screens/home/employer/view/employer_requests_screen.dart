@@ -65,7 +65,7 @@ class EmployerRequestScreen extends StatelessWidget {
                   }
                   if (state.requestGetStatus ==
                       FormzStatus.submissionFailure) {}
-                  if (state.requestGetStatus == FormzStatus.submissionSuccess) {
+                  if (state.requestGetStatus == FormzStatus.success) {
                     if (state.requests == null || state.requests!.isEmpty) {
                       return Center(
                           child: Text(

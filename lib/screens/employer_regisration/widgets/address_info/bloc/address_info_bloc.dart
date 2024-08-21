@@ -115,7 +115,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
             subCity: state.subCity.value,
             specialLocaion: state.specialLocation.value,
             familySize: int.parse(state.familySize.value));
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzStatus.success));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }

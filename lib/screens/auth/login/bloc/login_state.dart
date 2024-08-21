@@ -23,7 +23,7 @@ class LoginState extends Equatable {
       Password? password,
       UserRole? userRole,
       String? verificationId}) {
-    if (status == FormzStatus.submissionSuccess && verificationId == null) {
+    if (status == FormzStatus.success && verificationId == null) {
       throw VerificationIdNotReceivedException();
     }
 

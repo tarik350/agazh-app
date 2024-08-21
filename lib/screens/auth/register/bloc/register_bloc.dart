@@ -47,8 +47,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
       if (verificationId != null) {
         emit(state.copyWith(
-            status: FormzStatus.submissionSuccess,
-            verificationId: verificationId));
+            status: FormzStatus.success, verificationId: verificationId));
       } else {
         throw VerificationIdNotReceivedException();
       }

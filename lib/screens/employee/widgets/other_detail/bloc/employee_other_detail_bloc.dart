@@ -42,7 +42,7 @@ class EmployeeOtherDetailBloc
             age: int.parse(state.age.value),
             religion: state.religion,
             workType: state.workType);
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzStatus.success));
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
