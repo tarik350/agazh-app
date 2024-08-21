@@ -27,7 +27,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
     emit(state.copyWith(
         phoneNumber: phoneNumber,
-        status: Formz.validate([phoneNumber, state.password])));
+        status: Formz.validate([phoneNumber, state.password])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   FutureOr<void> _onPasswordChanged(
@@ -72,14 +74,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _onSelectedRoleChange(
       SelectedRoleChange event, Emitter<LoginState> emit) {
     if (event.userRole == 'employer') {
-      final status = Formz.validate([state.password, state.phoneNumber]);
-
       emit(state.copyWith(
           userRole: UserRole.employer,
           status: Formz.validate([state.password, state.phoneNumber])));
     } else {
-      final status = Formz.validate([state.password, state.phoneNumber]);
-
       emit(state.copyWith(
           userRole: UserRole.employee,
           status: Formz.validate([state.password, state.phoneNumber])));
