@@ -6,13 +6,13 @@ class AddressInfoState extends Equatable {
       this.city = const City.pure(),
       this.familySize = const FamilySize.pure(),
       this.subCity = const SubCity.pure(),
-      this.status = FormzStatus.pure,
+      this.status = FormzSubmissionStatus.initial,
       this.specialLocation = const SpecialLocaion.pure()});
 
   final HouseNumber houseNumber;
   final FamilySize familySize;
   final City city;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final SubCity subCity;
   final SpecialLocaion specialLocation;
 
@@ -22,7 +22,7 @@ class AddressInfoState extends Equatable {
     City? city,
     SubCity? subCity,
     SpecialLocaion? specialLocation,
-    FormzStatus? status,
+    FormzSubmissionStatus? status,
   }) {
     return AddressInfoState(
         houseNumber: houseNumber ?? this.houseNumber,

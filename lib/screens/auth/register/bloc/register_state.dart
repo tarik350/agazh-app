@@ -3,12 +3,12 @@ part of 'register_bloc.dart';
 class RegisterState extends Equatable {
   final PhoneNumber phoneNumber;
   // final Password password;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final String? errorMessage;
   final String? verificationId;
   const RegisterState({
     // this.password = const Password.pure(),
-    this.status = FormzStatus.pure,
+    this.status = FormzSubmissionStatus.initial,
     this.errorMessage,
     this.verificationId,
     this.phoneNumber = const PhoneNumber.pure(),
@@ -18,17 +18,17 @@ class RegisterState extends Equatable {
       {FullName? fullName,
       Password? password,
       PhoneNumber? phoneNumber,
-      FormzStatus? status,
+      FormzSubmissionStatus? status,
       String? errorMessage,
       String? verificationId}) {
-    if (status == FormzStatus.submissionSuccess && verificationId == null) {
+    if (status == FormzSubmissionStatus.success && verificationId == null) {
       throw VerificationIdNotReceivedException();
     }
 
     return RegisterState(
       phoneNumber: phoneNumber ?? this.phoneNumber,
       status: status ?? this.status,
-      errorMessage: status == FormzStatus.submissionFailure
+      errorMessage: status == FormzSubmissionStatus.failure
           ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
           : errorMessage ?? this.errorMessage,
       verificationId: verificationId ?? this.verificationId,

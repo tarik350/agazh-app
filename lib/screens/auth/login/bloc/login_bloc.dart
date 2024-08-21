@@ -43,7 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _onLogin(
       LoginFormSubmitted event, Emitter<LoginState> emit) async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       final employee = await _authService.lookupUser(
           state.phoneNumber.value, state.password.value, "employee");
@@ -57,7 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (verificationId != null) {
         emit(state.copyWith(
-            status: FormzStatus.submissionSuccess,
+            status: FormzSubmissionStatus.success,
             userRole: employee != null ? UserRole.employee : UserRole.employer,
             verificationId: verificationId));
       } else {
@@ -65,10 +65,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } on UserDoesNotExist catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.message));
+          status: FormzSubmissionStatus.failure, errorMessage: e.message));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+          status: FormzSubmissionStatus.failure, errorMessage: e.toString()));
     }
   }
 

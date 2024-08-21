@@ -78,7 +78,7 @@ class _AgeInput extends StatelessWidget {
                 context.read<EmployeeOtherDetailBloc>().add(AgeChanged(age)),
             keyString: "otherDetail_ageInput_textField",
             inputType: TextInputType.text,
-            errorText: state.age.invalid ? state.age.error?.message : null);
+            errorText: state.age.isNotValid ? state.age.error?.message : null);
       },
     );
   }
@@ -198,7 +198,7 @@ class _SubmitButton extends StatelessWidget {
       //     previous.status != current.status ||
       //     previous.workType != current.workType,
       listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           context.read<EmployerRegistrationCubit>().stepContinued();
         }
       },
@@ -208,15 +208,13 @@ class _SubmitButton extends StatelessWidget {
           previous.religion != current.religion,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated &&
+          onTap: state.status.isSuccess &&
                   state.workType.isNotEmpty &&
                   state.religion.isNotEmpty
               ? () =>
                   context.read<EmployeeOtherDetailBloc>().add(FormSubmitted())
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "proceed".tr(),
+          lable: state.status.isInProgress ? "loading".tr() : "proceed".tr(),
           backgroundColor: Colors.black,
         );
       },

@@ -16,10 +16,10 @@ class PersonalInfoState extends Equatable {
       this.profilePictureUploadStatus = ImageUploadStatus.pure,
       this.idCardUploadStatus = ImageUploadStatus.pure,
       this.lastName = const LastName.pure(),
-      this.status = FormzStatus.pure,
+      this.status = FormzSubmissionStatus.initial,
       this.errorMessage});
 
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final FirstName firstName;
   final LastName lastName;
   final String idCardPathString;
@@ -30,7 +30,7 @@ class PersonalInfoState extends Equatable {
   PersonalInfoState copyWith({
     FirstName? firstName,
     LastName? lastName,
-    FormzStatus? status,
+    FormzSubmissionStatus? status,
     String? idCardPathString,
     ImageUploadStatus? idCardUploadStatus,
     ImageUploadStatus? profilePictureUploadStatus,

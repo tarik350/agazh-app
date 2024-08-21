@@ -8,7 +8,7 @@ class EmployeeDemographyState extends Equatable {
       this.city = const City.pure(),
       this.familySize = const FamilySize.pure(),
       this.subCity = const SubCity.pure(),
-      this.status = FormzStatus.pure,
+      this.status = FormzSubmissionStatus.initial,
       this.salary = const Salary.pure(),
       this.errorMessage,
       this.jobStatus = JobStatusEnum.none});
@@ -16,7 +16,7 @@ class EmployeeDemographyState extends Equatable {
   final HouseNumber houseNumber;
   final FamilySize familySize;
   final City city;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final JobStatusEnum jobStatus;
   final SubCity subCity;
   final String? errorMessage;
@@ -29,7 +29,7 @@ class EmployeeDemographyState extends Equatable {
       SubCity? subCity,
       JobStatusEnum? jobStatus,
       String? errorMessage,
-      FormzStatus? status,
+      FormzSubmissionStatus? status,
       Salary? salary,
       String? workType}) {
     return EmployeeDemographyState(

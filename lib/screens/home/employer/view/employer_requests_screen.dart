@@ -60,12 +60,12 @@ class EmployerRequestScreen extends StatelessWidget {
               child: BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
                   if (state.requestGetStatus ==
-                      FormzStatus.submissionInProgress) {
+                      FormzSubmissionStatus.inProgress) {
                     return const EmployeeLoadingSkeleton();
                   }
                   if (state.requestGetStatus ==
-                      FormzStatus.submissionFailure) {}
-                  if (state.requestGetStatus == FormzStatus.submissionSuccess) {
+                      FormzSubmissionStatus.failure) {}
+                  if (state.requestGetStatus == FormzSubmissionStatus.success) {
                     if (state.requests == null || state.requests!.isEmpty) {
                       return Center(
                           child: Text(

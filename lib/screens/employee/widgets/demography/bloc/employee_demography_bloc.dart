@@ -104,13 +104,13 @@ class EmployeeDemographyBloc
   ) async {
     if (state.jobStatus == JobStatusEnum.none) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure,
+          status: FormzSubmissionStatus.failure,
           errorMessage: "You have to select job status"));
       return;
     }
 
     if (state.status.isValidated) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {
         employeeRepository.updateDemographyInformation(
@@ -119,9 +119,9 @@ class EmployeeDemographyBloc
             salaray: state.salary.value,
             subCity: state.subCity.value,
             jobStatus: state.jobStatus);
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }
   }

@@ -3,13 +3,13 @@ part of 'login_bloc.dart';
 class LoginState extends Equatable {
   final PhoneNumber phoneNumber;
   // final Password password;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final String? errorMessage;
   final Password password;
   final String? verificationId;
   final UserRole userRole;
   const LoginState(
-      {this.status = FormzStatus.pure,
+      {this.status = FormzSubmissionStatus.initial,
       this.errorMessage,
       this.userRole = UserRole.none,
       this.password = const Password.pure(),
@@ -18,12 +18,12 @@ class LoginState extends Equatable {
 
   LoginState copyWith(
       {PhoneNumber? phoneNumber,
-      FormzStatus? status,
+      FormzSubmissionStatus? status,
       String? errorMessage,
       Password? password,
       UserRole? userRole,
       String? verificationId}) {
-    if (status == FormzStatus.submissionSuccess && verificationId == null) {
+    if (status == FormzSubmissionStatus.success && verificationId == null) {
       throw VerificationIdNotReceivedException();
     }
 
@@ -32,7 +32,7 @@ class LoginState extends Equatable {
       status: status ?? this.status,
       userRole: userRole ?? this.userRole,
       password: password ?? this.password,
-      errorMessage: status == FormzStatus.submissionFailure
+      errorMessage: status == FormzSubmissionStatus.failure
           ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
           : errorMessage ?? this.errorMessage,
       verificationId: verificationId ?? this.verificationId,

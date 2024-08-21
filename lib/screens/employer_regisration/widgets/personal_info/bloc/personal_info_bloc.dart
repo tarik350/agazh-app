@@ -103,7 +103,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
         return;
       }
 
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {
         if (event.role == UserRole.employer) {
@@ -122,10 +122,10 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
               id: _auth.currentUser!.uid);
         }
 
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (e) {
         emit(state.copyWith(
-            status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+            status: FormzSubmissionStatus.failure, errorMessage: e.toString()));
       }
     }
   }

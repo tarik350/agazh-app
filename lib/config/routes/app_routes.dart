@@ -4,7 +4,7 @@ import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @AutoRouterConfig()
-class AppRouter extends $AppRouter {
+class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(

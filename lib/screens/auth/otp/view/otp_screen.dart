@@ -116,7 +116,7 @@ class OtpScreen extends StatelessWidget {
                               //on login if role is employee we go to employee home page
                               //or we go to employer home page
                               if (state.otpSubmissionStatus ==
-                                  OtpStatus.submissionSuccess) {
+                                  OtpStatus.success) {
                                 final preferance =
                                     await SharedPreferences.getInstance();
                                 if (route == 'login' && userRole != null) {
@@ -146,7 +146,7 @@ class OtpScreen extends StatelessWidget {
                               }
 
                               if (state.otpSubmissionStatus ==
-                                  OtpStatus.submissionFailure) {
+                                  OtpStatus.failure) {
                                 if (context.mounted) {
                                   AppConfig.getMassenger(context,
                                       "otp_verification_failed_message".tr());
@@ -158,12 +158,12 @@ class OtpScreen extends StatelessWidget {
                               //         ? context.read<RoleCubit>().state.userRole
                               //         : "get user role from auth service";
                               // if (state.otpSubmissionStatus ==
-                              //     OtpStatus.submissionFailure) {
+                              //     OtpStatus. failure) {
                               //   //todo => handle submission status
                               // }
 
                               // if (state.otpSubmissionStatus ==
-                              //     OtpStatus.submissionSuccess) {
+                              //     OtpStatus. success) {
                               //   switch (role) {
                               //     case UserRole.employee:
                               //       if (route == 'login') {
@@ -275,13 +275,13 @@ class OtpScreen extends StatelessWidget {
                             CustomButton(
                               onTap: state.otpStringStatus == OtpStatus.valid &&
                                       state.otpSubmissionStatus !=
-                                          OtpStatus.submissionInProgress
+                                          OtpStatusinProgress
                                   ? () => context
                                       .read<OtpCubit>()
                                       .submitOptRequest(verificationId)
                                   : null,
                               lable: state.otpSubmissionStatus ==
-                                      OtpStatus.submissionInProgress
+                                      OtpStatusinProgress
                                   ? "loading".tr()
                                   : "submit".tr(),
                               backgroundColor: AppColors.primaryColor,

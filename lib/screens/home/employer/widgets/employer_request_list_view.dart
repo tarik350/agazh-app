@@ -23,10 +23,10 @@ class EmployerRequestList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(listener: (context, state) {
-      if (state.requestDeleteStatus == FormzStatus.submissionSuccess) {
+      if (state.requestDeleteStatus == FormzSubmissionStatus.success) {
         showSuccessDialog(context, "delete_success_message".tr());
       }
-      if (state.requestDeleteStatus == FormzStatus.submissionFailure) {
+      if (state.requestDeleteStatus == FormzSubmissionStatus.failure) {
         showErrorDialog(context, "delete_request_message".tr());
       }
     }, builder: (context, state) {
@@ -38,7 +38,7 @@ class EmployerRequestList extends StatelessWidget {
           var status = request['status'];
           var timestamp = request['timestamp']?.toDate();
           bool isDeleting = state.deletingRequestIndex == index &&
-              state.requestDeleteStatus == FormzStatus.submissionInProgress;
+              state.requestDeleteStatus == FormzSubmissionStatus.inProgress;
 
           String formattedDate = timestamp != null
               ? DateFormat('EEEE MMMM d, yyyy').format(timestamp)
@@ -212,12 +212,12 @@ class EmployerRequestList extends StatelessWidget {
 //
 // listener: (context, state) {
 // if (state.requestDeleteStatus ==
-// FormzStatus.submissionSuccess) {
+// FormzSubmissionStatus. success) {
 // showSuccessDialog(
 // context, "delete_success_message".tr());
 // }
 // if (state.requestDeleteStatus ==
-// FormzStatus.submissionFailure) {
+// FormzSubmissionStatus. failure) {
 // showErrorDialog(
 // context, "delete_request_message".tr());
 // }

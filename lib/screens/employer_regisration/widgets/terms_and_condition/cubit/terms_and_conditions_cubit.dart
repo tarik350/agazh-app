@@ -18,7 +18,7 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
       : super(const TermsAndConditionState());
 
   void saveUser(UserRole role) async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       if (role == UserRole.employee) {
         employeeRepository.updatePassword(state.pin.value);
@@ -27,10 +27,11 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
         employerRepositroy.updatePassword(password: state.pin.value);
         await employerRepositroy.saveEmployer();
       }
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionCanceled, errorMessage: e.toString()));
+          status: FormzSubmissionStatus.submissionCanceled,
+          errorMessage: e.toString()));
     }
   }
 

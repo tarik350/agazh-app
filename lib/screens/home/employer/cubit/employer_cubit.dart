@@ -21,7 +21,7 @@ class EmployerCubit extends Cubit<EmployerState> {
       required String employeeId,
       required String name,
       required String employerId}) async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       bool alreadyRated =
           await employerRepository.hasRating(employeeId, employerId);
@@ -34,14 +34,14 @@ class EmployerCubit extends Cubit<EmployerState> {
           employeeId: employeeId,
           employerId: employerId,
           rating: rating);
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on RatingAlreadyAddedException catch (_) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure,
+          status: FormzSubmissionStatus.failure,
           errorMessage: "reating_error_message".tr(args: [name])));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+          status: FormzSubmissionStatus.failure, errorMessage: e.toString()));
     }
   }
 
@@ -54,7 +54,7 @@ class EmployerCubit extends Cubit<EmployerState> {
       required String employerId,
       required String fullName}) async {
     try {
-      emit(state.copyWith(requestStatus: FormzStatus.submissionInProgress));
+      emit(state.copyWith(requestStatus: FormzSubmissionStatus.inProgress));
 
       bool alreadyRequested = await employerRepository.hasRequest(
           employerId: employerId, employeeId: employeeId);
@@ -63,14 +63,14 @@ class EmployerCubit extends Cubit<EmployerState> {
       }
       await employerRepository.requestEmployee(
           employeeId: employeeId, employerId: employerId);
-      emit(state.copyWith(requestStatus: FormzStatus.submissionSuccess));
+      emit(state.copyWith(requestStatus: FormzSubmissionStatus.success));
     } on RequestAlreadySent catch (e) {
       emit(state.copyWith(
-          requestStatus: FormzStatus.submissionFailure,
+          requestStatus: FormzSubmissionStatus.failure,
           errorMessage: e.message));
     } catch (e) {
       emit(state.copyWith(
-          requestStatus: FormzStatus.submissionFailure,
+          requestStatus: FormzSubmissionStatus.failure,
           errorMessage: e.toString()));
     }
   }

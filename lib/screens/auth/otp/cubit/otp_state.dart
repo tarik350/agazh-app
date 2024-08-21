@@ -9,13 +9,13 @@ enum OtpStatus {
   invalid,
 
   /// The form is in the process of being submitted.
-  submissionInProgress,
+  inProgress,
 
   /// The form has been submitted successfully.
-  submissionSuccess,
+ . success,
 
   /// The form submission failed.
-  submissionFailure,
+ . failure,
 
   /// The form submission has been canceled.
   submissionCanceled

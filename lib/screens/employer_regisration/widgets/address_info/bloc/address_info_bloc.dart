@@ -107,7 +107,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     Emitter<AddressInfoState> emit,
   ) async {
     if (state.status.isValidated) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
         employerRepositroy.updateAddressInformation(
             houseNumber: int.parse(state.houseNumber.value),
@@ -115,9 +115,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
             subCity: state.subCity.value,
             specialLocaion: state.specialLocation.value,
             familySize: int.parse(state.familySize.value));
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }
   }

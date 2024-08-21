@@ -31,7 +31,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   FutureOr<void> _onFormSubmitted(
       RegisterFormSubmitted event, Emitter<RegisterState> emit) async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       final isEmplyerExist = await _authService.checkUserExists(
           state.phoneNumber.value, UserRole.employer);
@@ -47,14 +47,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
       if (verificationId != null) {
         emit(state.copyWith(
-            status: FormzStatus.submissionSuccess,
+            status: FormzSubmissionStatus.success,
             verificationId: verificationId));
       } else {
         throw VerificationIdNotReceivedException();
       }
     } on UserAlreadyExistException catch (_) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure,
+          status: FormzSubmissionStatus.failure,
           errorMessage: "errors.user_already_exists".tr()));
     } on FirebaseAuthException catch (e) {
       String errorMessage;
@@ -76,14 +76,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           break;
       }
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: errorMessage));
+          status: FormzSubmissionStatus.failure, errorMessage: errorMessage));
     } on VerificationIdNotReceivedException catch (_) {
       final errorMessage = "verification_id_not_received".tr();
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: errorMessage));
+          status: FormzSubmissionStatus.failure, errorMessage: errorMessage));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+          status: FormzSubmissionStatus.failure, errorMessage: e.toString()));
     }
   }
 }

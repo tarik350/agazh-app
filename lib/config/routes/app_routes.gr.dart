@@ -38,115 +38,6 @@ import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart'
 import 'package:mobile_app/screens/role/enums/selected_role.dart' as _i19;
 import 'package:mobile_app/screens/role/view/role_screen.dart' as _i14;
 
-abstract class $AppRouter extends _i16.RootStackRouter {
-  $AppRouter({super.navigatorKey});
-
-  @override
-  final Map<String, _i16.PageFactory> pagesMap = {
-    EmployeeDetailRoute.name: (routeData) {
-      final args = routeData.argsAs<EmployeeDetailRouteArgs>();
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i1.EmployeeDetailScreen(
-          key: args.key,
-          employee: args.employee,
-        ),
-      );
-    },
-    EmployeeFeedbackRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i2.EmployeeFeedbackScreen(),
-      );
-    },
-    EmployeeProfileRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i3.EmployeeProfileScreen(),
-      );
-    },
-    EmployeeStepperRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i4.EmployeeStepperScreen(),
-      );
-    },
-    EmployerHomeRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i5.EmployerHomeScreen(),
-      );
-    },
-    EmployerProfileRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i6.EmployerProfileScreen(),
-      );
-    },
-    EmployerRequestRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i7.EmployerRequestScreen(),
-      );
-    },
-    EmployerStepperRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i8.EmployerStepperScreen(),
-      );
-    },
-    LoginRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i9.LoginScreen(),
-      );
-    },
-    MyFlowRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i10.MyFlowScreen(),
-      );
-    },
-    OnboardingRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i11.OnboardingScreen(),
-      );
-    },
-    OtpRoute.name: (routeData) {
-      final args = routeData.argsAs<OtpRouteArgs>();
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i12.OtpScreen(
-          key: args.key,
-          verificationId: args.verificationId,
-          route: args.route,
-          userRole: args.userRole,
-          phoneNumber: args.phoneNumber,
-        ),
-      );
-    },
-    RegisterRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i13.RegisterScreen(),
-      );
-    },
-    RoleRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i14.RoleScreen(),
-      );
-    },
-    SiraAppRoute.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i15.SiraAppScreen(),
-      );
-    },
-  };
-}
-
 /// generated route for
 /// [_i1.EmployeeDetailScreen]
 class EmployeeDetailRoute extends _i16.PageRouteInfo<EmployeeDetailRouteArgs> {
@@ -165,8 +56,16 @@ class EmployeeDetailRoute extends _i16.PageRouteInfo<EmployeeDetailRouteArgs> {
 
   static const String name = 'EmployeeDetailRoute';
 
-  static const _i16.PageInfo<EmployeeDetailRouteArgs> page =
-      _i16.PageInfo<EmployeeDetailRouteArgs>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EmployeeDetailRouteArgs>();
+      return _i1.EmployeeDetailScreen(
+        key: args.key,
+        employee: args.employee,
+      );
+    },
+  );
 }
 
 class EmployeeDetailRouteArgs {
@@ -196,7 +95,12 @@ class EmployeeFeedbackRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployeeFeedbackRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i2.EmployeeFeedbackScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -210,7 +114,12 @@ class EmployeeProfileRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployeeProfileRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i3.EmployeeProfileScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -224,7 +133,12 @@ class EmployeeStepperRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployeeStepperRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i4.EmployeeStepperScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -238,7 +152,12 @@ class EmployerHomeRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployerHomeRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i5.EmployerHomeScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -252,7 +171,12 @@ class EmployerProfileRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployerProfileRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i6.EmployerProfileScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -266,7 +190,12 @@ class EmployerRequestRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployerRequestRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i7.EmployerRequestScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -280,7 +209,12 @@ class EmployerStepperRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'EmployerStepperRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i8.EmployerStepperScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -294,7 +228,12 @@ class LoginRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i9.LoginScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -308,7 +247,12 @@ class MyFlowRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'MyFlowRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i10.MyFlowScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -322,7 +266,12 @@ class OnboardingRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'OnboardingRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i11.OnboardingScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -349,8 +298,19 @@ class OtpRoute extends _i16.PageRouteInfo<OtpRouteArgs> {
 
   static const String name = 'OtpRoute';
 
-  static const _i16.PageInfo<OtpRouteArgs> page =
-      _i16.PageInfo<OtpRouteArgs>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<OtpRouteArgs>();
+      return _i12.OtpScreen(
+        key: args.key,
+        verificationId: args.verificationId,
+        route: args.route,
+        userRole: args.userRole,
+        phoneNumber: args.phoneNumber,
+      );
+    },
+  );
 }
 
 class OtpRouteArgs {
@@ -389,7 +349,12 @@ class RegisterRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'RegisterRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i13.RegisterScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -403,7 +368,12 @@ class RoleRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'RoleRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i14.RoleScreen();
+    },
+  );
 }
 
 /// generated route for
@@ -417,5 +387,10 @@ class SiraAppRoute extends _i16.PageRouteInfo<void> {
 
   static const String name = 'SiraAppRoute';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static _i16.PageInfo page = _i16.PageInfo(
+    name,
+    builder: (data) {
+      return const _i15.SiraAppScreen();
+    },
+  );
 }

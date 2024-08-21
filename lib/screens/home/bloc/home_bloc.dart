@@ -28,7 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(state.copyWith(
-        requestDeleteStatus: FormzStatus.submissionInProgress,
+        requestDeleteStatus: FormzSubmissionStatus.inProgress,
         deletingRequestIndex: event.index,
         requests: state.requests));
 
@@ -38,12 +38,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final requests = await employerRepository.getRequestsForEmployee();
 
       emit(state.copyWith(
-          requestDeleteStatus: FormzStatus.submissionSuccess,
+          requestDeleteStatus: FormzSubmissionStatus.success,
           deletingRequestIndex: null,
           requests: requests));
     } catch (_) {
       emit(state.copyWith(
-        requestDeleteStatus: FormzStatus.submissionFailure,
+        requestDeleteStatus: FormzSubmissionStatus.failure,
         deletingRequestIndex: null,
       ));
     }
@@ -51,13 +51,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   FutureOr<void> _onGetEmployeeRequest(
       GetEmployeeRequest event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(requestGetStatus: FormzStatus.submissionInProgress));
+    emit(state.copyWith(requestGetStatus: FormzSubmissionStatus.inProgress));
     try {
       final requests = await employerRepository.getRequestsForEmployee();
       emit(state.copyWith(
-          requestGetStatus: FormzStatus.submissionSuccess, requests: requests));
+          requestGetStatus: FormzSubmissionStatus.success, requests: requests));
     } catch (e) {
-      emit(state.copyWith(requestGetStatus: FormzStatus.submissionFailure));
+      emit(state.copyWith(requestGetStatus: FormzSubmissionStatus.failure));
     }
   }
 

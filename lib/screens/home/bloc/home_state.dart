@@ -1,8 +1,8 @@
 part of 'home_bloc.dart';
 
 class HomeState extends Equatable {
-  final FormzStatus requestDeleteStatus;
-  final FormzStatus requestGetStatus;
+  final FormzSubmissionStatus requestDeleteStatus;
+  final FormzSubmissionStatus requestGetStatus;
   final List<Map<String, dynamic>>? requests;
   final int? deletingRequestIndex;
   final String? errorMessage;
@@ -10,17 +10,17 @@ class HomeState extends Equatable {
   const HomeState({
     this.requests,
     this.errorMessage,
-    this.requestGetStatus = FormzStatus.pure,
-    this.requestDeleteStatus = FormzStatus.pure,
+    this.requestGetStatus = FormzSubmissionStatus.initial,
+    this.requestDeleteStatus = FormzSubmissionStatus.initial,
     this.deletingRequestIndex,
   });
 
   HomeState copyWith(
-      {FormzStatus? requestDeleteStatus,
+      {FormzSubmissionStatus? requestDeleteStatus,
       int? deletingRequestIndex,
       List<Map<String, dynamic>>? requests,
       String? errorMessage,
-      FormzStatus? requestGetStatus}) {
+      FormzSubmissionStatus? requestGetStatus}) {
     return HomeState(
       requestGetStatus: requestGetStatus ?? this.requestGetStatus,
       requests: requests,
