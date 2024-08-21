@@ -12,10 +12,10 @@ enum UserSubmissionStatus {
   inProgress,
 
   /// The form has been submitted successfully.
- . success,
+  success,
 
   /// The form submission failed.
- . failure,
+  failure,
 
   /// The form submission has been canceled.
   submissionCanceled

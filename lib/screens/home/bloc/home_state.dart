@@ -45,7 +45,7 @@ class GetEmployeeLoading extends HomeState {}
 class GetEmployeeLoaded extends HomeState {
   final List<Employee> employees;
 
-  GetEmployeeLoaded(this.employees);
+  const GetEmployeeLoaded(this.employees);
   @override
   List<Object?> get props => [employees];
 }
@@ -53,7 +53,7 @@ class GetEmployeeLoaded extends HomeState {
 class GetEmployeeError extends HomeState {
   final String message;
 
-  GetEmployeeError(this.message);
+  const GetEmployeeError(this.message);
   @override
   List<Object?> get props => [message];
 }
@@ -63,7 +63,7 @@ class GetEmployeeEmpty extends HomeState {}
 class GetEmployeeEmptyForFilter extends HomeState {
   final String filter;
 
-  GetEmployeeEmptyForFilter(this.filter);
+  const GetEmployeeEmptyForFilter(this.filter);
   @override
   List<Object?> get props => [filter];
 }

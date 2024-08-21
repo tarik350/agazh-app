@@ -8,6 +8,7 @@ class RegisterState extends Equatable {
   final String? verificationId;
   const RegisterState({
     // this.password = const Password.pure(),
+
     this.status = FormzSubmissionStatus.initial,
     this.errorMessage,
     this.verificationId,
