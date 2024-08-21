@@ -106,7 +106,7 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     FormSubmitted event,
     Emitter<AddressInfoState> emit,
   ) async {
-    if (state.status.isValidated) {
+    if (state.status.isSuccess) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
         employerRepositroy.updateAddressInformation(

@@ -173,7 +173,7 @@ class _PhoneNumberInput extends StatelessWidget {
                 context.read<LoginBloc>().add(PhoneNumberChanged(value)),
             keyString: "login_PhoneNumberInput_textfield",
             inputType: TextInputType.number,
-            errorText: state.phoneNumber.invalid
+            errorText: state.phoneNumber.isNotValid
                 ? state.phoneNumber.error!.message
                 : null);
       },
@@ -195,8 +195,9 @@ class _PasswordInput extends StatelessWidget {
                 context.read<LoginBloc>().add(PasswordChanged(value)),
             keyString: "login_PasswordInput_textfield",
             inputType: TextInputType.number,
-            errorText:
-                state.password.invalid ? state.password.error!.message : null);
+            errorText: state.password.isNotValid
+                ? state.password.error!.message
+                : null);
       },
     );
   }
@@ -211,14 +212,14 @@ class _LoginButton extends StatelessWidget {
         duration: const Duration(milliseconds: 1600),
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state.status.isSubmissionSuccess) {
+            if (state.status.isSuccess) {
               context.router.push(OtpRoute(
                   verificationId: state.verificationId!,
                   route: "login",
                   userRole: state.userRole,
                   phoneNumber: state.phoneNumber.value));
             }
-            if (state.status.isSubmissionFailure) {
+            if (state.status.isFailure) {
               AppConfig.getMassenger(context, state.errorMessage);
             }
           },
@@ -229,15 +230,12 @@ class _LoginButton extends StatelessWidget {
             return CustomButton(
               onTap:
                   //validated and is not in progress validated && is not in progress
-                  state.status.isValidated &&
-                          !state.status.isSubmissionInProgress
+                  state.status.isSuccess && !state.status.isInProgress
                       ? () =>
                           context.read<LoginBloc>().add(LoginFormSubmitted())
                       : null,
               backgroundColor: AppColors.primaryColor,
-              lable: state.status.isSubmissionInProgress
-                  ? "loading".tr()
-                  : "login".tr(),
+              lable: state.status.isInProgress ? "loading".tr() : "login".tr(),
             );
           },
         ));

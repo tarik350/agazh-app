@@ -5,8 +5,8 @@ enum OtpStatus {
 
   valid,
 
-  /// The form contains one or more invalid inputs.
-  invalid,
+  /// The form contains one or more.isNotValid inputs.
+ .isNotValid,
 
   /// The form is in the process of being submitted.
   inProgress,

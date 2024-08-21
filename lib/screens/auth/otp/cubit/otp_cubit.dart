@@ -57,6 +57,6 @@ class OtpCubit extends Cubit<OtpState> {
   }
 
   void changeOtpStringStatus() {
-    emit(state.copyWith(otpStringStatus: OtpStatus.invalid));
+    emit(state.copyWith(otpStringStatus: OtpStatus.isNotValid));
   }
 }

@@ -59,8 +59,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       switch (e.code) {
-        case 'invalid-phone-number':
-          errorMessage = "phone_number_invalid".tr();
+        case .isNotValid-phone-number':
+          errorMessage = "phone_number.isNotValid".tr();
           break;
         case 'network-request-failed':
           errorMessage = "errors.network_request_failed".tr();

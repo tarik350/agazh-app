@@ -94,7 +94,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     FormSubmitted event,
     Emitter<PersonalInfoState> emit,
   ) async {
-    if (state.status.isValidated) {
+    if (state.status.isSuccess) {
       if (state.idCardUploadStatus != ImageUploadStatus.completed) {
         emit(state.copyWith(
             idCardUploadStatus: ImageUploadStatus.notUploaded,

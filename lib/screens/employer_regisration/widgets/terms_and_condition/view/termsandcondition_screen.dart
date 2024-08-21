@@ -25,14 +25,14 @@ class TermsAndConditionScreen extends StatelessWidget {
           employerRepositroy: context.read<EmployerRepository>()),
       child: BlocConsumer<TermsandconditionCubit, TermsAndConditionState>(
         listener: (context, state) {
-          if (state.status.isSubmissionFailure) {
+          if (state.status.isFailure) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
                     content: Text(state.errorMessage ?? 'unknown_error').tr()),
               );
-          } else if (state.status.isSubmissionSuccess) {
+          } else if (state.status.isSuccess) {
             context.router.replace(const SiraAppRoute());
           }
         },
@@ -81,15 +81,14 @@ class TermsAndConditionScreen extends StatelessWidget {
                 const Spacer(),
                 CustomButton(
                   onTap: state.isChecked &&
-                          state.status.isValidated &&
-                          !state.status.isSubmissionInProgress
+                          state.status.isSuccess &&
+                          !state.status.isInProgress
                       ? () => context
                           .read<TermsandconditionCubit>()
                           .saveUser(context.read<RoleCubit>().state.userRole)
                       : null,
-                  lable: state.status.isSubmissionInProgress
-                      ? "loading".tr()
-                      : "save".tr(),
+                  lable:
+                      state.status.isInProgress ? "loading".tr() : "save".tr(),
                   backgroundColor: AppColors.primaryColor,
                 ),
               ],
@@ -115,7 +114,7 @@ class _PasswordInput extends StatelessWidget {
                 context.read<TermsandconditionCubit>().onPinChanged(value),
             keyString: "login_PasswordInput_textfield",
             inputType: TextInputType.number,
-            errorText: state.pin.invalid ? state.pin.error!.message : null);
+            errorText: state.pin.isNotValid ? state.pin.error!.message : null);
       },
     );
   }
@@ -136,7 +135,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
                 .onConfirmPinChanged(value),
             keyString: "login_confirmPassword_textfield",
             inputType: TextInputType.number,
-            errorText: state.confirmPin.invalid
+            errorText: state.confirmPin.isNotValid
                 ? state.confirmPin.error!.message
                 : null);
       },

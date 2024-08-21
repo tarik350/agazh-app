@@ -13,13 +13,13 @@ import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
 import '../../../../../config/constants/app_colors.dart';
 
 class EmplyeeDemographyForm extends StatelessWidget {
-  const EmplyeeDemographyForm({Key? key}) : super(key: key);
+  const EmplyeeDemographyForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<EmployeeDemographyBloc, EmployeeDemographyState>(
       listener: (context, state) {
-        // if (state.status.isSubmissionFailure) {
+        // if (state.status.isFailure) {
         //   ScaffoldMessenger.of(context)
         //     ..hideCurrentSnackBar()
         //     ..showSnackBar(
@@ -71,7 +71,7 @@ class _HouseNumberInput extends StatelessWidget {
                 .add(HouseNumberChanged(houseNumber)),
             keyString: "billingAddressForm_streetInput_textField",
             inputType: TextInputType.text,
-            errorText: state.houseNumber.invalid
+            errorText: state.houseNumber.isNotValid
                 ? state.houseNumber.error?.message
                 : null);
       },
@@ -92,7 +92,8 @@ class _CityInput extends StatelessWidget {
                 context.read<EmployeeDemographyBloc>().add(CityChanged(city)),
             keyString: "billingAddressForm_cityInput_textField",
             inputType: TextInputType.text,
-            errorText: state.city.invalid ? state.city.error?.message : null);
+            errorText:
+                state.city.isNotValid ? state.city.error?.message : null);
       },
     );
   }
@@ -113,7 +114,7 @@ class _SubCityInput extends StatelessWidget {
             keyString: "subCity_subCityInput_textField",
             inputType: TextInputType.text,
             errorText:
-                state.subCity.invalid ? state.subCity.error?.message : null);
+                state.subCity.isNotValid ? state.subCity.error?.message : null);
       },
     );
   }
@@ -144,9 +145,9 @@ class _SalaryInput extends StatelessWidget {
                     .add(SalaryChanged(newValue.toInt()));
               },
             ),
-            if (state.salary.invalid)
+            if (state.salary.isNotValid)
               Text(
-                state.salary.invalid ? state.salary.error!.message : "",
+                state.salary.isNotValid ? state.salary.error!.message : "",
                 style: const TextStyle(color: Colors.red),
               ),
           ],
@@ -170,7 +171,7 @@ class _SalaryInput extends StatelessWidget {
 //             keyString: "billingAddressForm_countryInput_textField",
 //             inputType: TextInputType.text,
 //             errorText:
-//                 state.country.invalid ? state.country.error?.message : null);
+//                 state.country.isNotValid ? state.country.error?.message : null);
 //       },
 //     );
 //   }
@@ -191,7 +192,7 @@ class _SalaryInput extends StatelessWidget {
 //                 .add(FamilySizeChanged(name)),
 //             keyString: 'familySize_FamilySizeInput_textField',
 //             inputType: TextInputType.number,
-//             errorText: state.familySize.invalid
+//             errorText: state.familySize.isNotValid
 //                 ? state.familySize.error!.message
 //                 : null);
 //       },
@@ -205,7 +206,7 @@ class _SubmitButton extends StatelessWidget {
     return BlocConsumer<EmployeeDemographyBloc, EmployeeDemographyState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           context.read<EmployerRegistrationCubit>().stepContinued();
         }
       },
@@ -214,15 +215,11 @@ class _SubmitButton extends StatelessWidget {
           previous.jobStatus != current.jobStatus,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated &&
-                  state.jobStatus != JobStatusEnum.none &&
-                  state.status.isValid
+          onTap: state.status.isSuccess && state.jobStatus != JobStatusEnum.none
               ? () =>
                   context.read<EmployeeDemographyBloc>().add(FormSubmitted())
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "proceed".tr(),
+          lable: state.status.isInProgress ? "loading".tr() : "proceed".tr(),
           backgroundColor: Colors.black,
         );
       },
@@ -236,7 +233,7 @@ class _CancelButton extends StatelessWidget {
     return BlocBuilder<EmployeeDemographyBloc, EmployeeDemographyState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
+        return state.status.isInProgress
             ? const SizedBox.shrink()
             : CustomButton(
                 key:

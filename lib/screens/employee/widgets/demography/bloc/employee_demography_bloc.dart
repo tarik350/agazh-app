@@ -109,7 +109,7 @@ class EmployeeDemographyBloc
       return;
     }
 
-    if (state.status.isValidated) {
+    if (state.status.isSuccess) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {

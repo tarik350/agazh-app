@@ -21,7 +21,7 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
+        if (state.status.isFailure) {
           //todo => show error message
           final message = state.errorMessage;
           ScaffoldMessenger.of(context)
@@ -30,7 +30,7 @@ class RegisterForm extends StatelessWidget {
               SnackBar(content: Text(message ?? "unknown_error".tr())),
             );
         }
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           try {
             final role = context.read<RoleCubit>().state.userRole;
             if (role == UserRole.employee) {
@@ -85,7 +85,7 @@ class _PhoneNumberInput extends StatelessWidget {
                 context.read<RegisterBloc>().add(PhoneNumberChanged(phone)),
             hintText: 'phone_number',
             keyString: 'registerForm_phoneNumberInput_textField',
-            errorText: state.phoneNumber.invalid
+            errorText: state.phoneNumber.isNotValid
                 ? state.phoneNumber.error!.message
                 : null);
       },
@@ -102,14 +102,11 @@ class _SubmitButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated &&
-                  !state.status.isSubmissionInProgress
+          onTap: state.status.isSuccess && !state.status.isInProgress
               ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted(
                   context.read<RoleCubit>().state.userRole))
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "register".tr(),
+          lable: state.status.isInProgress ? "loading".tr() : "register".tr(),
           backgroundColor: AppColors.primaryColor,
         );
       },
@@ -133,7 +130,7 @@ class _SubmitButton extends StatelessWidget {
 //             keyString: "registerForm_passwordInput_textField",
 //             inputType: TextInputType.text,
 //             errorText:
-//                 state.password.invalid ? state.password.error?.message : null);
+//                 state.password.isNotValid ? state.password.error?.message : null);
 //       },
 //     );
 //   }

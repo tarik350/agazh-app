@@ -23,7 +23,7 @@ class PersonalInfoForm extends StatelessWidget {
     // final state = context.read<PersonalInfoBloc>().state.name.value;
     return BlocListener<PersonalInfoBloc, PersonalInfoState>(
       listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
+        if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -92,7 +92,7 @@ class PersonalInfoForm extends StatelessWidget {
 //                 context.read<PersonalInfoBloc>().add(EmailChanged(email)),
 //             keyString: "personalInfoForm_emailInput_textField",
 //             inputType: TextInputType.emailAddress,
-//             errorText: state.email.invalid ? state.email.error!.message : null);
+//             errorText: state.email.isNotValid ? state.email.error!.message : null);
 //       },
 //     );
 //   }
@@ -111,7 +111,7 @@ class _FirstNameInput extends StatelessWidget {
                 context.read<PersonalInfoBloc>().add(FirstNameChanged(name)),
             keyString: 'personalInfoForm_FirstNameInput_textField',
             inputType: TextInputType.name,
-            errorText: state.firstName.invalid
+            errorText: state.firstName.isNotValid
                 ? state.firstName.error!.message
                 : null);
       },
@@ -132,8 +132,9 @@ class _LastNameInput extends StatelessWidget {
                 context.read<PersonalInfoBloc>().add(LastNameChanged(name)),
             keyString: 'personalInfoForm_LastNameInput_textField',
             inputType: TextInputType.name,
-            errorText:
-                state.lastName.invalid ? state.lastName.error!.message : null);
+            errorText: state.lastName.isNotValid
+                ? state.lastName.error!.message
+                : null);
       },
     );
   }
@@ -145,21 +146,19 @@ class _SubmitButton extends StatelessWidget {
     return BlocConsumer<PersonalInfoBloc, PersonalInfoState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           context.read<EmployerRegistrationCubit>().stepContinued();
         }
       },
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated
+          onTap: state.status.isSuccess
               ? () => context
                   .read<PersonalInfoBloc>()
                   .add(FormSubmitted(context.read<RoleCubit>().state.userRole))
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "proceed".tr(),
+          lable: state.status.isInProgress ? "loading".tr() : "proceed".tr(),
           backgroundColor: AppColors.primaryColor,
         );
       },
@@ -335,7 +334,7 @@ class _ProfilePictureUploader extends StatelessWidget {
 //     return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
 //       buildWhen: (previous, current) => previous.status != current.status,
 //       builder: (context, state) {
-//         return state.status.isSubmissionInProgress
+//         return state.status.isInProgress
 //             ? const SizedBox.shrink()
 //             : TextButton(
 //                 key: const Key('personalInfoForm_cancelButton_elevatedButton'),

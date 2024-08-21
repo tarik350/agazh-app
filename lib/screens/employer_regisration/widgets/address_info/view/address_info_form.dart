@@ -14,7 +14,7 @@ class AddressInfoForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AddressInfoBloc, AddressInfoState>(
       listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
+        if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -70,7 +70,7 @@ class _HouseNumberInput extends StatelessWidget {
                 .add(HouseNumberChanged(houseNumber)),
             keyString: "billingAddressForm_streetInput_textField",
             inputType: TextInputType.text,
-            errorText: state.houseNumber.invalid
+            errorText: state.houseNumber.isNotValid
                 ? state.houseNumber.error?.message
                 : null);
       },
@@ -112,7 +112,8 @@ class _CityInput extends StatelessWidget {
                 context.read<AddressInfoBloc>().add(CityChanged(city)),
             keyString: "billingAddressForm_cityInput_textField",
             inputType: TextInputType.text,
-            errorText: state.city.invalid ? state.city.error?.message : null);
+            errorText:
+                state.city.isNotValid ? state.city.error?.message : null);
       },
     );
   }
@@ -132,7 +133,7 @@ class _SubCityInput extends StatelessWidget {
             keyString: "subCity_subCityInput_textField",
             inputType: TextInputType.text,
             errorText:
-                state.subCity.invalid ? state.subCity.error?.message : null);
+                state.subCity.isNotValid ? state.subCity.error?.message : null);
       },
     );
   }
@@ -154,7 +155,7 @@ class _SpecialLocaionInput extends StatelessWidget {
                 .add(SpecialLocaionChanged(value)),
             keyString: "specialLocaion_specialLocaionInput_textField",
             inputType: TextInputType.text,
-            errorText: state.specialLocation.invalid
+            errorText: state.specialLocation.isNotValid
                 ? state.specialLocation.error?.message
                 : null);
       },
@@ -176,7 +177,7 @@ class _SpecialLocaionInput extends StatelessWidget {
 //             keyString: "billingAddressForm_countryInput_textField",
 //             inputType: TextInputType.text,
 //             errorText:
-//                 state.country.invalid ? state.country.error?.message : null);
+//                 state.country.isNotValid ? state.country.error?.message : null);
 //       },
 //     );
 //   }
@@ -196,7 +197,7 @@ class _FamilySizeInput extends StatelessWidget {
                 context.read<AddressInfoBloc>().add(FamilySizeChanged(name)),
             keyString: 'familySize_FamilySizeInput_textField',
             inputType: TextInputType.number,
-            errorText: state.familySize.invalid
+            errorText: state.familySize.isNotValid
                 ? state.familySize.error!.message
                 : null);
       },
@@ -210,19 +211,17 @@ class _SubmitButton extends StatelessWidget {
     return BlocConsumer<AddressInfoBloc, AddressInfoState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           context.read<EmployerRegistrationCubit>().stepContinued();
         }
       },
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated
+          onTap: state.status.isSuccess
               ? () => context.read<AddressInfoBloc>().add(FormSubmitted())
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "proceed".tr(),
+          lable: state.status.isInProgress ? "loading".tr() : "proceed".tr(),
           backgroundColor: Colors.black,
         );
       },
@@ -236,7 +235,7 @@ class _CancelButton extends StatelessWidget {
     return BlocBuilder<AddressInfoBloc, AddressInfoState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
+        return state.status.isInProgress
             ? const SizedBox.shrink()
             : CustomButton(
                 key:
