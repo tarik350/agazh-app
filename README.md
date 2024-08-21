@@ -1,4 +1,4 @@
-# mobile_app
+# Agazh app
 
 A new Flutter project.
 
