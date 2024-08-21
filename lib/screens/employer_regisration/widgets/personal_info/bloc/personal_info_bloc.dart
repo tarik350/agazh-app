@@ -42,7 +42,9 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
       status: Formz.validate([
         firstName,
         state.lastName,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -51,7 +53,9 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     final lastName = LastName.dirty(event.name);
     emit(state.copyWith(
       lastName: lastName,
-      status: Formz.validate([lastName, state.firstName]),
+      status: Formz.validate([lastName, state.firstName])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 

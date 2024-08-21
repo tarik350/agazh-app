@@ -30,21 +30,22 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzSubmissionStatus.submissionCanceled,
-          errorMessage: e.toString()));
+          status: FormzSubmissionStatus.canceled, errorMessage: e.toString()));
     }
   }
 
   void onPinChanged(String p) {
     final pin = PIN.dirty(p);
-    final confirmPin = state.confirmPin.pure
+    final confirmPin = state.confirmPin.isPure
         ? state.confirmPin
         : ConfirmPIN.dirty(password: p, value: state.confirmPin.value);
 
     emit(state.copyWith(
       pin: pin,
       confirmPin: confirmPin, // Update confirm pin only if it's dirty
-      status: Formz.validate([pin, confirmPin]),
+      status: Formz.validate([pin, confirmPin])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -53,7 +54,9 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
 
     emit(state.copyWith(
       confirmPin: confirmPin,
-      status: Formz.validate([state.pin, confirmPin]),
+      status: Formz.validate([state.pin, confirmPin])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 

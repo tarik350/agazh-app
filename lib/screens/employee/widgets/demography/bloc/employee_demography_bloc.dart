@@ -39,7 +39,9 @@ class EmployeeDemographyBloc
         state.salary,
         state.subCity,
         state.city,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -57,7 +59,9 @@ class EmployeeDemographyBloc
         state.city,
         state.salary,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -73,7 +77,9 @@ class EmployeeDemographyBloc
         state.salary,
         state.subCity,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -84,8 +90,10 @@ class EmployeeDemographyBloc
     final subCity = SubCity.dirty(event.country);
     emit(state.copyWith(
       subCity: subCity,
-      status: Formz.validate(
-          [state.houseNumber, state.city, subCity, state.salary]),
+      status:
+          Formz.validate([state.houseNumber, state.city, subCity, state.salary])
+              ? FormzSubmissionStatus.success
+              : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -95,7 +103,9 @@ class EmployeeDemographyBloc
     emit(state.copyWith(
         salary: salary,
         status: Formz.validate(
-            [state.houseNumber, state.city, state.subCity, salary])));
+                [state.houseNumber, state.city, state.subCity, salary])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   void _onFormSubmitted(

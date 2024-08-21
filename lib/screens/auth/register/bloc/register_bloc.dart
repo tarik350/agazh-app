@@ -26,7 +26,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       PhoneNumberChanged event, Emitter<RegisterState> emit) {
     final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
     emit(state.copyWith(
-        phoneNumber: phoneNumber, status: Formz.validate([phoneNumber])));
+        phoneNumber: phoneNumber,
+        status: Formz.validate([phoneNumber])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   FutureOr<void> _onFormSubmitted(
@@ -59,8 +62,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } on FirebaseAuthException catch (e) {
       String errorMessage;
       switch (e.code) {
-        case .isNotValid-phone-number':
-          errorMessage = "phone_number.isNotValid".tr();
+        case 'invalid-phone-number':
+          errorMessage = "phone_number_invalid".tr();
           break;
         case 'network-request-failed':
           errorMessage = "errors.network_request_failed".tr();

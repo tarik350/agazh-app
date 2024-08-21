@@ -116,12 +116,12 @@ class OtpScreen extends StatelessWidget {
                               //on login if role is employee we go to employee home page
                               //or we go to employer home page
                               if (state.otpSubmissionStatus ==
-                                  OtpStatus.success) {
+                                  OtpStatus.submissionSuccess) {
                                 final preferance =
                                     await SharedPreferences.getInstance();
                                 if (route == 'login' && userRole != null) {
                                   preferance.setString('role', userRole!.name);
-                                  context.router.push(SiraAppRoute());
+                                  context.router.push(const SiraAppRoute());
                                   // if (userRole == UserRole.employee) {
                                   //   context.router.push(route)
                                   // } else {
@@ -146,7 +146,7 @@ class OtpScreen extends StatelessWidget {
                               }
 
                               if (state.otpSubmissionStatus ==
-                                  OtpStatus.failure) {
+                                  OtpStatus.submissionFailure) {
                                 if (context.mounted) {
                                   AppConfig.getMassenger(context,
                                       "otp_verification_failed_message".tr());
@@ -158,12 +158,12 @@ class OtpScreen extends StatelessWidget {
                               //         ? context.read<RoleCubit>().state.userRole
                               //         : "get user role from auth service";
                               // if (state.otpSubmissionStatus ==
-                              //     OtpStatus. failure) {
+                              //     OtpStatus.submissionFailure) {
                               //   //todo => handle submission status
                               // }
 
                               // if (state.otpSubmissionStatus ==
-                              //     OtpStatus. success) {
+                              //     OtpStatus.submissionSuccess) {
                               //   switch (role) {
                               //     case UserRole.employee:
                               //       if (route == 'login') {
@@ -275,13 +275,13 @@ class OtpScreen extends StatelessWidget {
                             CustomButton(
                               onTap: state.otpStringStatus == OtpStatus.valid &&
                                       state.otpSubmissionStatus !=
-                                          OtpStatusinProgress
+                                          OtpStatus.submissionInProgress
                                   ? () => context
                                       .read<OtpCubit>()
                                       .submitOptRequest(verificationId)
                                   : null,
                               lable: state.otpSubmissionStatus ==
-                                      OtpStatusinProgress
+                                      OtpStatus.submissionInProgress
                                   ? "loading".tr()
                                   : "submit".tr(),
                               backgroundColor: AppColors.primaryColor,

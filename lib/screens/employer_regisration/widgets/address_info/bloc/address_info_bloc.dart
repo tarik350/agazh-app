@@ -36,7 +36,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         state.houseNumber,
         state.familySize,
         state.city,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -52,7 +54,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         familySize,
         state.city,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -68,7 +72,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         city,
         state.city,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -84,7 +90,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         state.familySize,
         state.city,
         subCity,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -99,7 +107,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
           state.subCity,
           state.familySize,
           state.houseNumber
-        ])));
+        ])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   void _onFormSubmitted(
