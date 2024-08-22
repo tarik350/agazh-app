@@ -31,116 +31,99 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: GradientBackgroundContainer(
-        showNavButton: false,
-        title: Stack(
-          children: [
-            Positioned(
-              right: 5,
-              top: 5,
-              child: IconButton(
-                  onPressed: () async {
-                    String? selectedLanguage = await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const LanguageSelectionDialog();
-                      },
-                    );
-
-                    if (selectedLanguage != null) {
-                      // print('Selected Language: $selectedLanguage');
-
-                      if (context.mounted) {
-                        if (selectedLanguage.toLowerCase() == "amharic") {
-                          context.setLocale(const Locale('am', 'ET'));
-                        } else {
-                          context.setLocale(const Locale('en', 'US'));
-                        }
-                      }
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.language,
-                    color: AppColors.whiteColor,
-                    size: 28,
-                  )),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [
+                AppColors.primaryColor,
+                AppColors.primaryColor.withOpacity(.5),
+                AppColors.secondaryColor
+              ],
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: EdgeInsets.only(top: 40.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          ),
+          child: Column(
+            // mainAxisSize:
+            //     MainAxisSize.min, // Ensure the Column takes minimum space
+            children: [
+              SizedBox(height: 50.h),
+              SizedBox(
+                height: 50.h,
+                child: Stack(
                   children: [
-                    FadeInUp(
-                        duration: const Duration(milliseconds: 1000),
-                        child: Text(
-                          "login".tr(),
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 40),
-                        )),
-                    const SizedBox(
-                      height: 10,
+                    Positioned(
+                      right: 0,
+                      top: 0.h,
+                      child: IconButton(
+                          onPressed: () async {
+                            String? selectedLanguage = await showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const LanguageSelectionDialog();
+                              },
+                            );
+
+                            if (selectedLanguage != null) {
+                              // print('Selected Language: $selectedLanguage');
+
+                              if (context.mounted) {
+                                if (selectedLanguage.toLowerCase() ==
+                                    "amharic") {
+                                  context.setLocale(const Locale('am', 'ET'));
+                                } else {
+                                  context.setLocale(const Locale('en', 'US'));
+                                }
+                              }
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.language,
+                            color: AppColors.whiteColor,
+                            size: 28,
+                          )),
                     ),
-                    FadeInUp(
-                        duration: const Duration(milliseconds: 1300),
-                        child: Text(
-                          "welcome".tr(),
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 18),
-                        )),
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
-        child: Container(
-          margin: EdgeInsets.all(20.w),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20.r))),
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
+              SizedBox(height: 50.h),
+              FadeInUp(
+                duration: const Duration(milliseconds: 1000),
+                child: SizedBox(
+                  height: 140.h,
+                  child: Image.asset('assets/images/agazh.png'),
                 ),
-                SizedBox(
-                  height: 12.h,
+              ),
+              const SizedBox(height: 10),
+              FadeInUp(
+                duration: const Duration(milliseconds: 1300),
+                child: Text(
+                  "welcome".tr(),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
-                FadeInUp(
-                    duration: const Duration(milliseconds: 1400),
-                    child: const Column(
-                      children: [_PhoneNumberInput(), _PasswordInput()],
-                    )),
-                SizedBox(
-                  height: 20.h,
+              ),
+              const SizedBox(height: 20),
+              FadeInUp(
+                duration: const Duration(milliseconds: 1400),
+                child: Column(
+                  children: [
+                    const _PhoneNumberInput(),
+                    SizedBox(height: 12.h),
+                    const _PasswordInput(),
+                  ],
                 ),
-                const _LoginButton(),
-                SizedBox(
-                  height: 20.h,
-                ),
-                const _RegisterButton()
-                // FadeInUp(
-                //     duration: const Duration(milliseconds: 1500),
-                //     child: Align(
-                //       alignment: Alignment.center,
-                //       child: GestureDetector(
-                //         onTap: () => {context.router.push(const RoleRoute())},
-                //         child: Text(
-                //           "create_account".tr(),
-                //           textAlign: TextAlign.center,
-                //           style: const TextStyle(
-                //               color: AppColors.primaryColor,
-                //               fontWeight: FontWeight.w600),
-                //         ),
-                //       ),
-                //     ))
-              ],
-            ),
+              ),
+              SizedBox(height: 25.h),
+              const _LoginButton(),
+              SizedBox(height: 20.h),
+              // const Spacer(),
+              const _RegisterButton(),
+              // SizedBox(
+              //   height: 22.h,
+              // )
+            ],
           ),
         ),
       ),
@@ -166,7 +149,7 @@ class _PhoneNumberInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return CustomTextfield(
+        return LoginTextField(
             hintText: "phone_number".tr(),
             obscureText: false,
             onChanged: (value) =>
@@ -188,7 +171,7 @@ class _PasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return CustomTextfield(
+        return LoginTextField(
             hintText: "pin".tr(),
             obscureText: false,
             onChanged: (value) =>
@@ -263,5 +246,64 @@ class _RegisterButton extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class LoginTextField extends StatelessWidget {
+  final String hintText;
+  final bool obscureText;
+  final Function(dynamic) onChanged;
+  final String keyString;
+  final String? errorText;
+  final TextInputType inputType;
+  final String? initialValue;
+  final Widget? suffix;
+  final int? maxLines;
+
+  const LoginTextField(
+      {super.key,
+      // required this.controller,
+      this.initialValue,
+      this.maxLines,
+      required this.hintText,
+      required this.obscureText,
+      required this.onChanged,
+      required this.keyString,
+      required this.inputType,
+      required this.errorText,
+      this.suffix});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      maxLines: maxLines,
+      initialValue: initialValue,
+      obscureText: obscureText,
+      key: Key(keyString),
+      onChanged: onChanged,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 2),
+              borderRadius: BorderRadius.circular(10.h)),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          errorStyle: const TextStyle(fontWeight: FontWeight.w300),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: 2),
+          ),
+          fillColor: AppColors.primaryColor.withOpacity(.1),
+          filled: true,
+          labelText: hintText,
+          labelStyle:
+              TextStyle(fontSize: 12.sp, color: Colors.black.withOpacity(.5)),
+          errorMaxLines: 3,
+          errorText: errorText?.tr(),
+          hintStyle: TextStyle(color: Colors.grey.shade500)),
+    );
   }
 }
