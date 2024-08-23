@@ -49,7 +49,8 @@ class _RatingDialogState extends State<RatingDialog> {
               children: [
                 Text(
                   'rate_title'.tr(),
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20.0),
                 RatingBar.builder(
@@ -74,8 +75,25 @@ class _RatingDialogState extends State<RatingDialog> {
                 TextFormField(
                   controller: _messageController,
                   decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 2),
+                        borderRadius: BorderRadius.circular(10.h)),
+                    errorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    errorStyle: const TextStyle(fontWeight: FontWeight.w300),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.primaryColor, width: 2),
+                    ),
                     labelText: 'feedback'.tr(),
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                        fontSize: 12.sp, color: Colors.black.withOpacity(.5)),
+                    border: const OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {

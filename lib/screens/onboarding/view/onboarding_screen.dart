@@ -127,7 +127,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               await sharedPreferance.setBool(
                                   'hasSeenOnboarding', true);
                               if (context.mounted) {
-                                context.router.push(const LoginRoute());
+                                context.router.replace(const LoginRoute());
                               }
                             },
                             style: ElevatedButton.styleFrom(

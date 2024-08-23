@@ -176,7 +176,14 @@ class _ImageUploaderButton extends StatelessWidget {
       builder: (context, state) {
         return GestureDetector(
             onTap: () async {
-              _showImageSourceDialog(context);
+              final image = await showImageSourceDialog(context);
+              if (image != null && context.mounted) {
+                context
+                    .read<PersonalInfoBloc>()
+                    .add(IdCardChanged(file: image, path: "idcard"));
+              } else {
+                //todo => Handle the case where no image was picked (optional)
+              }
             },
             child: SizedBox(
               width: double.infinity,
@@ -236,45 +243,6 @@ class _ImageUploaderButton extends StatelessWidget {
       },
     );
   }
-
-  void _showImageSourceDialog(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                    leading: const Icon(Icons.photo_library),
-                    title: const Text('Gallery'),
-                    onTap: () {
-                      _pickImage(context, ImageSource.gallery);
-                      Navigator.of(context).pop();
-                    }),
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
-                  onTap: () {
-                    _pickImage(context, ImageSource.camera);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
-  Future<void> _pickImage(BuildContext context, ImageSource source) async {
-    Uint8List? image = await pickImage(source);
-    if (context.mounted) {
-      context
-          .read<PersonalInfoBloc>()
-          .add(IdCardChanged(file: image!, path: "idcard"));
-    } else {
-      // Handle the case where no image was picked (optional)
-    }
-  }
 }
 
 class _ProfilePictureUploader extends StatelessWidget {
@@ -311,8 +279,8 @@ class _ProfilePictureUploader extends StatelessWidget {
                 left: 35.w,
                 child: IconButton(
                     onPressed: () async {
-                      Uint8List image = await pickImage(ImageSource.gallery);
-                      if (context.mounted) {
+                      final image = await showImageSourceDialog(context);
+                      if (context.mounted && image != null) {
                         context.read<PersonalInfoBloc>().add(
                             ProfilePictureChanged(
                                 file: image, path: "profilePics"));

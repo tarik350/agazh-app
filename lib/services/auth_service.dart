@@ -10,25 +10,32 @@ import 'package:mobile_app/data/models/user_old.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/firestore_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/models/employee.dart';
 
-class AuthService {
-  String? verificationId;
-  String? name;
-  String? phone;
-  bool? isAuthenticated;
-  UserModel? user;
-  final _firestoreService = FirebaseService();
-
-  void setIsAuthenticated(bool isAuth) {
-    isAuthenticated = isAuth;
+class AuthService extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isAuthenticated = false;
+  bool get isAuthenticated => _isAuthenticated;
+  Future<void> initAuthStatus() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    _isAuthenticated = preferences.getBool("isAuthenticated") ?? false;
   }
 
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<void> setIsAuthenticated() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setBool('isAuthenticated', true);
+    _isAuthenticated = true;
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setBool('isAuthenticated', false);
+    _isAuthenticated = false;
+    notifyListeners();
+  }
 
   Future<String?> phoneVerification(String phone) async {
     final Completer<String?> completer = Completer<String?>();
@@ -51,51 +58,6 @@ class AuthService {
     return completer.future;
   }
 
-  // this.verificationId = verificationId;
-  // this.phone = phone;
-  // context.router.push(OTPRoute(mode: mode));
-  Future<void> registerWithPhone(
-      {required String name,
-      required String phone,
-      required BuildContext context}) async {
-    this.name = name;
-    this.phone = phone;
-    final users = FirebaseFirestore.instance.collection('users');
-    try {
-      final docRef =
-          await users.where('phoneNumber', isEqualTo: phone).count().get();
-      final exists = docRef.count! > 0;
-
-      if (!exists) {
-        if (context.mounted) {
-          phoneVerification(phone);
-        }
-      } else {
-        //todo show error user with this phone alraedy exists
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<bool> verifyOtpRegister(String otp) async {
-    final credintials = await _auth.signInWithCredential(
-        PhoneAuthProvider.credential(
-            verificationId: verificationId!, smsCode: otp));
-    //todo logic to register user with firebase
-    if (credintials.user != null) {
-      final user = UserModel(name: name!, phoneNumber: phone!, role: "");
-      await _firestoreService.createUser(
-          user: user, uuid: credintials.user!.uid);
-      this.user = user;
-      return true;
-    } else {
-      return false;
-    }
-
-    // return credintials.user != null ? true : false;
-  }
-
   Future<bool> verifyOtp(String otp, String verificationId) async {
     try {
       final credintials = await _auth.signInWithCredential(
@@ -106,42 +68,6 @@ class AuthService {
     } catch (e) {
       //todo show error => error while verifying OTP
       return false;
-    }
-  }
-
-  Future<String?> getUserRole() async {
-    final user = await _db
-        .collection('users')
-        .where('phoneNumber', isEqualTo: phone)
-        .get();
-
-    final userDetail = user.docs.first.data();
-    if (userDetail.isEmpty) {
-      return null;
-    } else {
-      return userDetail['role'];
-    }
-  }
-
-  void updateUser({
-    String? name,
-    String? password,
-    String? phoneNumber,
-    String? role,
-    String? language,
-    String? location,
-  }) {
-    if (name != null) user!.name = name;
-    // if (password != null) user.password = password;
-    if (phoneNumber != null) {
-      user!.phoneNumber = phoneNumber;
-    }
-    if (role != null) user!.role = role;
-    if (language != null) {
-      user!.language = language;
-    }
-    if (location != null) {
-      user!.location = location;
     }
   }
 

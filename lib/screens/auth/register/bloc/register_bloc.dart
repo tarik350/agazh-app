@@ -11,6 +11,7 @@ import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/mo
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
+import 'package:mobile_app/utils/helpers/helper.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
@@ -24,7 +25,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   FutureOr<void> _onPhoneNumberChanged(
       PhoneNumberChanged event, Emitter<RegisterState> emit) {
-    final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
+    final phoneNumber =
+        PhoneNumber.dirty(normalizePhoneNumber(event.phoneNumber));
     emit(state.copyWith(
         phoneNumber: phoneNumber, status: Formz.validate([phoneNumber])));
   }

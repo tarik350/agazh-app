@@ -14,7 +14,7 @@
   "employer": "ቀጣሪ",
   "submit": "ቀጥል",
   "register_title": "እባኮ ስልክ ቁጥር ያስገቡ",
-  "register_subtitle": "ስልክ ቁጥር ከ (+251) መጀመር አለበት",
+  "register_subtitle": "የማረጋገጫ ኮድ ለማግኘት እባኮ ስልክ ቁጥሮን ያስገቡ",
   "register": "ተመዝገብ",
   "unknown_error": "ያልታወቅ ችግር አጋጥሟል",
   "otp_title": "ስልክ ቁጥሮን ያረጋግጡ",
@@ -119,5 +119,8 @@
   "request_error_message": "ለ {} ከዚ ፊት የስራ ጥያቄ ለከዋል",
   "profile_success_message": "የግል መረጃ ተሻሽሏል",
   "profile_error_message": "የግል መረጃ በማሻሻል ላይ ችግር አጋጥሞል",
-  "profile_picture_success_message": "የግል ምስል በተሳካ ሁኔታ ተሻሽሏል"
+  "profile_picture_success_message": "የግል ምስል በተሳካ ሁኔታ ተሻሽሏል",
+
+  "select_language" : "ቋንቋ ይቀይሩ"
+
 }

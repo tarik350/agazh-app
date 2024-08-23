@@ -27,7 +27,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Select Language'),
+      title: Text('select_language'.tr()),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

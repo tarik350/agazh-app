@@ -83,7 +83,7 @@ class _PhoneNumberInput extends StatelessWidget {
             inputType: TextInputType.phone,
             onChanged: (phone) =>
                 context.read<RegisterBloc>().add(PhoneNumberChanged(phone)),
-            hintText: 'phone_number',
+            hintText: 'phone_number'.tr(),
             keyString: 'registerForm_phoneNumberInput_textField',
             errorText: state.phoneNumber.invalid
                 ? state.phoneNumber.error!.message
@@ -116,25 +116,3 @@ class _SubmitButton extends StatelessWidget {
     );
   }
 }
-
-// class _PasswordInput extends StatelessWidget {
-//   const _PasswordInput({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<RegisterBloc, RegisterState>(
-//       buildWhen: (previous, current) => previous.password != current.password,
-//       builder: (context, state) {
-//         return CustomTextfield(
-//             hintText: "Password",
-//             obscureText: false,
-//             onChanged: (password) =>
-//                 context.read<RegisterBloc>().add(PasswordChanged(password)),
-//             keyString: "registerForm_passwordInput_textField",
-//             inputType: TextInputType.text,
-//             errorText:
-//                 state.password.invalid ? state.password.error?.message : null);
-//       },
-//     );
-//   }
-// }

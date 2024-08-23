@@ -255,26 +255,24 @@ class EmployeeDetailScreen extends StatelessWidget {
                         ),
                         BlocConsumer<EmployerCubit, EmployerState>(
                             listener: (context, state) {
-                          if (state.requestStatus == FormzStatus.success) {
+                          if (state is RequestErrorState) {
+                            showErrorDialog(context, state.message);
+                          }
+
+                          if (state is RatingErrorState) {
+                            showErrorDialog(context, state.message);
+                          }
+
+                          if (state is RatingSuccessState) {
+                            showSuccessDialog(
+                                context, "rating_success_message".tr());
+                          }
+                          if (state is RequestSuccessState) {
                             showSuccessDialog(
                                 context,
-                                // "Request has been made for ${employee.fullName}. You will be updated after admin reviews your request, Thank You"
                                 "employee_request_success_message".tr(args: [
                                   "${employee.firstName} ${employee.lastName}"
                                 ]));
-                          }
-
-                          if (state.status == FormzStatus.submissionFailure ||
-                              state.requestStatus ==
-                                  FormzStatus.submissionFailure) {
-                            showErrorDialog(
-                                context,
-                                state.errorMessage ??
-                                    "rating_error_message".tr());
-                          }
-                          if (state.status == FormzStatus.success) {
-                            showSuccessDialog(
-                                context, "rating_success_message".tr());
                           }
                         }, builder: (context, state) {
                           return ElevatedButton(

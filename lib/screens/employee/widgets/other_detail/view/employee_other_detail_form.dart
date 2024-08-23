@@ -37,33 +37,18 @@ class EmployeeOtherDetailForm extends StatelessWidget {
           const SizedBox(
             height: 12,
           ),
-          _SubmitButton()
+          Row(
+            children: [
+              Expanded(child: _SubmitButton()),
+              const SizedBox(width: 8.0),
+              Expanded(child: _CancelButton()),
+            ],
+          ),
         ],
       )),
     );
   }
 }
-
-// class _ReligionInput extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<EmployeeOtherDetailBloc, EmployeeOtherDetailState>(
-//       buildWhen: (previous, current) => previous.religion != current.religion,
-//       builder: (context, state) {
-//         return CustomTextfield(
-//             hintText: 'other_detail.religion',
-//             obscureText: false,
-//             onChanged: (religion) => context
-//                 .read<EmployeeOtherDetailBloc>()
-//                 .add(ReligionChanged(religion)),
-//             keyString: "otherDetail_religionInput_textField",
-//             inputType: TextInputType.text,
-//             errorText:
-//                 state.religion.invalid ? state.religion.error?.message : null);
-//       },
-//     );
-//   }
-// }
 
 class _AgeInput extends StatelessWidget {
   @override
@@ -72,7 +57,7 @@ class _AgeInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.age != current.age,
       builder: (context, state) {
         return CustomTextfield(
-            hintText: 'other_detail.age',
+            hintText: 'other_detail.age'.tr(),
             obscureText: false,
             onChanged: (age) =>
                 context.read<EmployeeOtherDetailBloc>().add(AgeChanged(age)),
@@ -103,12 +88,7 @@ class _WorkTypeDropDown extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                   border: Border.all(
                       width: 1.w,
-                      color: AppColors.primaryColor.withOpacity(.3)))
-
-              // padding: EdgeInsets.symmetric(horizontal: 16),
-              // height: 40,
-              // width: 140,
-              ),
+                      color: AppColors.primaryColor.withOpacity(.3)))),
           isExpanded: true,
           hint: Text(
             'other_detail.select_work_type'.tr(),
@@ -219,6 +199,27 @@ class _SubmitButton extends StatelessWidget {
               : "proceed".tr(),
           backgroundColor: Colors.black,
         );
+      },
+    );
+  }
+}
+
+class _CancelButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EmployeeOtherDetailBloc, EmployeeOtherDetailState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return state.status.isSubmissionInProgress
+            ? const SizedBox.shrink()
+            : CustomButton(
+                key:
+                    const Key('billingAddressForm_cancelButton_elevatedButton'),
+                onTap: () =>
+                    context.read<EmployerRegistrationCubit>().stepCancelled(),
+                lable: "cancel".tr(),
+                backgroundColor: Colors.red,
+              );
       },
     );
   }

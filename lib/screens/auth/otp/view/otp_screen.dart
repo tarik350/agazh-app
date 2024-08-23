@@ -12,6 +12,8 @@ import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/otp/cubit/otp_cubit.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -24,13 +26,15 @@ class OtpScreen extends StatelessWidget {
   final String phoneNumber;
   final UserRole? userRole;
 
-  const OtpScreen(
+  OtpScreen(
       {super.key,
       required this.verificationId,
       required this.route,
       this.userRole,
       this.phoneNumber = ''});
   // String getTitle() {}
+
+  final _authService = getit<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +125,13 @@ class OtpScreen extends StatelessWidget {
                                     await SharedPreferences.getInstance();
                                 if (route == 'login' && userRole != null) {
                                   preferance.setString('role', userRole!.name);
-                                  context.router.push(SiraAppRoute());
+                                  if (context.mounted) {
+                                    await _authService.setIsAuthenticated();
+                                    if (context.mounted) {
+                                      context.router
+                                          .replaceAll([const SiraAppRoute()]);
+                                    }
+                                  }
                                   // if (userRole == UserRole.employee) {
                                   //   context.router.push(route)
                                   // } else {
@@ -129,18 +139,22 @@ class OtpScreen extends StatelessWidget {
                                   // take role from params
                                   //here if role is null we throw an exception
                                 } else if (route == 'register') {
-                                  final role =
-                                      context.read<RoleCubit>().state.userRole;
-                                  preferance.setString('role', role.name);
+                                  if (context.mounted) {
+                                    final role = context
+                                        .read<RoleCubit>()
+                                        .state
+                                        .userRole;
+                                    preferance.setString('role', role.name);
 
-                                  if (role == UserRole.employee) {
-                                    //route to employee stepper
-                                    context.router
-                                        .push(const EmployeeStepperRoute());
-                                  } else if (role == UserRole.employer) {
-                                    context.router
-                                        .push(const EmployerStepperRoute());
-                                    //route to employer stepper
+                                    if (role == UserRole.employee) {
+                                      //route to employee stepper
+                                      context.router.replaceAll(
+                                          [const EmployeeStepperRoute()]);
+                                    } else if (role == UserRole.employer) {
+                                      context.router.replaceAll(
+                                          [const EmployerStepperRoute()]);
+                                      //route to employer stepper
+                                    }
                                   }
                                 }
                               }

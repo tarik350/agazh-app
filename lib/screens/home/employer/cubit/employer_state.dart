@@ -31,6 +31,21 @@ class EmployerState extends Equatable {
       ];
 }
 
-class RequestErrorState extends EmployerState {}
+class RequestErrorState extends EmployerState {
+  final String message;
+  const RequestErrorState(this.message);
+}
 
-class RatingErrorState extends EmployerState {}
+class RequestLoadingState extends EmployerState {}
+
+class RequestSuccessState extends EmployerState {}
+
+class RatingErrorState extends EmployerState {
+  final String message;
+
+  const RatingErrorState(this.message);
+}
+
+class RatingLoadingState extends EmployerState {}
+
+class RatingSuccessState extends EmployerState {}

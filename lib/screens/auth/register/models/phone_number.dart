@@ -12,15 +12,21 @@ class PhoneNumber extends FormzInput<String, PhoneNumberValidationError> {
   const PhoneNumber.pure() : super.pure('');
   const PhoneNumber.dirty([String value = '']) : super.dirty(value);
 
-  static final _phoneRegex = RegExp(r"^\+251[0-9]{9}$");
-  // static final _phoneRegex = RegExp(r"^\+251[97][0-9]{9}$");
+  // Regex to match the different valid formats
+  static final _phoneRegex = RegExp(
+    r'^(09[0-9]{8}|07[0-9]{8}|251[0-9]{9}|\+251[0-9]{9}|9[0-9]{8}|7[0-9]{8})$',
+  );
+
+  // Convert the input to the standard format: +251 followed by the rest of the digits
 
   @override
   PhoneNumberValidationError? validator(String value) {
-    return value.isEmpty
-        ? PhoneNumberValidationError.required
-        : _phoneRegex.hasMatch(value)
-            ? null
-            : PhoneNumberValidationError.invalid;
+    if (value.isEmpty) {
+      return PhoneNumberValidationError.required;
+    } else if (!_phoneRegex.hasMatch(value)) {
+      return PhoneNumberValidationError.invalid;
+    } else {
+      return null;
+    }
   }
 }

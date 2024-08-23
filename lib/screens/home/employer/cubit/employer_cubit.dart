@@ -34,14 +34,17 @@ class EmployerCubit extends Cubit<EmployerState> {
           employeeId: employeeId,
           employerId: employerId,
           rating: rating);
-      emit(state.copyWith(status: FormzStatus.success));
+      emit(RatingSuccessState());
+      // emit(state.copyWith(status: FormzStatus.success));
     } on RatingAlreadyAddedException catch (_) {
-      emit(state.copyWith(
-          status: FormzStatus.submissionFailure,
-          errorMessage: "reating_error_message".tr(args: [name])));
+      emit(RatingErrorState("reating_error_message".tr(args: [name])));
+      // emit(state.copyWith(
+      //     status: FormzStatus.submissionFailure,
+      //     errorMessage: "reating_error_message".tr(args: [name])));
     } catch (e) {
-      emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+      emit(RatingErrorState(e.toString()));
+      // emit(state.copyWith(
+      //     status: FormzStatus.submissionFailure, errorMessage: e.toString()));
     }
   }
 
@@ -63,15 +66,19 @@ class EmployerCubit extends Cubit<EmployerState> {
       }
       await employerRepository.requestEmployee(
           employeeId: employeeId, employerId: employerId);
-      emit(state.copyWith(requestStatus: FormzStatus.success));
+      emit(RequestSuccessState());
+      // emit(state.copyWith(requestStatus: FormzStatus.success));
     } on RequestAlreadySent catch (e) {
-      emit(state.copyWith(
-          requestStatus: FormzStatus.submissionFailure,
-          errorMessage: e.message));
+      emit(RequestErrorState(e.message));
+      // emit(state.copyWith(
+      //     requestStatus: FormzStatus.submissionFailure,
+      //     errorMessage: e.message));
     } catch (e) {
-      emit(state.copyWith(
-          requestStatus: FormzStatus.submissionFailure,
-          errorMessage: e.toString()));
+      emit(RequestErrorState(e.toString()));
+
+      // emit(state.copyWith(
+      //     requestStatus: FormzStatus.submissionFailure,
+      //     errorMessage: e.toString()));
     }
   }
 }

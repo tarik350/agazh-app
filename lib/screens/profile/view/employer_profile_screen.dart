@@ -130,297 +130,290 @@ class _ProfileScreenState extends State<EmployerProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
-          centerTitle: true,
-          title: Text(
-            "profile".tr(),
-            style: TextStyle(
-              color: AppColors.primaryColor,
-              fontSize: 23.sp,
-              fontWeight: FontWeight.w600,
-            ),
-          )),
       body: employer == null
           ? const EditProfileShimmer()
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100.r),
-                          child: SizedBox(
-                            width: 100.w,
-                            height: 100.w,
-                            child: CachedNetworkImage(
-                              imageUrl: profilePath.isNotEmpty
-                                  ? profilePath
-                                  : employer!.profilePicturePath,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) => Container(
-                                color: AppColors.secondaryColor,
-                                child: const Icon(
-                                  Icons.person,
-                                  color: AppColors.primaryColor,
-                                  size: 50,
+          : SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100.r),
+                            child: SizedBox(
+                              width: 100.w,
+                              height: 100.w,
+                              child: CachedNetworkImage(
+                                imageUrl: profilePath.isNotEmpty
+                                    ? profilePath
+                                    : employer!.profilePicturePath,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) => Container(
+                                  color: AppColors.secondaryColor,
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: AppColors.primaryColor,
+                                    size: 50,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                            bottom: -10,
-                            left: 55.w,
-                            child: IconButton(
-                                onPressed: () async {
-                                  Uint8List image =
-                                      await pickImage(ImageSource.gallery);
+                          Positioned(
+                              bottom: -10,
+                              left: 55.w,
+                              child: IconButton(
+                                  onPressed: () async {
+                                    final image =
+                                        await showImageSourceDialog(context);
 
-                                  if (context.mounted) {
-                                    context
-                                        .read<ProfileCubit>()
-                                        .uploadProfilePicture(
-                                            file: image,
-                                            path: "profilePics",
-                                            id: employer!.id);
-                                  }
-                                },
-                                icon: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100.r),
-                                  child: Container(
-                                    padding: EdgeInsets.all(4.r),
-                                    color: AppColors.primaryColor,
-                                    child:
-                                        BlocBuilder<ProfileCubit, ProfileState>(
-                                      builder: (context, state) {
-                                        if (state is ProfilePicutureUploading) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: SizedBox(
-                                              height: 12.h,
-                                              width: 12.w,
-                                              child: CircularProgressIndicator(
-                                                color: AppColors.whiteColor,
-                                                strokeWidth: 2.w,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        return Icon(
-                                          Icons.edit,
-                                          size: 22.r,
-                                          color: AppColors.whiteColor,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                )))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 28.h,
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    BlocConsumer<ProfileCubit, ProfileState>(
-                      listener: (context, state) {
-                        if (state is ProfileUpdated) {
-                          showSuccessDialog(
-                              context, "profile_success_message".tr());
-                        }
-                        if (state is ProfileUpdateError) {
-                          showErrorDialog(
-                              context, "profile_error_message".tr());
-                        }
-                        if (state is IdCardUploaded) {
-                          setState(() {
-                            idCardPath = state.path;
-                          });
-                          showSuccessDialog(
-                              context, "idcard_upload_success_message".tr());
-                        }
-
-                        if (state is ImageUploadError) {
-                          showErrorDialog(
-                              context, "idcard_upload_error_message".tr());
-                        }
-                        if (state is ProfilePictureUploaded) {
-                          setState(() {
-                            profilePath = state.path;
-                          });
-                          showSuccessDialog(
-                              context, "profile_picture_success_message".tr());
-                        }
-                      },
-                      builder: (context, state) {
-                        return GestureDetector(
-                            onTap: () async {
-                              Uint8List image =
-                                  await pickImage(ImageSource.gallery);
-                              if (context.mounted) {
-                                context
-                                    .read<ProfileCubit>()
-                                    .uploadIdCard(file: image, path: "idcard");
-                              }
-                            },
-                            child: SizedBox(
-                              width: double.infinity,
-                              // decoration: const BoxDecoration(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  DottedBorder(
-                                    color: AppColors.primaryColor,
-                                    strokeWidth: 4.w,
-                                    strokeCap: StrokeCap.butt,
-                                    radius: Radius.circular(30.r),
-                                    child: state is IdCardUploading
-                                        ? Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Center(
+                                    if (context.mounted && image != null) {
+                                      context
+                                          .read<ProfileCubit>()
+                                          .uploadProfilePicture(
+                                              file: image,
+                                              path: "profilePics",
+                                              id: employer!.id);
+                                    }
+                                  },
+                                  icon: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100.r),
+                                    child: Container(
+                                      padding: EdgeInsets.all(4.r),
+                                      color: AppColors.primaryColor,
+                                      child: BlocBuilder<ProfileCubit,
+                                          ProfileState>(
+                                        builder: (context, state) {
+                                          if (state
+                                              is ProfilePicutureUploading) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
                                               child: SizedBox(
-                                                width: 12.h,
-                                                height: 12.w,
+                                                height: 12.h,
+                                                width: 12.w,
                                                 child:
                                                     CircularProgressIndicator(
-                                                  color: AppColors.primaryColor,
-                                                  strokeWidth: 4.w,
+                                                  color: AppColors.whiteColor,
+                                                  strokeWidth: 2.w,
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                        : Center(
-                                            child: Column(children: [
-                                              Icon(
-                                                Icons.add,
-                                                size: 30.h,
-                                                color: AppColors.primaryColor,
-                                              ),
-                                              Text(
-                                                "upload_id".tr(),
-                                                style: const TextStyle(
+                                            );
+                                          }
+                                          return Icon(
+                                            Icons.edit,
+                                            size: 22.r,
+                                            color: AppColors.whiteColor,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  )))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 28.h,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      BlocConsumer<ProfileCubit, ProfileState>(
+                        listener: (context, state) {
+                          if (state is ProfileUpdated) {
+                            showSuccessDialog(
+                                context, "profile_success_message".tr());
+                          }
+                          if (state is ProfileUpdateError) {
+                            showErrorDialog(
+                                context, "profile_error_message".tr());
+                          }
+                          if (state is IdCardUploaded) {
+                            setState(() {
+                              idCardPath = state.path;
+                            });
+                            showSuccessDialog(
+                                context, "idcard_upload_success_message".tr());
+                          }
+
+                          if (state is ImageUploadError) {
+                            showErrorDialog(
+                                context, "idcard_upload_error_message".tr());
+                          }
+                          if (state is ProfilePictureUploaded) {
+                            setState(() {
+                              profilePath = state.path;
+                            });
+                            showSuccessDialog(context,
+                                "profile_picture_success_message".tr());
+                          }
+                        },
+                        builder: (context, state) {
+                          return GestureDetector(
+                              onTap: () async {
+                                final image =
+                                    await showImageSourceDialog(context);
+                                if (context.mounted && image != null) {
+                                  context.read<ProfileCubit>().uploadIdCard(
+                                      file: image, path: "idcard");
+                                }
+                              },
+                              child: SizedBox(
+                                width: double.infinity,
+                                // decoration: const BoxDecoration(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    DottedBorder(
+                                      color: AppColors.primaryColor,
+                                      strokeWidth: 4.w,
+                                      strokeCap: StrokeCap.butt,
+                                      radius: Radius.circular(30.r),
+                                      child: state is IdCardUploading
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: Center(
+                                                child: SizedBox(
+                                                  width: 12.h,
+                                                  height: 12.w,
+                                                  child:
+                                                      CircularProgressIndicator(
                                                     color:
                                                         AppColors.primaryColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ]),
+                                                    strokeWidth: 4.w,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : Center(
+                                              child: Column(children: [
+                                                Icon(
+                                                  Icons.add,
+                                                  size: 30.h,
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                                Text(
+                                                  "upload_id".tr(),
+                                                  style: const TextStyle(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ]),
+                                            ),
+                                    ),
+                                    SizedBox(
+                                      height: 4.h,
+                                    ),
+                                  ],
+                                ),
+                              ));
+                        },
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: firstNameController,
+                        labelText: 'firstname',
+                        disabled: true,
+                        keyboardType: TextInputType.text,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: lastNameController,
+                        labelText: 'lastname',
+                        disabled: true,
+                        keyboardType: TextInputType.text,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: familySizeController,
+                        labelText: 'family_size',
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: cityController,
+                        labelText: 'city',
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: subCityController,
+                        labelText: 'sub_city',
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: specialLocationController,
+                        labelText: 'special_location',
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                        controller: houseNumberController,
+                        labelText: 'house_number',
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      ProfileTextField(
+                          controller: passwordController, labelText: 'pin'),
+                      const SizedBox(height: 20),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                    splashFactory: NoSplash.splashFactory,
+                                    backgroundColor: AppColors.primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)))
+                                .copyWith(backgroundColor:
+                                    WidgetStateProperty.resolveWith<Color>(
+                                        (states) {
+                              if (states.contains(WidgetState.disabled)) {
+                                return AppColors.primaryColor.withOpacity(.7);
+                              } else {
+                                return AppColors.primaryColor;
+                              }
+                            })).copyWith(),
+                            onPressed: _updateProfile,
+                            child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(13.w),
+                                child: Center(
+                                  child: state is ProfileUpdating
+                                      ? AppConfig.getProgressIndicatorNormal(
+                                          color: AppColors.whiteColor)
+                                      : Text(
+                                          'update'.tr(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
                                           ),
-                                  ),
-                                  SizedBox(
-                                    height: 4.h,
-                                  ),
-                                ],
-                              ),
-                            ));
-                      },
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: firstNameController,
-                      labelText: 'firstname',
-                      disabled: true,
-                      keyboardType: TextInputType.text,
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: lastNameController,
-                      labelText: 'lastname',
-                      disabled: true,
-                      keyboardType: TextInputType.text,
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: familySizeController,
-                      labelText: 'family_size',
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: cityController,
-                      labelText: 'city',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: subCityController,
-                      labelText: 'sub_city',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: specialLocationController,
-                      labelText: 'special_location',
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                      controller: houseNumberController,
-                      labelText: 'house_number',
-                      keyboardType: TextInputType.number,
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    ProfileTextField(
-                        controller: passwordController, labelText: 'pin'),
-                    const SizedBox(height: 20),
-                    BlocBuilder<ProfileCubit, ProfileState>(
-                      builder: (context, state) {
-                        return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                                  splashFactory: NoSplash.splashFactory,
-                                  backgroundColor: AppColors.primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)))
-                              .copyWith(backgroundColor:
-                                  WidgetStateProperty.resolveWith<Color>(
-                                      (states) {
-                            if (states.contains(WidgetState.disabled)) {
-                              return AppColors.primaryColor.withOpacity(.7);
-                            } else {
-                              return AppColors.primaryColor;
-                            }
-                          })).copyWith(),
-                          onPressed: _updateProfile,
-                          child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(13.w),
-                              child: Center(
-                                child: state is ProfileUpdating
-                                    ? AppConfig.getProgressIndicatorNormal(
-                                        color: AppColors.whiteColor)
-                                    : Text(
-                                        'update'.tr(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
                                         ),
-                                      ),
-                              )),
-                        );
-                      },
-                    ),
-                  ],
+                                )),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

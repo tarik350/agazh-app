@@ -14,7 +14,7 @@
   "employer": "Employer",
   "submit": "Submit",
   "register_title": "Please Enter Your Phone Number",
-  "register_subtitle": "Phone Number should start with (+251)",
+  "register_subtitle": "Please enter your phone number to get an OTP code.",
   "register": "Register",
   "unknown_error": "Unknown error occurred",
   "otp_title": "Verify Your Phone Number",
@@ -119,5 +119,8 @@
   "request_error_message": "You have already sent a request for {}",
   "profile_success_message": "Profile Information updated Successfully",
   "profile_error_message": "Error while uploading profile information",
-  "profile_picture_success_message": "Profile picture uploaded successfully"
+  "profile_picture_success_message": "Profile picture uploaded successfully",
+
+
+  "select_language" : "Select Language"
 }

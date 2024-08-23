@@ -9,7 +9,9 @@ import 'package:mobile_app/screens/auth/register/bloc/register_bloc.dart';
 import 'package:mobile_app/screens/auth/register/models/Password.dart';
 import 'package:mobile_app/screens/auth/register/models/phone_number.dart';
 import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
+import 'package:mobile_app/utils/helpers/helper.dart';
 
 import '../../../role/enums/selected_role.dart';
 
@@ -17,7 +19,7 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final _authService = AuthService();
+  final _authService = getit<AuthService>();
   LoginBloc() : super(const LoginState()) {
     on<LoginFormSubmitted>(_onLogin);
     on<PhoneNumberChanged>(_onPhoneChanged);
@@ -27,7 +29,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _onPhoneChanged(
       PhoneNumberChanged event, Emitter<LoginState> emit) {
-    final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
+    final phoneNumber =
+        PhoneNumber.dirty(normalizePhoneNumber(event.phoneNumber));
     emit(state.copyWith(
         phoneNumber: phoneNumber,
         status: Formz.validate([phoneNumber, state.password])));
@@ -47,6 +50,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final employee = await _authService.lookupUser(
           state.phoneNumber.value, state.password.value, "employee");
+      print(state.phoneNumber.value);
       final employer = await _authService.lookupUser(
           state.phoneNumber.value, state.password.value, "employers");
       if (employee == null && employer == null) {

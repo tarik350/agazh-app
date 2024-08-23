@@ -10,12 +10,17 @@ import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/cubit/terms_and_conditions_cubit.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
 
+import '../../../cubit/employer_registration_cubit.dart';
+
 class TermsAndConditionScreen extends StatelessWidget {
-  const TermsAndConditionScreen({Key? key}) : super(key: key);
+  TermsAndConditionScreen({Key? key}) : super(key: key);
+  final _authService = getit<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,7 @@ class TermsAndConditionScreen extends StatelessWidget {
           employeeRepository: context.read<EmployeeRepository>(),
           employerRepositroy: context.read<EmployerRepository>()),
       child: BlocConsumer<TermsandconditionCubit, TermsAndConditionState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state.status.isSubmissionFailure) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -33,7 +38,10 @@ class TermsAndConditionScreen extends StatelessWidget {
                     content: Text(state.errorMessage ?? 'unknown_error').tr()),
               );
           } else if (state.status.isSubmissionSuccess) {
-            context.router.replace(const SiraAppRoute());
+            await _authService.setIsAuthenticated();
+            if (context.mounted) {
+              context.router.replaceAll([const SiraAppRoute()]);
+            }
           }
         },
         builder: (context, state) {
@@ -79,18 +87,27 @@ class TermsAndConditionScreen extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                CustomButton(
-                  onTap: state.isChecked &&
-                          state.status.isValidated &&
-                          !state.status.isSubmissionInProgress
-                      ? () => context
-                          .read<TermsandconditionCubit>()
-                          .saveUser(context.read<RoleCubit>().state.userRole)
-                      : null,
-                  lable: state.status.isSubmissionInProgress
-                      ? "loading".tr()
-                      : "save".tr(),
-                  backgroundColor: AppColors.primaryColor,
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        onTap: state.isChecked &&
+                                state.status.isValidated &&
+                                !state.status.isSubmissionInProgress
+                            ? () => context
+                                .read<TermsandconditionCubit>()
+                                .saveUser(
+                                    context.read<RoleCubit>().state.userRole)
+                            : null,
+                        lable: state.status.isSubmissionInProgress
+                            ? "loading".tr()
+                            : "save".tr(),
+                        backgroundColor: AppColors.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    Expanded(child: _CancelButton()),
+                  ],
                 ),
               ],
             ),
@@ -139,6 +156,27 @@ class _ConfirmPasswordInput extends StatelessWidget {
             errorText: state.confirmPin.invalid
                 ? state.confirmPin.error!.message
                 : null);
+      },
+    );
+  }
+}
+
+class _CancelButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TermsandconditionCubit, TermsAndConditionState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return state.status.isSubmissionInProgress
+            ? const SizedBox.shrink()
+            : CustomButton(
+                key:
+                    const Key('billingAddressForm_cancelButton_elevatedButton'),
+                onTap: () =>
+                    context.read<EmployerRegistrationCubit>().stepCancelled(),
+                lable: "cancel".tr(),
+                backgroundColor: Colors.red,
+              );
       },
     );
   }

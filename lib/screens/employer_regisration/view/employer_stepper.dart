@@ -72,7 +72,7 @@ class EmployerStepper extends StatelessWidget {
                   ? const PersonalInfoScreen()
                   : state.activeStepperIndex == 1
                       ? const AddressInfoScreen()
-                      : const TermsAndConditionScreen()
+                      : TermsAndConditionScreen()
             ],
           ),
         );
