@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/LastName.dart';
 
 class Employer extends Equatable {
   final String firstName;

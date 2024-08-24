@@ -11,8 +11,6 @@ import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/screens/auth/login/bloc/login_bloc.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
-import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
-import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
 
 import '../../../../utils/dialogue/language_selection_dialogue.dart';
 
@@ -293,7 +291,7 @@ class LoginTextField extends StatelessWidget {
             borderSide: BorderSide(color: Colors.red),
           ),
           errorStyle: const TextStyle(fontWeight: FontWeight.w300),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: 2),
           ),
           fillColor: AppColors.primaryColor.withOpacity(.1),

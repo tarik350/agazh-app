@@ -59,7 +59,7 @@ class EmployeeRequestList extends StatelessWidget {
                             height: 100,
                             child: CachedNetworkImage(
                               fit: BoxFit.cover,
-                              imageUrl: employer.profilePicturePath ?? '',
+                              imageUrl: employer.profilePicturePath,
                               progressIndicatorBuilder:
                                   (context, _, progress) => const Center(
                                       child: CircularProgressIndicator()),
@@ -90,7 +90,7 @@ class EmployeeRequestList extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '${employer.city ?? 'No City'}, ${employer.subCity ?? 'No Subcity'}',
+                                      '${employer.city}, ${employer.subCity}',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.grey[700],

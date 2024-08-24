@@ -6,8 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
-import 'package:mobile_app/config/routes/app_routes.gr.dart';
-import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
 import 'package:mobile_app/screens/home/employer/widgets/employee_list_view.dart';

@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/services/init_service.dart';
@@ -42,8 +41,6 @@ class AppRouter extends $AppRouter {
 }
 
 class AuthGuard extends AutoRouteGuard {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();

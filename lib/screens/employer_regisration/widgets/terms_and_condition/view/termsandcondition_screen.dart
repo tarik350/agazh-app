@@ -13,7 +13,6 @@ import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
-
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
 
 import '../../../cubit/employer_registration_cubit.dart';
@@ -45,7 +44,6 @@ class TermsAndConditionScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final user = context.read<EmployerRepository>().getUser();
           return Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
