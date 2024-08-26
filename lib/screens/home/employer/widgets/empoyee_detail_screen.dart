@@ -145,6 +145,29 @@ class EmployeeDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
+                          "${"other_detail.salary".tr()} :",
+                          style: const TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          employee.salary.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF222262),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
                           "${'profession'.tr()} :",
                           style: const TextStyle(
                               color: AppColors.primaryColor,

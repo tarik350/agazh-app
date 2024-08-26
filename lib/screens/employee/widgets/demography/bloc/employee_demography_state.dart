@@ -11,6 +11,7 @@ class EmployeeDemographyState extends Equatable {
       this.status = FormzStatus.pure,
       this.salary = const Salary.pure(),
       this.errorMessage,
+      this.isNewHouseNumberSelected = false,
       this.jobStatus = JobStatusEnum.none});
 
   final HouseNumber houseNumber;
@@ -21,6 +22,7 @@ class EmployeeDemographyState extends Equatable {
   final SubCity subCity;
   final String? errorMessage;
   final Salary salary;
+  final bool isNewHouseNumberSelected;
 
   EmployeeDemographyState copyWith(
       {HouseNumber? houseNumber,
@@ -31,6 +33,7 @@ class EmployeeDemographyState extends Equatable {
       String? errorMessage,
       FormzStatus? status,
       Salary? salary,
+      bool? isNewHouseNumberSelected,
       String? workType}) {
     return EmployeeDemographyState(
         houseNumber: houseNumber ?? this.houseNumber,
@@ -40,10 +43,20 @@ class EmployeeDemographyState extends Equatable {
         status: status ?? this.status,
         errorMessage: errorMessage,
         salary: salary ?? this.salary,
+        isNewHouseNumberSelected:
+            isNewHouseNumberSelected ?? this.isNewHouseNumberSelected,
         jobStatus: jobStatus ?? this.jobStatus);
   }
 
   @override
-  List<Object> get props =>
-      [houseNumber, subCity, jobStatus, city, familySize, status, salary];
+  List<Object> get props => [
+        houseNumber,
+        subCity,
+        jobStatus,
+        city,
+        familySize,
+        status,
+        salary,
+        isNewHouseNumberSelected
+      ];
 }

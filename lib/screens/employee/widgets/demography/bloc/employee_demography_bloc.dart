@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/models/salaray.dart';
@@ -25,13 +26,16 @@ class EmployeeDemographyBloc
     on<FormSubmitted>(_onFormSubmitted);
     on<JobStatusChanged>(_onJobStatusChangd);
     on<SalaryChanged>(_onSalaryChanged);
+    on<DemographyHouseNumberNewSelected>(_onHouseNumberNewSelected);
   }
 
   void _onHouseNumberChanged(
     HouseNumberChanged event,
     Emitter<EmployeeDemographyState> emit,
   ) {
-    final houseNumber = HouseNumber.dirty(event.houseNumber);
+    final houseNumber = HouseNumber.dirty(
+      value: event.houseNumber,
+    );
     emit(state.copyWith(
       houseNumber: houseNumber,
       status: Formz.validate([
@@ -109,12 +113,12 @@ class EmployeeDemographyBloc
       return;
     }
 
-    if (state.status.isValidated) {
+    if (state.status.isValid) {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
 
       try {
         employeeRepository.updateDemographyInformation(
-            houseNumber: int.parse(state.houseNumber.value),
+            houseNumber: state.houseNumber.value,
             city: state.city.value,
             salaray: state.salary.value,
             subCity: state.subCity.value,
@@ -123,6 +127,16 @@ class EmployeeDemographyBloc
       } catch (_) {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
+    } else {
+      debugPrint("");
     }
+  }
+
+  FutureOr<void> _onHouseNumberNewSelected(
+      DemographyHouseNumberNewSelected event,
+      Emitter<EmployeeDemographyState> emit) {
+    emit(
+      state.copyWith(isNewHouseNumberSelected: event.isNewSelected),
+    );
   }
 }

@@ -9,8 +9,9 @@ class Employer extends Equatable {
   final String role;
   final String city;
   final String subCity;
-  final int houseNumber;
-  final String idCardImagePath;
+  final dynamic houseNumber;
+  final String idCardImagePathFront;
+  final String idCardImagePathBack;
   final String profilePicturePath;
   final String phone;
   final String password;
@@ -25,7 +26,8 @@ class Employer extends Equatable {
       this.city = '',
       this.subCity = '',
       this.houseNumber = 0,
-      this.idCardImagePath = '',
+      this.idCardImagePathFront = '',
+      this.idCardImagePathBack = '',
       this.profilePicturePath = '',
       this.phone = '',
       this.specialLocation = '',
@@ -43,7 +45,8 @@ class Employer extends Equatable {
       city: data['city'] ?? '',
       subCity: data['subCity'] ?? '',
       houseNumber: data['houseNumber'] ?? 0,
-      idCardImagePath: data['idCardImagePath'] ?? '',
+      idCardImagePathFront: data['idCardImagePathFront'] ?? '',
+      idCardImagePathBack: data['idCardImagePathBack'] ?? '',
       profilePicturePath: data['profilePicturePath'] ?? '',
       phone: data['phone'] ?? '',
       specialLocation: data['phone'] ?? '',
@@ -61,7 +64,8 @@ class Employer extends Equatable {
       city: json['city'] ?? '',
       subCity: json['subCity'] ?? '',
       houseNumber: json['houseNumber'] ?? 0,
-      idCardImagePath: json['idCardImagePath'] ?? '',
+      idCardImagePathFront: json['idCardImagePathFront'] ?? '',
+      idCardImagePathBack: json['idCardImagePathBack'] ?? '',
       profilePicturePath: json['profilePicturePath'] ?? '',
       phone: json['phone'] ?? '',
       specialLocation: json['specialLocation'] ?? '',
@@ -79,7 +83,8 @@ class Employer extends Equatable {
       'lastName': lastName,
       'subCity': subCity,
       'houseNumber': houseNumber,
-      'idCardImagePath': idCardImagePath,
+      'idCardImagePathFront': idCardImagePathFront,
+      'idCardImagePathBack': idCardImagePathBack,
       'profilePicturePath': profilePicturePath,
       'phone': phone,
       'specialLocation': specialLocation,
@@ -95,8 +100,9 @@ class Employer extends Equatable {
       String? role,
       String? city,
       String? subCity,
-      int? houseNumber,
-      String? idCardImagePath,
+      dynamic? houseNumber,
+      String? idCardImagePathFront,
+      String? idCardImagePathBack,
       String? profilePicturePath,
       String? phone,
       String? specialLocation,
@@ -110,7 +116,8 @@ class Employer extends Equatable {
         city: city ?? this.city,
         subCity: subCity ?? this.subCity,
         houseNumber: houseNumber ?? this.houseNumber,
-        idCardImagePath: idCardImagePath ?? this.idCardImagePath,
+        idCardImagePathFront: idCardImagePathFront ?? this.idCardImagePathFront,
+        idCardImagePathBack: idCardImagePathBack ?? this.idCardImagePathBack,
         profilePicturePath: profilePicturePath ?? this.profilePicturePath,
         phone: phone ?? this.phone,
         specialLocation: specialLocation ?? this.specialLocation,
@@ -127,7 +134,8 @@ class Employer extends Equatable {
         city,
         subCity,
         houseNumber,
-        idCardImagePath,
+        idCardImagePathFront,
+        idCardImagePathBack,
         profilePicturePath,
         phone,
         specialLocation,

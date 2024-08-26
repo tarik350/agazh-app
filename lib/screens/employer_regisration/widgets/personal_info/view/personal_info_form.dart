@@ -17,7 +17,6 @@ class PersonalInfoForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final state = context.read<PersonalInfoBloc>().state.name.value;
     return BlocListener<PersonalInfoBloc, PersonalInfoState>(
       listener: (context, state) {
         if (state.status.isSubmissionFailure) {
@@ -28,7 +27,7 @@ class PersonalInfoForm extends StatelessWidget {
                   content: Text(state.errorMessage ?? 'unknown_error'.tr())),
             );
         }
-        if (state.idCardUploadStatus == ImageUploadStatus.notUploaded) {
+        if (state.idCardUploadStatusFront == ImageUploadStatus.notUploaded) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -37,14 +36,16 @@ class PersonalInfoForm extends StatelessWidget {
                       "idcard_upload_error_message".tr())),
             );
         }
-        // if (state.profilePictureUploadStatus == ImageUploadStatus.completed) {
-        //   ScaffoldMessenger.of(context)
-        //     ..hideCurrentSnackBar()
-        //     ..showSnackBar(
-        //       const SnackBar(
-        //           content: Text("Profile picture uploaded successfully")),
-        //     );
-        // }
+        if (state.idCardUploadStatusBack == ImageUploadStatus.notUploaded) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                  content: Text(state.errorMessage ??
+                      "idcard_upload_error_message".tr())),
+            );
+        }
+
         if (state.profilePictureUploadStatus == ImageUploadStatus.failed) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -53,29 +54,32 @@ class PersonalInfoForm extends StatelessWidget {
             );
         }
       },
-      child: Column(
-        children: [
-          const _ProfilePictureUploader(),
-          const SizedBox(height: 20.0),
-          _FirstNameInput(),
-          const SizedBox(height: 20.0),
-          _LastNameInput(),
-          const SizedBox(height: 20.0),
-          const _ImageUploaderButton(),
-          const SizedBox(height: 20.0),
-          Row(
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              Expanded(child: _SubmitButton()),
-              // const SizedBox(width: 8.0),
-              // _CancelButton(),
+              const _ProfilePictureUploader(),
+              const SizedBox(height: 20.0),
+              _FirstNameInput(),
+              const SizedBox(height: 20.0),
+              _LastNameInput(),
+              const SizedBox(height: 20.0),
+              const _IDCardUploadFront(),
+              const SizedBox(height: 20.0),
+              const _IDCardUploadBack(),
+              const SizedBox(height: 20.0),
+              Row(
+                children: [
+                  Expanded(child: _SubmitButton()),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
-
 // class _EmailInput extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -164,8 +168,8 @@ class _SubmitButton extends StatelessWidget {
   }
 }
 
-class _ImageUploaderButton extends StatelessWidget {
-  const _ImageUploaderButton({super.key});
+class _IDCardUploadFront extends StatelessWidget {
+  const _IDCardUploadFront({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +181,7 @@ class _ImageUploaderButton extends StatelessWidget {
               if (image != null && context.mounted) {
                 context
                     .read<PersonalInfoBloc>()
-                    .add(IdCardChanged(file: image, path: "idcard"));
+                    .add(IdCardChangedFront(file: image, path: "idcard"));
               } else {
                 //todo => Handle the case where no image was picked (optional)
               }
@@ -192,7 +196,8 @@ class _ImageUploaderButton extends StatelessWidget {
                     strokeWidth: 4.w,
                     strokeCap: StrokeCap.butt,
                     radius: Radius.circular(30.r),
-                    child: state.idCardUploadStatus != ImageUploadStatus.loading
+                    child: state.idCardUploadStatusFront !=
+                            ImageUploadStatus.loading
                         ? Center(
                             child: Column(children: [
                               Icon(
@@ -201,7 +206,7 @@ class _ImageUploaderButton extends StatelessWidget {
                                 color: AppColors.primaryColor,
                               ),
                               Text(
-                                "upload_id".tr(),
+                                "upload_id_front".tr(),
                                 style: const TextStyle(
                                     color: AppColors.primaryColor,
                                     fontWeight: FontWeight.bold),
@@ -225,7 +230,86 @@ class _ImageUploaderButton extends StatelessWidget {
                   SizedBox(
                     height: 4.h,
                   ),
-                  state.idCardUploadStatus == ImageUploadStatus.completed
+                  state.idCardUploadStatusFront == ImageUploadStatus.completed
+                      ? Text(
+                          "idcard_upload_success_message".tr(),
+                          style: TextStyle(
+                              color: AppColors.succesColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.sp),
+                        )
+                      : Container()
+                ],
+              ),
+            ));
+      },
+    );
+  }
+}
+
+class _IDCardUploadBack extends StatelessWidget {
+  const _IDCardUploadBack({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PersonalInfoBloc, PersonalInfoState>(
+      builder: (context, state) {
+        return GestureDetector(
+            onTap: () async {
+              final image = await showImageSourceDialog(context);
+              if (image != null && context.mounted) {
+                context
+                    .read<PersonalInfoBloc>()
+                    .add(IdCardChangedBack(file: image, path: "idcard"));
+              } else {
+                //todo => Handle the case where no image was picked (optional)
+              }
+            },
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DottedBorder(
+                    color: AppColors.primaryColor,
+                    strokeWidth: 4.w,
+                    strokeCap: StrokeCap.butt,
+                    radius: Radius.circular(30.r),
+                    child: state.idCardUploadStatusBack !=
+                            ImageUploadStatus.loading
+                        ? Center(
+                            child: Column(children: [
+                              Icon(
+                                Icons.add,
+                                size: 30.h,
+                                color: AppColors.primaryColor,
+                              ),
+                              Text(
+                                "upload_id_back".tr(),
+                                style: const TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ]),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                              child: SizedBox(
+                                width: 12.h,
+                                height: 12.w,
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                  strokeWidth: 4.w,
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  state.idCardUploadStatusBack == ImageUploadStatus.completed
                       ? Text(
                           "idcard_upload_success_message".tr(),
                           style: TextStyle(

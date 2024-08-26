@@ -38,13 +38,17 @@ class RegisterForm extends StatelessWidget {
                   .read<EmployeeRepository>()
                   .updatePhone(state.phoneNumber.value);
               context.router.push(OtpRoute(
-                  verificationId: state.verificationId!, route: "register"));
+                  phoneNumber: state.phoneNumber.value,
+                  verificationId: state.verificationId!,
+                  route: "register"));
             } else if (role == UserRole.employer) {
               context
                   .read<EmployerRepository>()
                   .updatePhone(state.phoneNumber.value);
               context.router.push(OtpRoute(
-                  verificationId: state.verificationId!, route: "register"));
+                  phoneNumber: state.phoneNumber.value,
+                  verificationId: state.verificationId!,
+                  route: "register"));
             }
           } catch (e) {
             debugPrint(e.toString());

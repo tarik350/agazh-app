@@ -11,10 +11,12 @@ enum ImageUploadStatus {
 class PersonalInfoState extends Equatable {
   const PersonalInfoState(
       {this.firstName = const FirstName.pure(),
-      this.idCardPathString = '',
+      this.idCardPathStringFront = '',
+      this.idCardPathStringBack = '',
       this.profilePicturePathString = '',
       this.profilePictureUploadStatus = ImageUploadStatus.pure,
-      this.idCardUploadStatus = ImageUploadStatus.pure,
+      this.idCardUploadStatusFront = ImageUploadStatus.pure,
+      this.idCardUploadStatusBack = ImageUploadStatus.pure,
       this.lastName = const LastName.pure(),
       this.status = FormzStatus.pure,
       this.errorMessage});
@@ -22,24 +24,31 @@ class PersonalInfoState extends Equatable {
   final FormzStatus status;
   final FirstName firstName;
   final LastName lastName;
-  final String idCardPathString;
+  final String idCardPathStringFront;
+  final String idCardPathStringBack;
   final String profilePicturePathString;
-  final ImageUploadStatus idCardUploadStatus;
+  final ImageUploadStatus idCardUploadStatusFront;
+  final ImageUploadStatus idCardUploadStatusBack;
   final ImageUploadStatus profilePictureUploadStatus;
   final String? errorMessage;
   PersonalInfoState copyWith({
     FirstName? firstName,
     LastName? lastName,
     FormzStatus? status,
-    String? idCardPathString,
-    ImageUploadStatus? idCardUploadStatus,
+    String? idCardPathStringFront,
+    String? idCardPathStringBack,
+    ImageUploadStatus? idCardUploadStatusFront,
+    ImageUploadStatus? idCardUploadStatusBack,
     ImageUploadStatus? profilePictureUploadStatus,
     String? profilePicturePathString,
     String? errorMessage,
   }) {
     return PersonalInfoState(
         firstName: firstName ?? this.firstName,
-        idCardUploadStatus: idCardUploadStatus ?? this.idCardUploadStatus,
+        idCardUploadStatusFront:
+            idCardUploadStatusFront ?? this.idCardUploadStatusFront,
+        idCardUploadStatusBack:
+            idCardUploadStatusBack ?? this.idCardUploadStatusBack,
         profilePictureUploadStatus:
             profilePictureUploadStatus ?? this.profilePictureUploadStatus,
         status: status ?? this.status,
@@ -47,17 +56,21 @@ class PersonalInfoState extends Equatable {
             profilePicturePathString ?? this.profilePicturePathString,
         lastName: lastName ?? this.lastName,
         errorMessage: errorMessage,
-        idCardPathString: idCardPathString ?? this.idCardPathString);
+        idCardPathStringBack: idCardPathStringBack ?? this.idCardPathStringBack,
+        idCardPathStringFront:
+            idCardPathStringFront ?? this.idCardPathStringFront);
   }
 
   @override
   List<Object> get props => [
         firstName,
         lastName,
-        idCardUploadStatus,
+        idCardUploadStatusFront,
+        idCardUploadStatusBack,
         profilePicturePathString,
         profilePictureUploadStatus,
-        idCardPathString,
+        idCardPathStringFront,
+        idCardPathStringBack,
         status,
       ];
 }

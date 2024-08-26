@@ -45,70 +45,88 @@ class TermsAndConditionScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const _PasswordInput(),
-                SizedBox(
-                  height: 12.h,
-                ),
-                const _ConfirmPasswordInput(),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.5,
-                      child: Theme(
-                        data: ThemeData(
-                          splashColor: Colors.transparent,
-                          splashFactory: NoSplash.splashFactory,
-                          highlightColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
+            child: LayoutBuilder(builder: (context, constraints) {
+              final bool isKeyboardOpen =
+                  MediaQuery.of(context).viewInsets.bottom != 0.0;
+              final double bottomPadding =
+                  MediaQuery.of(context).viewInsets.bottom;
+
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const _PasswordInput(),
+                        SizedBox(
+                          height: 12.h,
                         ),
-                        child: Checkbox(
-                          activeColor: AppColors.primaryColor,
-                          value: state.isChecked,
-                          onChanged: (value) => context
-                              .read<TermsandconditionCubit>()
-                              .onCheckBoxChange(value!),
+                        const _ConfirmPasswordInput(),
+                        SizedBox(
+                          height: 10.h,
                         ),
-                      ),
+                        Row(
+                          children: [
+                            Transform.scale(
+                              scale: 1.5,
+                              child: Theme(
+                                data: ThemeData(
+                                  splashColor: Colors.transparent,
+                                  splashFactory: NoSplash.splashFactory,
+                                  highlightColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                ),
+                                child: Checkbox(
+                                  activeColor: AppColors.primaryColor,
+                                  value: state.isChecked,
+                                  onChanged: (value) => context
+                                      .read<TermsandconditionCubit>()
+                                      .onCheckBoxChange(value!),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
+                            Expanded(
+                              child: Text("terms_and_condition_message".tr()),
+                            )
+                          ],
+                        ),
+                        const Spacer(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomButton(
+                                onTap: state.isChecked &&
+                                        state.status.isValidated &&
+                                        !state.status.isSubmissionInProgress
+                                    ? () => context
+                                        .read<TermsandconditionCubit>()
+                                        .saveUser(context
+                                            .read<RoleCubit>()
+                                            .state
+                                            .userRole)
+                                    : null,
+                                lable: state.status.isSubmissionInProgress
+                                    ? "loading".tr()
+                                    : "save".tr(),
+                                backgroundColor: AppColors.primaryColor,
+                              ),
+                            ),
+                            const SizedBox(width: 8.0),
+                            Expanded(child: _CancelButton()),
+                          ],
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Expanded(
-                      child: Text("terms_and_condition_message".tr()),
-                    )
-                  ],
+                  ),
                 ),
-                const Spacer(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomButton(
-                        onTap: state.isChecked &&
-                                state.status.isValidated &&
-                                !state.status.isSubmissionInProgress
-                            ? () => context
-                                .read<TermsandconditionCubit>()
-                                .saveUser(
-                                    context.read<RoleCubit>().state.userRole)
-                            : null,
-                        lable: state.status.isSubmissionInProgress
-                            ? "loading".tr()
-                            : "save".tr(),
-                        backgroundColor: AppColors.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    Expanded(child: _CancelButton()),
-                  ],
-                ),
-              ],
-            ),
+              );
+            }),
           );
         },
       ),

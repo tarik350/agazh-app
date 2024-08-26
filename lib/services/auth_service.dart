@@ -40,7 +40,9 @@ class AuthService extends ChangeNotifier {
         verificationFailed: (FirebaseAuthException e) {
           completer.completeError(e);
         },
-        codeAutoRetrievalTimeout: (String verificationId) {},
+        codeAutoRetrievalTimeout: (String verificationId) {
+          //this call back is code when resend otp is available
+        },
         codeSent: (String verificationId, int? resendToken) {
           completer.complete(verificationId);
         },

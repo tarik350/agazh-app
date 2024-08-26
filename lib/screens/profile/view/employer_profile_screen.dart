@@ -80,40 +80,40 @@ class _ProfileScreenState extends State<EmployerProfileScreen> {
   String profilePath = '';
 
   void _updateProfile() {
-    final updatedFields = <String, dynamic>{};
-
-    if (firstNameController.text.isNotEmpty) {
-      updatedFields['firstName'] = firstNameController.text;
-    }
-    if (lastNameController.text.isNotEmpty) {
-      updatedFields['lastName'] = lastNameController.text;
-    }
-    if (familySizeController.text.isNotEmpty) {
-      updatedFields['familySize'] = int.parse(familySizeController.text);
-    }
-    if (cityController.text.isNotEmpty) {
-      updatedFields['city'] = cityController.text;
-    }
-    if (subCityController.text.isNotEmpty) {
-      updatedFields['subCity'] = subCityController.text;
-    }
-    if (houseNumberController.text.isNotEmpty) {
-      updatedFields['houseNumber'] = int.parse(houseNumberController.text);
-    }
-    if (idCardPath.isNotEmpty) {
-      updatedFields['idCardImagePath'] = idCardPath;
-    }
-    if (profilePath.isNotEmpty) {
-      updatedFields['profilePicturePath'] = profilePath;
-    }
-    if (passwordController.text.isNotEmpty) {
-      updatedFields['password'] = passwordController.text;
-    }
-    if (specialLocationController.text.isNotEmpty) {
-      updatedFields['specialLocation'] = specialLocationController.text;
-    }
-
     try {
+      final updatedFields = <String, dynamic>{};
+
+      if (firstNameController.text.isNotEmpty) {
+        updatedFields['firstName'] = firstNameController.text;
+      }
+      if (lastNameController.text.isNotEmpty) {
+        updatedFields['lastName'] = lastNameController.text;
+      }
+      if (familySizeController.text.isNotEmpty) {
+        updatedFields['familySize'] = int.parse(familySizeController.text);
+      }
+      if (cityController.text.isNotEmpty) {
+        updatedFields['city'] = cityController.text;
+      }
+      if (subCityController.text.isNotEmpty) {
+        updatedFields['subCity'] = subCityController.text;
+      }
+      if (houseNumberController.text.isNotEmpty) {
+        updatedFields['houseNumber'] = houseNumberController.text;
+      }
+      if (idCardPath.isNotEmpty) {
+        updatedFields['idCardImagePath'] = idCardPath;
+      }
+      if (profilePath.isNotEmpty) {
+        updatedFields['profilePicturePath'] = profilePath;
+      }
+      if (passwordController.text.isNotEmpty) {
+        updatedFields['password'] = passwordController.text;
+      }
+      if (specialLocationController.text.isNotEmpty) {
+        updatedFields['specialLocation'] = specialLocationController.text;
+      }
+
       context.read<ProfileCubit>().updateProfile(
           auth.currentUser!.uid, updatedFields, UserRole.employer);
     } catch (e) {
@@ -245,67 +245,68 @@ class _ProfileScreenState extends State<EmployerProfileScreen> {
                           }
                         },
                         builder: (context, state) {
-                          return GestureDetector(
-                              onTap: () async {
-                                final image =
-                                    await showImageSourceDialog(context);
-                                if (context.mounted && image != null) {
-                                  context.read<ProfileCubit>().uploadIdCard(
-                                      file: image, path: "idcard");
-                                }
-                              },
-                              child: SizedBox(
-                                width: double.infinity,
-                                // decoration: const BoxDecoration(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    DottedBorder(
-                                      color: AppColors.primaryColor,
-                                      strokeWidth: 4.w,
-                                      strokeCap: StrokeCap.butt,
-                                      radius: Radius.circular(30.r),
-                                      child: state is IdCardUploading
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.all(12.0),
-                                              child: Center(
-                                                child: SizedBox(
-                                                  width: 12.h,
-                                                  height: 12.w,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    strokeWidth: 4.w,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          : Center(
-                                              child: Column(children: [
-                                                Icon(
-                                                  Icons.add,
-                                                  size: 30.h,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                                Text(
-                                                  "upload_id".tr(),
-                                                  style: const TextStyle(
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ]),
-                                            ),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                  ],
-                                ),
-                              ));
+                          return Container();
+                          // return GestureDetector(
+                          //     onTap: () async {
+                          //       final image =
+                          //           await showImageSourceDialog(context);
+                          //       if (context.mounted && image != null) {
+                          //         context.read<ProfileCubit>().uploadIdCard(
+                          //             file: image, path: "idcard");
+                          //       }
+                          //     },
+                          //     child: SizedBox(
+                          //       width: double.infinity,
+                          //       // decoration: const BoxDecoration(),
+                          //       child: Column(
+                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                          //         children: [
+                          //           DottedBorder(
+                          //             color: AppColors.primaryColor,
+                          //             strokeWidth: 4.w,
+                          //             strokeCap: StrokeCap.butt,
+                          //             radius: Radius.circular(30.r),
+                          //             child: state is IdCardUploading
+                          //                 ? Padding(
+                          //                     padding:
+                          //                         const EdgeInsets.all(12.0),
+                          //                     child: Center(
+                          //                       child: SizedBox(
+                          //                         width: 12.h,
+                          //                         height: 12.w,
+                          //                         child:
+                          //                             CircularProgressIndicator(
+                          //                           color:
+                          //                               AppColors.primaryColor,
+                          //                           strokeWidth: 4.w,
+                          //                         ),
+                          //                       ),
+                          //                     ),
+                          //                   )
+                          //                 : Center(
+                          //                     child: Column(children: [
+                          //                       Icon(
+                          //                         Icons.add,
+                          //                         size: 30.h,
+                          //                         color: AppColors.primaryColor,
+                          //                       ),
+                          //                       Text(
+                          //                         "upload_id".tr(),
+                          //                         style: const TextStyle(
+                          //                             color: AppColors
+                          //                                 .primaryColor,
+                          //                             fontWeight:
+                          //                                 FontWeight.bold),
+                          //                       )
+                          //                     ]),
+                          //                   ),
+                          //           ),
+                          //           SizedBox(
+                          //             height: 4.h,
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ));
                         },
                       ),
                       SizedBox(

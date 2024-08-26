@@ -38,7 +38,8 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    language = context.locale == Locale('en', "US") ? "English" : "Amharic";
+    language =
+        context.locale == const Locale('en', "US") ? "English" : "Amharic";
   }
 
   Future<String?> _getRole() async {
@@ -120,6 +121,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                     title: Text(
                                       "my_request_title".tr(),
                                     )),
+                              SettingsTile(
+                                  onPressed: (context) {
+                                    context.router
+                                        .push(const ChangePasswordRoute());
+                                  },
+                                  leading: const Icon(Icons.key),
+                                  title: Text(
+                                    "change_pin".tr(),
+                                  )),
                             ],
                           ),
                         ],

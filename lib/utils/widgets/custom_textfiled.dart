@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 
 class CustomTextfield extends StatelessWidget {
-  // final controller;
   final String hintText;
   final bool obscureText;
   final Function(dynamic) onChanged;
@@ -13,10 +12,10 @@ class CustomTextfield extends StatelessWidget {
   final String? initialValue;
   final Widget? suffix;
   final int? maxLines;
+  final bool enabled;
 
   const CustomTextfield(
       {super.key,
-      // required this.controller,
       this.initialValue,
       this.maxLines,
       required this.hintText,
@@ -25,7 +24,8 @@ class CustomTextfield extends StatelessWidget {
       required this.keyString,
       required this.inputType,
       required this.errorText,
-      this.suffix});
+      this.suffix,
+      this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class CustomTextfield extends StatelessWidget {
       obscureText: obscureText,
       key: Key(keyString),
       onChanged: onChanged,
+      enabled: enabled, // Control the enabled state
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
@@ -43,6 +44,9 @@ class CustomTextfield extends StatelessWidget {
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
           ),
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black.withOpacity(.3)),
+          ),
           focusedErrorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
           ),
@@ -50,12 +54,15 @@ class CustomTextfield extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400),
           ),
-          fillColor: AppColors.primaryColor.withOpacity(.1),
+          fillColor: enabled
+              ? AppColors.primaryColor.withOpacity(.1)
+              : Colors.black.withOpacity(.3),
           filled: true,
           hintText: hintText.tr(),
           errorMaxLines: 3,
           errorText: errorText?.tr(),
-          hintStyle: TextStyle(color: Colors.grey.shade500)),
+          hintStyle:
+              TextStyle(color: enabled ? Colors.grey.shade500 : Colors.white)),
     );
   }
 }

@@ -11,11 +11,9 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: EmployerHomeRoute.page,
         ),
+        AutoRoute(page: ChangePasswordRoute.page),
         AutoRoute(
-          page: SiraAppRoute.page,
-          initial: true,
-          guards: [AuthGuard()],
-        ),
+            page: SiraAppRoute.page, initial: true, guards: [AuthGuard()]),
         AutoRoute(page: EmployeeProfileRoute.page),
         AutoRoute(page: EmployerProfileRoute.page),
         AutoRoute(

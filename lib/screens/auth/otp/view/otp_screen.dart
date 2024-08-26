@@ -90,10 +90,20 @@ class OtpScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Center(
-                    //   child: Text(
-                    //       '${context.select((TimerBloc bloc) => bloc.state.duration)}'),
-                    // ),
+                    Center(
+                      child: BlocBuilder<OtpCubit, OtpState>(
+                        builder: (context, state) {
+                          return Text(
+                            "resend_otp_in".tr(args: [state.countdown]),
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: 22.h,
                     ),
@@ -103,22 +113,17 @@ class OtpScreen extends StatelessWidget {
                           child: BlocConsumer<OtpCubit, OtpState>(
                             listenWhen: (previous, current) =>
                                 previous.otpSubmissionStatus !=
-                                current.otpSubmissionStatus,
+                                    current.otpSubmissionStatus ||
+                                previous.resendStatus != current.resendStatus,
                             listener: (context, state) async {
-                              //get the role
-                              //if it is registration we could get it from role cubit
-                              //other wise we have to look up the user in either of the collection
-                              //get the doc get the role
-                              //other wise we could add a drop down for selecting role on login
-                              //and pass it to otp page when routing from login
-
-                              //gets have two separate blocs for handling routing in otp screen
-
-                              //on register if role is employee we go emplyee stepper
-                              //or we go to employer stepper
-
-                              //on login if role is employee we go to employee home page
-                              //or we go to employer home page
+                              if (state.resendStatus == ResendStatus.success) {
+                                AppConfig.getMassenger(
+                                    context, "resend_success_message".tr());
+                              }
+                              if (state.resendStatus == ResendStatus.failed) {
+                                AppConfig.getMassenger(
+                                    context, "resend_failed_message".tr());
+                              }
                               if (state.otpSubmissionStatus ==
                                   OtpStatus.submissionSuccess) {
                                 final preferance =
@@ -132,12 +137,6 @@ class OtpScreen extends StatelessWidget {
                                           .replaceAll([const SiraAppRoute()]);
                                     }
                                   }
-                                  // if (userRole == UserRole.employee) {
-                                  //   context.router.push(route)
-                                  // } else {
-                                  // }
-                                  // take role from params
-                                  //here if role is null we throw an exception
                                 } else if (route == 'register') {
                                   if (context.mounted) {
                                     final role = context
@@ -166,42 +165,6 @@ class OtpScreen extends StatelessWidget {
                                       "otp_verification_failed_message".tr());
                                 }
                               }
-                              // final role =
-                              //     context.read<RoleCubit>().state.userRole !=
-                              //             UserRole.none
-                              //         ? context.read<RoleCubit>().state.userRole
-                              //         : "get user role from auth service";
-                              // if (state.otpSubmissionStatus ==
-                              //     OtpStatus.submissionFailure) {
-                              //   //todo => handle submission status
-                              // }
-
-                              // if (state.otpSubmissionStatus ==
-                              //     OtpStatus.submissionSuccess) {
-                              //   switch (role) {
-                              //     case UserRole.employee:
-                              //       if (route == 'login') {
-                              //         //todo -> route to home
-                              //       } else {
-                              //         //todo -> route to stepper
-                              //       }
-                              //       break;
-                              //     case UserRole.employer:
-                              //       if (route == 'signup') {
-                              //         context.router
-                              //             .push(const EmployerStepperRoute());
-                              //       } else {
-                              //         context.router.push(SiraApp());
-                              //       }
-                              //       break;
-                              //     default:
-                              //   }
-
-                              //   // if (role == UserRole.employer) {
-                              //   // } else if (role == UserRole.employee) {
-                              //   //   //todo route to emplyee stepper
-                              //   // } else {}
-                              // }
                             },
                             builder: (context, state) {
                               return PinCodeTextField(
@@ -304,14 +267,17 @@ class OtpScreen extends StatelessWidget {
                               child: TextButton(
                                   style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,
+                                      foregroundColor: AppColors.primaryColor,
                                       splashFactory: NoSplash.splashFactory,
                                       textStyle: const TextStyle(
-                                          color: AppColors.primaryColor,
+                                          color: Colors.red,
                                           fontWeight: FontWeight.bold)),
                                   onPressed: state.isResendDisabled
                                       ? null
                                       : () {
-                                          context.read<OtpCubit>().resendOtp();
+                                          context
+                                              .read<OtpCubit>()
+                                              .resendOtp(phoneNumber);
                                         },
                                   child: Text('resend_otp'.tr())),
                             ),
@@ -329,77 +295,3 @@ class OtpScreen extends StatelessWidget {
     );
   }
 }
-//instaruction for otp
-
-//  RichText(
-//                     text = TextSpan(
-//                       children: [
-//                         TextSpan(
-//                           text:
-//                               'Please enter the 6-digit OTP code that was sent to you via SMS.\n\n',
-//                           style: TextStyle(
-//                               color: Colors.black.withOpacity(.5),
-//                               fontSize: 13.sp),
-//                         ),
-//                         TextSpan(
-//                           text: 'Instructions\n',
-//                           style: TextStyle(
-//                               color: Colors.black.withOpacity(.8),
-//                               fontSize: 13.sp,
-//                               fontWeight: FontWeight.bold),
-//                         ),
-//                         WidgetSpan(
-//                             child: SizedBox(
-//                           height: 28.h,
-//                         )),
-//                         TextSpan(
-//                           text:
-//                               '1. Tap on the first field below to start entering the code.\n',
-//                           style: TextStyle(
-//                               color: Colors.grey[700], fontSize: 13.sp),
-//                         ),
-//                         WidgetSpan(
-//                             child: SizedBox(
-//                           height: 22.h,
-//                         )),
-//                         TextSpan(
-//                           text: '2. Enter the numbers one by one.\n',
-//                           style: TextStyle(
-//                               color: Colors.grey[700], fontSize: 13.sp),
-//                         ),
-//                         WidgetSpan(
-//                             child: SizedBox(
-//                           height: 22.h,
-//                         )),
-//                         TextSpan(
-//                           text: '3. The OTP code contains only numbers.\n',
-//                           style: TextStyle(
-//                               color: Colors.grey[700], fontSize: 13.sp),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-
-// margin: EdgeInsets.zero,
-// mainAxisAlignment:
-//     MainAxisAlignment.spaceBetween,
-// numberOfFields: 6,
-// focusedBorderColor: AppColors.primaryColor,
-// contentPadding: EdgeInsets.all(12.w),
-// fieldWidth: 42.w,
-// borderWidth: 5.h,
-// enabledBorderColor:
-//     AppColors.blackColor.withOpacity(.2),
-// textStyle: TextStyle(
-//     fontSize: 18.sp,
-//     color: AppColors.primaryColor,
-//     fontWeight: FontWeight.bold),
-// borderRadius:
-//     BorderRadius.all(Radius.circular(8.r)),
-// showFieldAsBox: true,
-// onCodeChanged: (code) => context
-//     .read<OtpCubit>()
-//     .onOtpStringChange(code),
-// onSubmit: (code) => context
-//     .read<OtpCubit>()
-//     .setOptString(code)

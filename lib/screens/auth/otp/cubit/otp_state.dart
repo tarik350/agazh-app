@@ -21,6 +21,8 @@ enum OtpStatus {
   submissionCanceled
 }
 
+enum ResendStatus { initial, failed, success }
+
 class OtpState extends Equatable {
   final String otpString;
   final OtpStatus otpStringStatus;
@@ -28,6 +30,8 @@ class OtpState extends Equatable {
   final bool isResendDisabled;
   final OtpStatus otpResendStatus;
   final String verificationId;
+  final String countdown;
+  final ResendStatus resendStatus;
 
   const OtpState(
       {this.otpString = '',
@@ -35,6 +39,8 @@ class OtpState extends Equatable {
       this.otpSubmissionStatus = OtpStatus.pure,
       this.otpResendStatus = OtpStatus.pure,
       this.verificationId = '',
+      this.resendStatus = ResendStatus.initial,
+      this.countdown = '02:00',
       this.isResendDisabled = true});
 
   OtpState copyWith(
@@ -43,6 +49,8 @@ class OtpState extends Equatable {
       bool? isResendDisabled,
       String? verificationId,
       OtpStatus? otpResendStatus,
+      String? countdown,
+      ResendStatus? resendStatus,
       OtpStatus? otpSubmissionStatus}) {
     return OtpState(
         otpString: otpString ?? this.otpString,
@@ -50,6 +58,8 @@ class OtpState extends Equatable {
         verificationId: verificationId ?? this.verificationId,
         otpSubmissionStatus: otpSubmissionStatus ?? this.otpSubmissionStatus,
         isResendDisabled: isResendDisabled ?? this.isResendDisabled,
+        countdown: countdown ?? this.countdown,
+        resendStatus: resendStatus ?? this.resendStatus,
         otpStringStatus: otpStringStatus ?? this.otpStringStatus);
   }
 
@@ -60,6 +70,8 @@ class OtpState extends Equatable {
         isResendDisabled,
         otpStringStatus,
         verificationId,
-        otpResendStatus
+        countdown,
+        otpResendStatus,
+        resendStatus
       ];
 }

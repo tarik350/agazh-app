@@ -99,7 +99,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
       updatedFields['subCity'] = subCityController.text;
     }
     if (houseNumberController.text.isNotEmpty) {
-      updatedFields['houseNumber'] = int.parse(houseNumberController.text);
+      updatedFields['houseNumber'] = houseNumberController.text;
     }
     if (idCardPath.isNotEmpty) {
       updatedFields['idCardImagePath'] = idCardPath;
@@ -255,67 +255,68 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                           }
                         },
                         builder: (context, state) {
-                          return GestureDetector(
-                              onTap: () async {
-                                final image =
-                                    await showImageSourceDialog(context);
-                                if (context.mounted && image != null) {
-                                  context.read<ProfileCubit>().uploadIdCard(
-                                      file: image, path: "idcard");
-                                }
-                              },
-                              child: SizedBox(
-                                width: double.infinity,
-                                // decoration: const BoxDecoration(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    DottedBorder(
-                                      color: AppColors.primaryColor,
-                                      strokeWidth: 4.w,
-                                      strokeCap: StrokeCap.butt,
-                                      radius: Radius.circular(30.r),
-                                      child: state is IdCardUploading
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.all(12.0),
-                                              child: Center(
-                                                child: SizedBox(
-                                                  width: 12.h,
-                                                  height: 12.w,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    strokeWidth: 4.w,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          : Center(
-                                              child: Column(children: [
-                                                Icon(
-                                                  Icons.add,
-                                                  size: 30.h,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                                Text(
-                                                  "upload_id".tr(),
-                                                  style: const TextStyle(
-                                                      color: AppColors
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ]),
-                                            ),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                  ],
-                                ),
-                              ));
+                          return Container();
+                          // return GestureDetector(
+                          //     onTap: () async {
+                          //       final image =
+                          //           await showImageSourceDialog(context);
+                          //       if (context.mounted && image != null) {
+                          //         context.read<ProfileCubit>().uploadIdCard(
+                          //             file: image, path: "idcard");
+                          //       }
+                          //     },
+                          //     child: SizedBox(
+                          //       width: double.infinity,
+                          //       // decoration: const BoxDecoration(),
+                          //       child: Column(
+                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                          //         children: [
+                          //           DottedBorder(
+                          //             color: AppColors.primaryColor,
+                          //             strokeWidth: 4.w,
+                          //             strokeCap: StrokeCap.butt,
+                          //             radius: Radius.circular(30.r),
+                          //             child: state is IdCardUploading
+                          //                 ? Padding(
+                          //                     padding:
+                          //                         const EdgeInsets.all(12.0),
+                          //                     child: Center(
+                          //                       child: SizedBox(
+                          //                         width: 12.h,
+                          //                         height: 12.w,
+                          //                         child:
+                          //                             CircularProgressIndicator(
+                          //                           color:
+                          //                               AppColors.primaryColor,
+                          //                           strokeWidth: 4.w,
+                          //                         ),
+                          //                       ),
+                          //                     ),
+                          //                   )
+                          //                 : Center(
+                          //                     child: Column(children: [
+                          //                       Icon(
+                          //                         Icons.add,
+                          //                         size: 30.h,
+                          //                         color: AppColors.primaryColor,
+                          //                       ),
+                          //                       Text(
+                          //                         "upload_id".tr(),
+                          //                         style: const TextStyle(
+                          //                             color: AppColors
+                          //                                 .primaryColor,
+                          //                             fontWeight:
+                          //                                 FontWeight.bold),
+                          //                       )
+                          //                     ]),
+                          //                   ),
+                          //           ),
+                          //           SizedBox(
+                          //             height: 4.h,
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ));
                         },
                       ),
                       SizedBox(
@@ -456,6 +457,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                         height: 12.h,
                       ),
                       ProfileTextField(
+                        disabled: true,
                         controller: ageController,
                         labelText: 'other_detail.age',
                       ),

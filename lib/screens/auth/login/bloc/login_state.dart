@@ -5,14 +5,15 @@ class LoginState extends Equatable {
   // final Password password;
   final FormzStatus status;
   final String? errorMessage;
-  final Password password;
+  final PIN password;
   final String? verificationId;
   final UserRole userRole;
+
   const LoginState(
       {this.status = FormzStatus.pure,
       this.errorMessage,
       this.userRole = UserRole.none,
-      this.password = const Password.pure(),
+      this.password = const PIN.pure(),
       this.verificationId,
       this.phoneNumber = const PhoneNumber.pure()});
 
@@ -20,7 +21,7 @@ class LoginState extends Equatable {
       {PhoneNumber? phoneNumber,
       FormzStatus? status,
       String? errorMessage,
-      Password? password,
+      PIN? password,
       UserRole? userRole,
       String? verificationId}) {
     if (status == FormzStatus.success && verificationId == null) {
@@ -36,11 +37,16 @@ class LoginState extends Equatable {
           ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
           : errorMessage ?? this.errorMessage,
       verificationId: verificationId ?? this.verificationId,
-      // password: password ?? this.password
     );
   }
 
   @override
-  List<dynamic> get props =>
-      [phoneNumber, status, errorMessage, userRole, password, verificationId];
+  List<dynamic> get props => [
+        phoneNumber,
+        status,
+        errorMessage,
+        userRole,
+        password,
+        verificationId,
+      ];
 }

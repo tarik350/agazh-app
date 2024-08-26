@@ -30,3 +30,21 @@ class GetEmployee extends HomeEvent {
 
   const GetEmployee({this.filter, this.name});
 }
+
+class PINChanged extends HomeEvent {
+  final String pin;
+  const PINChanged(this.pin);
+
+  @override
+  List<Object> get props => [pin];
+}
+
+class ConfirmPinChanged extends HomeEvent {
+  final String confirmPin;
+  const ConfirmPinChanged(this.confirmPin);
+
+  @override
+  List<Object> get props => [confirmPin];
+}
+
+class ChangePasswordEvent extends HomeEvent {}

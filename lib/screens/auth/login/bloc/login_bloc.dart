@@ -3,12 +3,17 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:mobile_app/data/repository/employee_repository.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/register/models/Password.dart';
 import 'package:mobile_app/screens/auth/register/models/phone_number.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/confirm_pin.dart';
+import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/pin.dart';
 import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
 import 'package:mobile_app/utils/helpers/helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../role/enums/selected_role.dart';
 
@@ -17,6 +22,7 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final _authService = getit<AuthService>();
+
   LoginBloc() : super(const LoginState()) {
     on<LoginFormSubmitted>(_onLogin);
     on<PhoneNumberChanged>(_onPhoneChanged);
@@ -35,7 +41,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _onPasswordChanged(
       PasswordChanged event, Emitter<LoginState> emit) {
-    final passwrod = Password.dirty(event.password);
+    final passwrod = PIN.dirty(event.password);
     emit(state.copyWith(
         password: passwrod,
         status: Formz.validate([passwrod, state.phoneNumber])));
@@ -43,11 +49,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _onLogin(
       LoginFormSubmitted event, Emitter<LoginState> emit) async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
+      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+
       final employee = await _authService.lookupUser(
           state.phoneNumber.value, state.password.value, "employee");
-      print(state.phoneNumber.value);
       final employer = await _authService.lookupUser(
           state.phoneNumber.value, state.password.value, "employers");
       if (employee == null && employer == null) {

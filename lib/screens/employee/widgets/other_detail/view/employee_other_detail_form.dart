@@ -18,34 +18,42 @@ class EmployeeOtherDetailForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<EmployeeOtherDetailBloc, EmployeeOtherDetailState>(
       listener: (context, state) {},
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          const _WorkTypeDropDown(),
-          const SizedBox(
-            height: 12,
-          ),
-          const _ReligionDropdown(),
-          const SizedBox(
-            height: 12,
-          ),
-          // _ReligionInput(),
-          // const SizedBox(
-          //   height: 12,
-          // ),
-          _AgeInput(),
-          const SizedBox(
-            height: 12,
-          ),
-          Row(
-            children: [
-              Expanded(child: _SubmitButton()),
-              const SizedBox(width: 8.0),
-              Expanded(child: _CancelButton()),
-            ],
-          ),
-        ],
-      )),
+      child: Expanded(
+        child: LayoutBuilder(builder: (context, constraints) {
+          return SingleChildScrollView(
+              child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  const _WorkTypeDropDown(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const _ReligionDropdown(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  _AgeInput(),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      Expanded(child: _SubmitButton()),
+                      const SizedBox(width: 8.0),
+                      Expanded(child: _CancelButton()),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ));
+        }),
+      ),
     );
   }
 }
@@ -197,7 +205,7 @@ class _SubmitButton extends StatelessWidget {
           lable: state.status.isSubmissionInProgress
               ? "loading".tr()
               : "proceed".tr(),
-          backgroundColor: Colors.black,
+          backgroundColor: AppColors.primaryColor,
         );
       },
     );

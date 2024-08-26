@@ -55,3 +55,9 @@ class SpecialLocaionChanged extends AddressInfoEvent {
 }
 
 class FormSubmitted extends AddressInfoEvent {}
+
+class HouseNumberNewSelected extends AddressInfoEvent {
+  final bool isNewSelected;
+
+  const HouseNumberNewSelected(this.isNewSelected);
+}

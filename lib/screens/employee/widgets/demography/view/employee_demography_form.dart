@@ -27,30 +27,41 @@ class EmplyeeDemographyForm extends StatelessWidget {
         //     );
         // }
       },
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            _SalaryInput(),
-            const SizedBox(
-              height: 12,
+      child: Expanded(
+        child: LayoutBuilder(builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    _SalaryInput(),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    const _JobStatusDropDown(),
+                    const SizedBox(height: 12.0),
+                    _CityInput(),
+                    const SizedBox(height: 12.0),
+                    _SubCityInput(),
+                    const SizedBox(height: 12.0),
+                    _HouseNumberInput(),
+                    const SizedBox(height: 12.0),
+                    Row(
+                      children: [
+                        Expanded(child: _SubmitButton()),
+                        const SizedBox(width: 8.0),
+                        Expanded(child: _CancelButton()),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const _JobStatusDropDown(),
-            const SizedBox(height: 12.0),
-            _CityInput(),
-            const SizedBox(height: 12.0),
-            _SubCityInput(),
-            const SizedBox(height: 12.0),
-            _HouseNumberInput(),
-            const SizedBox(height: 12.0),
-            Row(
-              children: [
-                Expanded(child: _SubmitButton()),
-                const SizedBox(width: 8.0),
-                Expanded(child: _CancelButton()),
-              ],
-            ),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }
@@ -61,19 +72,64 @@ class _HouseNumberInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EmployeeDemographyBloc, EmployeeDemographyState>(
       buildWhen: (previous, current) =>
-          previous.houseNumber != current.houseNumber,
+          previous.houseNumber != current.houseNumber ||
+          previous.isNewHouseNumberSelected != current.isNewHouseNumberSelected,
       builder: (context, state) {
-        return CustomTextfield(
-            hintText: 'house_number',
-            obscureText: false,
-            onChanged: (houseNumber) => context
-                .read<EmployeeDemographyBloc>()
-                .add(HouseNumberChanged(houseNumber)),
-            keyString: "billingAddressForm_streetInput_textField",
-            inputType: TextInputType.text,
-            errorText: state.houseNumber.invalid
-                ? state.houseNumber.error?.message
-                : null);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextfield(
+              hintText: 'house_number',
+              obscureText: false,
+              onChanged: (houseNumber) => context
+                  .read<EmployeeDemographyBloc>()
+                  .add(HouseNumberChanged(houseNumber)),
+              keyString: "billingAddressForm_streetInput_textField",
+              inputType: TextInputType.text,
+              errorText: state.houseNumber.invalid
+                  ? state.houseNumber.error?.message
+                  : null,
+              // Disable input if 'new' is selected
+              enabled: !state.isNewHouseNumberSelected,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.h),
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 30.h,
+                    width: 30.h,
+                    child: Checkbox(
+                      // fillColor: WidgetStateProperty.all<Color>(
+                      // AppColors.primaryColor),
+                      activeColor: AppColors.primaryColor,
+
+                      value: state.isNewHouseNumberSelected,
+                      onChanged: (value) {
+                        context
+                            .read<EmployeeDemographyBloc>()
+                            .add(DemographyHouseNumberNewSelected(value!));
+                        if (value == true) {
+                          context
+                              .read<EmployeeDemographyBloc>()
+                              .add(const HouseNumberChanged('new'));
+                        } else {
+                          context
+                              .read<EmployeeDemographyBloc>()
+                              .add(const HouseNumberChanged(""));
+                        }
+                      },
+                    ),
+                  ),
+                  Text(
+                    'new'.tr(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -128,9 +184,18 @@ class _SalaryInput extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Selected Salary: ${state.salary.value} ETB',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Text(
+                  'select_salary'.tr(),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  ': ${state.salary.value} ETB',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             Slider(
               value: state.salary.value.toDouble(),
@@ -214,16 +279,14 @@ class _SubmitButton extends StatelessWidget {
           previous.jobStatus != current.jobStatus,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated &&
-                  state.jobStatus != JobStatusEnum.none &&
-                  state.status.isValid
+          onTap: state.jobStatus != JobStatusEnum.none && state.status.isValid
               ? () =>
                   context.read<EmployeeDemographyBloc>().add(FormSubmitted())
               : null,
           lable: state.status.isSubmissionInProgress
               ? "loading".tr()
               : "proceed".tr(),
-          backgroundColor: Colors.black,
+          backgroundColor: AppColors.primaryColor,
         );
       },
     );

@@ -21,14 +21,23 @@ class CustomButton extends StatelessWidget {
               backgroundColor: backgroundColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)))
-          .copyWith(backgroundColor:
-              MaterialStateProperty.resolveWith<Color>((states) {
-        if (states.contains(MaterialState.disabled)) {
-          return backgroundColor.withOpacity(.7);
-        } else {
-          return backgroundColor;
-        }
-      })).copyWith(),
+          .copyWith(backgroundColor: WidgetStateProperty.resolveWith<Color>(
+        (states) {
+          if (states.contains(WidgetState.disabled)) {
+            return backgroundColor.withOpacity(.3);
+          } else {
+            return backgroundColor;
+          }
+        },
+      ), foregroundColor: WidgetStateProperty.resolveWith<Color>(
+        (states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.black.withOpacity(.3);
+          } else {
+            return Colors.white;
+          }
+        },
+      )).copyWith(),
       onPressed: onTap,
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -38,7 +47,6 @@ class CustomButton extends StatelessWidget {
           child: Text(
             lable,
             style: const TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

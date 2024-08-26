@@ -16,7 +16,7 @@ class EmployeeStepperScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: BlocProvider<EmployerRegistrationCubit>(
           create: (_) => EmployerRegistrationCubit(4),
