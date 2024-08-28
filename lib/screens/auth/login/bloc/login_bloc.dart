@@ -1,7 +1,6 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/screens/auth/register/models/Password.dart';
 import 'package:mobile_app/screens/auth/register/models/phone_number.dart';
@@ -76,16 +75,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _onSelectedRoleChange(
       SelectedRoleChange event, Emitter<LoginState> emit) {
     if (event.userRole == 'employer') {
-      final status = Formz.validate([state.password, state.phoneNumber]);
-
       emit(state.copyWith(
           userRole: UserRole.employer,
           status: Formz.validate([state.password, state.phoneNumber])
               ? FormzSubmissionStatus.success
               : FormzSubmissionStatus.initial));
     } else {
-      final status = Formz.validate([state.password, state.phoneNumber]);
-
       emit(state.copyWith(
           userRole: UserRole.employee,
           status: Formz.validate([state.password, state.phoneNumber])

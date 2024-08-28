@@ -11,11 +11,10 @@ import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/cubit/terms_and_conditions_cubit.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
-
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
 
 class TermsAndConditionScreen extends StatelessWidget {
-  const TermsAndConditionScreen({Key? key}) : super(key: key);
+  const TermsAndConditionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,6 @@ class TermsAndConditionScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final user = context.read<EmployerRepository>().getUser();
           return Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

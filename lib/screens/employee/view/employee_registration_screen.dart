@@ -7,12 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/screens/employee/view/employee_stepper.dart';
 import 'package:mobile_app/screens/employer_regisration/cubit/employer_registration_cubit.dart';
-import 'package:mobile_app/screens/employer_regisration/view/employer_stepper.dart';
 import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
 
 @RoutePage()
 class EmployeeStepperScreen extends StatelessWidget {
-  const EmployeeStepperScreen({Key? key}) : super(key: key);
+  const EmployeeStepperScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

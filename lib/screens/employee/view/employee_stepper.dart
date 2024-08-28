@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +10,7 @@ import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/vi
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/view/termsandcondition_screen.dart';
 
 class EmplyeeStepper extends StatelessWidget {
-  const EmplyeeStepper({Key? key}) : super(key: key);
+  const EmplyeeStepper({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
-import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/home/employer/cubit/employer_cubit.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
@@ -49,7 +48,8 @@ class _RatingDialogState extends State<RatingDialog> {
               children: [
                 Text(
                   'rate_title'.tr(),
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20.0),
                 RatingBar.builder(
@@ -75,7 +75,7 @@ class _RatingDialogState extends State<RatingDialog> {
                   controller: _messageController,
                   decoration: InputDecoration(
                     labelText: 'feedback'.tr(),
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                   maxLines: 3,
                   validator: (value) {

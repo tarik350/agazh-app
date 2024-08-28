@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:formz/formz.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/employee.dart';
@@ -80,7 +79,7 @@ class EmployerRequestList extends StatelessWidget {
                             height: 100,
                             child: CachedNetworkImage(
                               fit: BoxFit.cover,
-                              imageUrl: employee.profilePicturePath ?? '',
+                              imageUrl: employee.profilePicturePath,
                               progressIndicatorBuilder:
                                   (context, _, progress) => const Center(
                                       child: CircularProgressIndicator()),
@@ -111,7 +110,7 @@ class EmployerRequestList extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '${employee.city ?? 'No City'}, ${employee.subCity ?? 'No Subcity'}',
+                                      '${employee.city}, ${employee.subCity}',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.grey[700],
@@ -124,8 +123,7 @@ class EmployerRequestList extends StatelessWidget {
                               const SizedBox(height: 8),
                               RatingBar.builder(
                                 itemSize: 15,
-                                initialRating:
-                                    employee.totalRating.toDouble() ?? 0,
+                                initialRating: employee.totalRating.toDouble(),
                                 minRating: 0,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,

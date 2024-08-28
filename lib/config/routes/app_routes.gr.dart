@@ -12,7 +12,7 @@ import 'package:auto_route/auto_route.dart' as _i16;
 import 'package:flutter/material.dart' as _i17;
 import 'package:mobile_app/data/models/employee.dart' as _i18;
 import 'package:mobile_app/flow_builder_screen.dart' as _i10;
-import 'package:mobile_app/screens/app/view/sira_app.dart' as _i15;
+import 'package:mobile_app/screens/app/view/agazh_app.dart' as _i15;
 import 'package:mobile_app/screens/auth/login/view/login_screen.dart' as _i9;
 import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i12;
 import 'package:mobile_app/screens/auth/register/view/register_screen.dart'

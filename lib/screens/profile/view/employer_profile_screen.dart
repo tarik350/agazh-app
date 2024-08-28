@@ -13,23 +13,20 @@ import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/Employer.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/LastName.dart';
 import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_shimmer.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_text_filed.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
-import 'package:mobile_app/utils/widgets/employee_loading_shimmer.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../services/image_service.dart';
 
 @RoutePage()
 class EmployerProfileScreen extends StatefulWidget {
   const EmployerProfileScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();

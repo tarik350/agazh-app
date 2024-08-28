@@ -2,16 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/data/models/Employer.dart';
 import 'package:mobile_app/data/models/user_old.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/firestore_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
-
-import '../data/models/employee.dart';
 
 class AuthService {
   String? verificationId;
@@ -26,8 +22,6 @@ class AuthService {
   }
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String?> phoneVerification(String phone) async {

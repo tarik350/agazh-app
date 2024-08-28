@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/other_detail/models/age.dart';
-import 'package:mobile_app/screens/employee/widgets/other_detail/models/religion.dart';
 
 part 'employee_other_detail_event.dart';
 part 'employee_other_detail_state.dart';
