@@ -164,7 +164,7 @@ class Employee extends Equatable {
       String? idCardImagePathBack,
       String? city,
       String? subCity,
-      dynamic? houseNumber,
+      dynamic houseNumber,
       WorkStatus? workStatus,
       String? phone,
       String? password,

@@ -137,7 +137,7 @@ class _HouseNumberInput extends StatelessWidget {
                   ),
                   Text(
                     'new'.tr(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

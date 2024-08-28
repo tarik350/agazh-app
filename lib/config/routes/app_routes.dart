@@ -13,7 +13,7 @@ class AppRouter extends $AppRouter {
         ),
         AutoRoute(page: ChangePasswordRoute.page),
         AutoRoute(
-            page: SiraAppRoute.page, initial: true, guards: [AuthGuard()]),
+            page: AgazhAppRoute.page, initial: true, guards: [AuthGuard()]),
         AutoRoute(page: EmployeeProfileRoute.page),
         AutoRoute(page: EmployerProfileRoute.page),
         AutoRoute(

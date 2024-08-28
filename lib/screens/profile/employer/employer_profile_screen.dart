@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
-import 'package:mobile_app/data/models/employee.dart';
-import 'package:mobile_app/data/repository/employee_repository.dart';
-import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
+import 'package:mobile_app/data/models/Employer.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_shimmer.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_text_filed.dart';
@@ -22,28 +19,26 @@ import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
 import '../../../services/image_service.dart';
 
 @RoutePage()
-class EmployeeProfileScreen extends StatefulWidget {
-  const EmployeeProfileScreen({Key? key}) : super(key: key);
+class EmployerProfileScreen extends StatefulWidget {
+  const EmployerProfileScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  _EmployeeProfileScreenState createState() => _EmployeeProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
+class _ProfileScreenState extends State<EmployerProfileScreen> {
   final auth = FirebaseAuth.instance;
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
+  late TextEditingController familySizeController;
   late TextEditingController cityController;
   late TextEditingController subCityController;
   late TextEditingController houseNumberController;
   late TextEditingController passwordController;
-  late TextEditingController ageController;
-  late TextEditingController religionController;
-  String idCardPath = '';
-  String profilePath = '';
-  late String workType = "";
-  late String jobStatus = "";
-  Employee? employee;
+  late TextEditingController specialLocationController;
+  Employer? employer;
 
   @override
   void initState() {
@@ -52,80 +47,74 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   }
 
   Future<void> _initializeProfile() async {
-    final fetchedEmployee =
-        await context.read<EmployeeRepository>().getEmployeeByCurrentUserUid();
+    final fetchedEmployer =
+        await context.read<EmployerRepository>().getEmployerData();
     setState(() {
-      employee = fetchedEmployee ?? const Employee();
+      employer = fetchedEmployer ?? const Employer();
       _initializeTextControllers();
     });
   }
 
   void _initializeTextControllers() {
-    firstNameController = TextEditingController(text: employee?.firstName);
-    lastNameController = TextEditingController(text: employee?.lastName);
-    cityController = TextEditingController(text: employee?.city);
-    subCityController = TextEditingController(text: employee?.subCity);
+    firstNameController = TextEditingController(text: employer?.firstName);
+    lastNameController = TextEditingController(text: employer?.lastName);
+    familySizeController =
+        TextEditingController(text: employer?.familySize.toString() ?? '');
+    cityController = TextEditingController(text: employer?.city);
+    subCityController = TextEditingController(text: employer?.subCity);
     houseNumberController =
-        TextEditingController(text: employee?.houseNumber.toString());
-    passwordController = TextEditingController(text: employee?.password);
-    religionController = TextEditingController(text: employee?.religion);
-    ageController = TextEditingController(text: employee?.age.toString());
-    workType = employee?.workType ?? "";
-    jobStatus =
-        employee?.jobStatus == JobStatusEnum.partTime ? "partTime" : "fullTime";
+        TextEditingController(text: employer?.houseNumber.toString() ?? '');
+    passwordController = TextEditingController(text: employer?.password);
+    specialLocationController =
+        TextEditingController(text: employer?.specialLocation);
   }
 
-  void getEmployee() async {
-    final employee =
-        await context.read<EmployeeRepository>().getEmployeeByCurrentUserUid();
-    this.employee = employee ?? const Employee();
+  void getEmployer() async {
+    final employer = await context.read<EmployerRepository>().getEmployerData();
+    this.employer = employer ?? const Employer();
     return null;
   }
 
+  String idCardPath = '';
+  String profilePath = '';
+
   void _updateProfile() {
-    final updatedFields = <String, dynamic>{};
-
-    if (firstNameController.text.isNotEmpty) {
-      updatedFields['firstName'] = firstNameController.text;
-    }
-    if (lastNameController.text.isNotEmpty) {
-      updatedFields['lastName'] = lastNameController.text;
-    }
-
-    if (cityController.text.isNotEmpty) {
-      updatedFields['city'] = cityController.text;
-    }
-    if (subCityController.text.isNotEmpty) {
-      updatedFields['subCity'] = subCityController.text;
-    }
-    if (houseNumberController.text.isNotEmpty) {
-      updatedFields['houseNumber'] = houseNumberController.text;
-    }
-    if (idCardPath.isNotEmpty) {
-      updatedFields['idCardImagePath'] = idCardPath;
-    }
-    if (profilePath.isNotEmpty) {
-      updatedFields['profilePicturePath'] = profilePath;
-    }
-    if (workType.isNotEmpty) {
-      updatedFields['workType'] = workType;
-    }
-    if (jobStatus.isNotEmpty) {
-      updatedFields['jobstatus'] = jobStatus;
-    }
-    if (passwordController.text.isNotEmpty) {
-      updatedFields['password'] = passwordController.text;
-    }
-    if (ageController.text.isNotEmpty) {
-      updatedFields['age'] = ageController.text;
-    }
-    if (religionController.text.isNotEmpty) {
-      updatedFields['religion'] = religionController.text;
-    }
-
     try {
+      final updatedFields = <String, dynamic>{};
+
+      if (firstNameController.text.isNotEmpty) {
+        updatedFields['firstName'] = firstNameController.text;
+      }
+      if (lastNameController.text.isNotEmpty) {
+        updatedFields['lastName'] = lastNameController.text;
+      }
+      if (familySizeController.text.isNotEmpty) {
+        updatedFields['familySize'] = int.parse(familySizeController.text);
+      }
+      if (cityController.text.isNotEmpty) {
+        updatedFields['city'] = cityController.text;
+      }
+      if (subCityController.text.isNotEmpty) {
+        updatedFields['subCity'] = subCityController.text;
+      }
+      if (houseNumberController.text.isNotEmpty) {
+        updatedFields['houseNumber'] = houseNumberController.text;
+      }
+      if (idCardPath.isNotEmpty) {
+        updatedFields['idCardImagePath'] = idCardPath;
+      }
+      if (profilePath.isNotEmpty) {
+        updatedFields['profilePicturePath'] = profilePath;
+      }
+      if (passwordController.text.isNotEmpty) {
+        updatedFields['password'] = passwordController.text;
+      }
+      if (specialLocationController.text.isNotEmpty) {
+        updatedFields['specialLocation'] = specialLocationController.text;
+      }
+
       context.read<ProfileCubit>().updateProfile(
-          auth.currentUser!.uid, updatedFields, UserRole.employee);
+          auth.currentUser!.uid, updatedFields, UserRole.employer);
     } catch (e) {
       print(e);
     }
@@ -134,7 +123,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: employee == null
+      body: employer == null
           ? const EditProfileShimmer()
           : SafeArea(
               child: Padding(
@@ -153,7 +142,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                               child: CachedNetworkImage(
                                 imageUrl: profilePath.isNotEmpty
                                     ? profilePath
-                                    : employee!.profilePicturePath,
+                                    : employer!.profilePicturePath,
                                 fit: BoxFit.cover,
                                 errorWidget: (context, url, error) => Container(
                                   color: AppColors.secondaryColor,
@@ -180,7 +169,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                                           .uploadProfilePicture(
                                               file: image,
                                               path: "profilePics",
-                                              id: employee!.id);
+                                              id: employer!.id);
                                     }
                                   },
                                   icon: ClipRRect(
@@ -322,100 +311,6 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       SizedBox(
                         height: 12.h,
                       ),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton2(
-                          value: workType.isNotEmpty ? workType : null,
-                          onChanged: (value) => setState(() {
-                            workType = value!;
-                          }),
-                          buttonStyleData: ButtonStyleData(
-                              padding: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                      width: 1.w,
-                                      color: AppColors.primaryColor
-                                          .withOpacity(.3)))
-
-                              // padding: EdgeInsets.symmetric(horizontal: 16),
-                              // height: 40,
-                              // width: 140,
-                              ),
-                          isExpanded: true,
-                          hint: Text(
-                            'other_detail.select_work_type'.tr(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ),
-                          items: [
-                            "Kitchen Staff",
-                            "Cleaner",
-                            "Full Time Housekeeper",
-                            "Part Time Housekeeper",
-                            "Nanny"
-                          ]
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      "other_detail.${AppConfig.toSnakeCase(item)}"
-                                          .tr(),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 18.h,
-                      ),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton2(
-                          value: jobStatus.isEmpty
-                              ? null
-                              : jobStatus == 'partTime'
-                                  ? "Part Time"
-                                  : "Full Time",
-                          onChanged: (String? value) => setState(() {
-                            jobStatus =
-                                value == 'Part Time' ? "partTime" : "fullTime";
-                          }),
-                          buttonStyleData: ButtonStyleData(
-                              padding: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                      width: 1.w,
-                                      color: AppColors.primaryColor
-                                          .withOpacity(.3)))),
-                          isExpanded: true,
-                          hint: Text(
-                            'demography.select_job_status'.tr(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ),
-                          items: ["Part Time", "Full Time"]
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      "demography.${AppConfig.toSnakeCase(item)}"
-                                          .tr(),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 18.h,
-                      ),
                       ProfileTextField(
                         controller: firstNameController,
                         labelText: 'firstname',
@@ -423,7 +318,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                         keyboardType: TextInputType.text,
                       ),
                       SizedBox(
-                        height: 18.h,
+                        height: 12.h,
                       ),
                       ProfileTextField(
                         controller: lastNameController,
@@ -434,11 +329,11 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       SizedBox(
                         height: 12.h,
                       ),
-                      // ProfileTextField(
-                      //   controller: familySizeController,
-                      //   labelText: 'Family Size',
-                      //   keyboardType: TextInputType.number,
-                      // ),
+                      ProfileTextField(
+                        controller: familySizeController,
+                        labelText: 'family_size',
+                        keyboardType: TextInputType.number,
+                      ),
                       SizedBox(
                         height: 12.h,
                       ),
@@ -457,23 +352,9 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                         height: 12.h,
                       ),
                       ProfileTextField(
-                        disabled: true,
-                        controller: ageController,
-                        labelText: 'other_detail.age',
+                        controller: specialLocationController,
+                        labelText: 'special_location',
                       ),
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      ProfileTextField(
-                        controller: religionController,
-                        labelText: 'other_detail.religion',
-                      ),
-
-                      SizedBox(
-                        height: 12.h,
-                      ),
-                      //work type
-
                       SizedBox(
                         height: 12.h,
                       ),

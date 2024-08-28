@@ -3,17 +3,12 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:mobile_app/data/repository/employee_repository.dart';
-import 'package:mobile_app/data/repository/employer_repository.dart';
-import 'package:mobile_app/screens/auth/register/models/Password.dart';
 import 'package:mobile_app/screens/auth/register/models/phone_number.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/confirm_pin.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/pin.dart';
 import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
 import 'package:mobile_app/utils/helpers/helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../role/enums/selected_role.dart';
 

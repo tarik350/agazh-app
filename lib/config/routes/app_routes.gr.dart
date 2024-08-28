@@ -11,51 +11,57 @@
 import 'package:auto_route/auto_route.dart' as _i17;
 import 'package:flutter/material.dart' as _i18;
 import 'package:mobile_app/data/models/employee.dart' as _i19;
-import 'package:mobile_app/flow_builder_screen.dart' as _i11;
-import 'package:mobile_app/screens/app/view/sira_app.dart' as _i16;
+import 'package:mobile_app/flow_builder_screen.dart' as _i12;
+import 'package:mobile_app/screens/app/view/agazh_app.dart' as _i1;
 import 'package:mobile_app/screens/auth/login/view/change_password_screen.dart'
-    as _i1;
-import 'package:mobile_app/screens/auth/login/view/login_screen.dart' as _i10;
-import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i13;
-import 'package:mobile_app/screens/auth/register/view/register_screen.dart'
-    as _i14;
-import 'package:mobile_app/screens/employee/view/employee_registration_screen.dart'
-    as _i5;
-import 'package:mobile_app/screens/employer_regisration/view/employer_stepper_screen.dart'
-    as _i9;
-import 'package:mobile_app/screens/home/employee/view/employee_feedback_screen.dart'
-    as _i3;
-import 'package:mobile_app/screens/home/employer/view/employer_home_screen.dart'
-    as _i6;
-import 'package:mobile_app/screens/home/employer/view/employer_requests_screen.dart'
-    as _i8;
-import 'package:mobile_app/screens/home/employer/widgets/empoyee_detail_screen.dart'
     as _i2;
-import 'package:mobile_app/screens/onboarding/view/onboarding_screen.dart'
-    as _i12;
-import 'package:mobile_app/screens/profile/view/employee_profile_screen.dart'
+import 'package:mobile_app/screens/auth/login/view/login_screen.dart' as _i11;
+import 'package:mobile_app/screens/auth/otp/view/otp_screen.dart' as _i14;
+import 'package:mobile_app/screens/auth/register/view/register_screen.dart'
+    as _i15;
+import 'package:mobile_app/screens/employee/view/employee_registration_screen.dart'
+    as _i6;
+import 'package:mobile_app/screens/employer_regisration/view/employer_stepper_screen.dart'
+    as _i10;
+import 'package:mobile_app/screens/home/employee/view/employee_feedback_screen.dart'
     as _i4;
-import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart'
+import 'package:mobile_app/screens/home/employer/view/employer_home_screen.dart'
     as _i7;
+import 'package:mobile_app/screens/home/employer/view/employer_requests_screen.dart'
+    as _i9;
+import 'package:mobile_app/screens/home/employer/widgets/empoyee_detail_screen.dart'
+    as _i3;
+import 'package:mobile_app/screens/onboarding/view/onboarding_screen.dart'
+    as _i13;
+import 'package:mobile_app/screens/profile/view/employee_profile_screen.dart'
+    as _i5;
+import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart'
+    as _i8;
 import 'package:mobile_app/screens/role/enums/selected_role.dart' as _i20;
-import 'package:mobile_app/screens/role/view/role_screen.dart' as _i15;
+import 'package:mobile_app/screens/role/view/role_screen.dart' as _i16;
 
 abstract class $AppRouter extends _i17.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i17.PageFactory> pagesMap = {
+    AgazhAppRoute.name: (routeData) {
+      return _i17.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i1.AgazhAppScreen(),
+      );
+    },
     ChangePasswordRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i1.ChangePasswordScreen(),
+        child: const _i2.ChangePasswordScreen(),
       );
     },
     EmployeeDetailRoute.name: (routeData) {
       final args = routeData.argsAs<EmployeeDetailRouteArgs>();
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i2.EmployeeDetailScreen(
+        child: _i3.EmployeeDetailScreen(
           key: args.key,
           employee: args.employee,
         ),
@@ -64,68 +70,68 @@ abstract class $AppRouter extends _i17.RootStackRouter {
     EmployeeFeedbackRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.EmployeeFeedbackScreen(),
+        child: const _i4.EmployeeFeedbackScreen(),
       );
     },
     EmployeeProfileRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.EmployeeProfileScreen(),
+        child: const _i5.EmployeeProfileScreen(),
       );
     },
     EmployeeStepperRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.EmployeeStepperScreen(),
+        child: const _i6.EmployeeStepperScreen(),
       );
     },
     EmployerHomeRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.EmployerHomeScreen(),
+        child: const _i7.EmployerHomeScreen(),
       );
     },
     EmployerProfileRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i7.EmployerProfileScreen(),
+        child: const _i8.EmployerProfileScreen(),
       );
     },
     EmployerRequestRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.EmployerRequestScreen(),
+        child: const _i9.EmployerRequestScreen(),
       );
     },
     EmployerStepperRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.EmployerStepperScreen(),
+        child: const _i10.EmployerStepperScreen(),
       );
     },
     LoginRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.LoginScreen(),
+        child: const _i11.LoginScreen(),
       );
     },
     MyFlowRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i11.MyFlowScreen(),
+        child: const _i12.MyFlowScreen(),
       );
     },
     OnboardingRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i12.OnboardingScreen(),
+        child: const _i13.OnboardingScreen(),
       );
     },
     OtpRoute.name: (routeData) {
       final args = routeData.argsAs<OtpRouteArgs>();
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i13.OtpScreen(
+        child: _i14.OtpScreen(
           key: args.key,
           verificationId: args.verificationId,
           route: args.route,
@@ -137,26 +143,34 @@ abstract class $AppRouter extends _i17.RootStackRouter {
     RegisterRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i14.RegisterScreen(),
+        child: const _i15.RegisterScreen(),
       );
     },
     RoleRoute.name: (routeData) {
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i15.RoleScreen(),
-      );
-    },
-    SiraAppRoute.name: (routeData) {
-      return _i17.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i16.SiraAppScreen(),
+        child: const _i16.RoleScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.ChangePasswordScreen]
+/// [_i1.AgazhAppScreen]
+class AgazhAppRoute extends _i17.PageRouteInfo<void> {
+  const AgazhAppRoute({List<_i17.PageRouteInfo>? children})
+      : super(
+          AgazhAppRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AgazhAppRoute';
+
+  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i2.ChangePasswordScreen]
 class ChangePasswordRoute extends _i17.PageRouteInfo<void> {
   const ChangePasswordRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -170,7 +184,7 @@ class ChangePasswordRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.EmployeeDetailScreen]
+/// [_i3.EmployeeDetailScreen]
 class EmployeeDetailRoute extends _i17.PageRouteInfo<EmployeeDetailRouteArgs> {
   EmployeeDetailRoute({
     _i18.Key? key,
@@ -208,7 +222,7 @@ class EmployeeDetailRouteArgs {
 }
 
 /// generated route for
-/// [_i3.EmployeeFeedbackScreen]
+/// [_i4.EmployeeFeedbackScreen]
 class EmployeeFeedbackRoute extends _i17.PageRouteInfo<void> {
   const EmployeeFeedbackRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -222,7 +236,7 @@ class EmployeeFeedbackRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.EmployeeProfileScreen]
+/// [_i5.EmployeeProfileScreen]
 class EmployeeProfileRoute extends _i17.PageRouteInfo<void> {
   const EmployeeProfileRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -236,7 +250,7 @@ class EmployeeProfileRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.EmployeeStepperScreen]
+/// [_i6.EmployeeStepperScreen]
 class EmployeeStepperRoute extends _i17.PageRouteInfo<void> {
   const EmployeeStepperRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -250,7 +264,7 @@ class EmployeeStepperRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.EmployerHomeScreen]
+/// [_i7.EmployerHomeScreen]
 class EmployerHomeRoute extends _i17.PageRouteInfo<void> {
   const EmployerHomeRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -264,7 +278,7 @@ class EmployerHomeRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.EmployerProfileScreen]
+/// [_i8.EmployerProfileScreen]
 class EmployerProfileRoute extends _i17.PageRouteInfo<void> {
   const EmployerProfileRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -278,7 +292,7 @@ class EmployerProfileRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.EmployerRequestScreen]
+/// [_i9.EmployerRequestScreen]
 class EmployerRequestRoute extends _i17.PageRouteInfo<void> {
   const EmployerRequestRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -292,7 +306,7 @@ class EmployerRequestRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.EmployerStepperScreen]
+/// [_i10.EmployerStepperScreen]
 class EmployerStepperRoute extends _i17.PageRouteInfo<void> {
   const EmployerStepperRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -306,7 +320,7 @@ class EmployerStepperRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.LoginScreen]
+/// [_i11.LoginScreen]
 class LoginRoute extends _i17.PageRouteInfo<void> {
   const LoginRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -320,7 +334,7 @@ class LoginRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.MyFlowScreen]
+/// [_i12.MyFlowScreen]
 class MyFlowRoute extends _i17.PageRouteInfo<void> {
   const MyFlowRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -334,7 +348,7 @@ class MyFlowRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.OnboardingScreen]
+/// [_i13.OnboardingScreen]
 class OnboardingRoute extends _i17.PageRouteInfo<void> {
   const OnboardingRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -348,7 +362,7 @@ class OnboardingRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.OtpScreen]
+/// [_i14.OtpScreen]
 class OtpRoute extends _i17.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     _i18.Key? key,
@@ -401,7 +415,7 @@ class OtpRouteArgs {
 }
 
 /// generated route for
-/// [_i14.RegisterScreen]
+/// [_i15.RegisterScreen]
 class RegisterRoute extends _i17.PageRouteInfo<void> {
   const RegisterRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -415,7 +429,7 @@ class RegisterRoute extends _i17.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.RoleScreen]
+/// [_i16.RoleScreen]
 class RoleRoute extends _i17.PageRouteInfo<void> {
   const RoleRoute({List<_i17.PageRouteInfo>? children})
       : super(
@@ -424,20 +438,6 @@ class RoleRoute extends _i17.PageRouteInfo<void> {
         );
 
   static const String name = 'RoleRoute';
-
-  static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i16.SiraAppScreen]
-class SiraAppRoute extends _i17.PageRouteInfo<void> {
-  const SiraAppRoute({List<_i17.PageRouteInfo>? children})
-      : super(
-          SiraAppRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SiraAppRoute';
 
   static const _i17.PageInfo<void> page = _i17.PageInfo<void>(name);
 }

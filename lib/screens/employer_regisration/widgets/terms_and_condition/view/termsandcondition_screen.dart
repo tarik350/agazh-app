@@ -39,18 +39,13 @@ class TermsAndConditionScreen extends StatelessWidget {
           } else if (state.status.isSubmissionSuccess) {
             await _authService.setIsAuthenticated();
             if (context.mounted) {
-              context.router.replaceAll([const SiraAppRoute()]);
+              context.router.replaceAll([const AgazhAppRoute()]);
             }
           }
         },
         builder: (context, state) {
           return Expanded(
             child: LayoutBuilder(builder: (context, constraints) {
-              final bool isKeyboardOpen =
-                  MediaQuery.of(context).viewInsets.bottom != 0.0;
-              final double bottomPadding =
-                  MediaQuery.of(context).viewInsets.bottom;
-
               return SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(

@@ -134,7 +134,7 @@ class OtpScreen extends StatelessWidget {
                                     await _authService.setIsAuthenticated();
                                     if (context.mounted) {
                                       context.router
-                                          .replaceAll([const SiraAppRoute()]);
+                                          .replaceAll([const AgazhAppRoute()]);
                                     }
                                   }
                                 } else if (route == 'register') {

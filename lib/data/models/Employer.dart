@@ -100,7 +100,7 @@ class Employer extends Equatable {
       String? role,
       String? city,
       String? subCity,
-      dynamic? houseNumber,
+      dynamic houseNumber,
       String? idCardImagePathFront,
       String? idCardImagePathBack,
       String? profilePicturePath,
