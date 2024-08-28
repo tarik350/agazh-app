@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
+
 import 'package:mobile_app/screens/auth/login/view/login_screen.dart';
 import 'package:mobile_app/utils/constants/onboarding_contents.dart';
 import 'package:mobile_app/utils/helpers/size_config.dart';
@@ -9,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
