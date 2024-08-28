@@ -33,9 +33,9 @@ import 'package:mobile_app/screens/home/employer/widgets/empoyee_detail_screen.d
     as _i3;
 import 'package:mobile_app/screens/onboarding/view/onboarding_screen.dart'
     as _i13;
-import 'package:mobile_app/screens/profile/view/employee_profile_screen.dart'
+import 'package:mobile_app/screens/profile/employee/employee_profile_screen.dart'
     as _i5;
-import 'package:mobile_app/screens/profile/view/employer_profile_screen.dart'
+import 'package:mobile_app/screens/profile/employer/employer_profile_screen.dart'
     as _i8;
 import 'package:mobile_app/screens/role/enums/selected_role.dart' as _i20;
 import 'package:mobile_app/screens/role/view/role_screen.dart' as _i16;
