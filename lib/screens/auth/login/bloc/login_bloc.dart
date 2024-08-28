@@ -1,14 +1,12 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:mobile_app/screens/auth/register/models/Password.dart';
 import 'package:mobile_app/screens/auth/register/models/phone_number.dart';
-import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/pin.dart';
 import 'package:mobile_app/services/auth_service.dart';
-import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/exceptions/exceptions.dart';
-import 'package:mobile_app/utils/helpers/helper.dart';
 
 import '../../../role/enums/selected_role.dart';
 
@@ -16,8 +14,7 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final _authService = getit<AuthService>();
-
+  final _authService = AuthService();
   LoginBloc() : super(const LoginState()) {
     on<LoginFormSubmitted>(_onLogin);
     on<PhoneNumberChanged>(_onPhoneChanged);
@@ -27,26 +24,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _onPhoneChanged(
       PhoneNumberChanged event, Emitter<LoginState> emit) {
-    final phoneNumber =
-        PhoneNumber.dirty(normalizePhoneNumber(event.phoneNumber));
+    final phoneNumber = PhoneNumber.dirty(event.phoneNumber);
     emit(state.copyWith(
         phoneNumber: phoneNumber,
-        status: Formz.validate([phoneNumber, state.password])));
+        status: Formz.validate([phoneNumber, state.password])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   FutureOr<void> _onPasswordChanged(
       PasswordChanged event, Emitter<LoginState> emit) {
-    final passwrod = PIN.dirty(event.password);
+    final passwrod = Password.dirty(event.password);
     emit(state.copyWith(
         password: passwrod,
-        status: Formz.validate([passwrod, state.phoneNumber])));
+        status: Formz.validate([passwrod, state.phoneNumber])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   FutureOr<void> _onLogin(
       LoginFormSubmitted event, Emitter<LoginState> emit) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
-
       final employee = await _authService.lookupUser(
           state.phoneNumber.value, state.password.value, "employee");
       final employer = await _authService.lookupUser(
@@ -59,7 +58,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (verificationId != null) {
         emit(state.copyWith(
-            status: FormzStatus.success,
+            status: FormzSubmissionStatus.success,
             userRole: employee != null ? UserRole.employee : UserRole.employer,
             verificationId: verificationId));
       } else {
@@ -67,23 +66,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } on UserDoesNotExist catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.message));
+          status: FormzSubmissionStatus.failure, errorMessage: e.message));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+          status: FormzSubmissionStatus.failure, errorMessage: e.toString()));
     }
   }
 
   FutureOr<void> _onSelectedRoleChange(
       SelectedRoleChange event, Emitter<LoginState> emit) {
     if (event.userRole == 'employer') {
+      final status = Formz.validate([state.password, state.phoneNumber]);
+
       emit(state.copyWith(
           userRole: UserRole.employer,
-          status: Formz.validate([state.password, state.phoneNumber])));
+          status: Formz.validate([state.password, state.phoneNumber])
+              ? FormzSubmissionStatus.success
+              : FormzSubmissionStatus.initial));
     } else {
+      final status = Formz.validate([state.password, state.phoneNumber]);
+
       emit(state.copyWith(
           userRole: UserRole.employee,
-          status: Formz.validate([state.password, state.phoneNumber])));
+          status: Formz.validate([state.password, state.phoneNumber])
+              ? FormzSubmissionStatus.success
+              : FormzSubmissionStatus.initial));
     }
   }
 }

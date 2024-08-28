@@ -23,7 +23,7 @@ class EmployeeDetailScreen extends StatelessWidget {
   final Employee employee;
   final auth = FirebaseAuth.instance;
 
-  EmployeeDetailScreen({Key? key, required this.employee}) : super(key: key);
+  EmployeeDetailScreen({super.key, required this.employee});
 
   @override
   Widget build(BuildContext context) {
@@ -145,29 +145,6 @@ class EmployeeDetailScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "${"other_detail.salary".tr()} :",
-                          style: const TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          employee.salary.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF222262),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
                           "${'profession'.tr()} :",
                           style: const TextStyle(
                               color: AppColors.primaryColor,
@@ -238,7 +215,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                                 }
                               })).copyWith(),
                               onPressed: state.requestStatus ==
-                                      FormzStatus.submissionInProgress
+                                      FormzSubmissionStatus.inProgress
                                   ? null
                                   : () => context
                                       .read<EmployerCubit>()
@@ -251,7 +228,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20.0),
                                 child: state.requestStatus ==
-                                        FormzStatus.submissionInProgress
+                                        FormzSubmissionStatus.inProgress
                                     ? Center(
                                         child: SizedBox(
                                           height: 18.w,
@@ -278,24 +255,27 @@ class EmployeeDetailScreen extends StatelessWidget {
                         ),
                         BlocConsumer<EmployerCubit, EmployerState>(
                             listener: (context, state) {
-                          if (state is RequestErrorState) {
-                            showErrorDialog(context, state.message);
-                          }
-
-                          if (state is RatingErrorState) {
-                            showErrorDialog(context, state.message);
-                          }
-
-                          if (state is RatingSuccessState) {
-                            showSuccessDialog(
-                                context, "rating_success_message".tr());
-                          }
-                          if (state is RequestSuccessState) {
+                          if (state.requestStatus ==
+                              FormzSubmissionStatus.success) {
                             showSuccessDialog(
                                 context,
+                                // "Request has been made for ${employee.fullName}. You will be updated after admin reviews your request, Thank You"
                                 "employee_request_success_message".tr(args: [
                                   "${employee.firstName} ${employee.lastName}"
                                 ]));
+                          }
+
+                          if (state.status == FormzSubmissionStatus.failure ||
+                              state.requestStatus ==
+                                  FormzSubmissionStatus.failure) {
+                            showErrorDialog(
+                                context,
+                                state.errorMessage ??
+                                    "rating_error_message".tr());
+                          }
+                          if (state.status == FormzSubmissionStatus.success) {
+                            showSuccessDialog(
+                                context, "rating_success_message".tr());
                           }
                         }, builder: (context, state) {
                           return ElevatedButton(
@@ -340,7 +320,7 @@ class EmployeeDetailScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 20.0),
                               child: state.status ==
-                                      FormzStatus.submissionInProgress
+                                      FormzSubmissionStatus.inProgress
                                   ? Center(
                                       child: SizedBox(
                                         height: 18.w,

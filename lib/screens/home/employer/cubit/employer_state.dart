@@ -2,20 +2,20 @@ part of 'employer_cubit.dart';
 
 class EmployerState extends Equatable {
   final double rating;
-  final FormzStatus status;
-  final FormzStatus requestStatus;
+  final FormzSubmissionStatus status;
+  final FormzSubmissionStatus requestStatus;
   final String? errorMessage;
   const EmployerState(
-      {this.status = FormzStatus.pure,
+      {this.status = FormzSubmissionStatus.initial,
       this.rating = 0.0,
       this.errorMessage,
-      this.requestStatus = FormzStatus.pure});
+      this.requestStatus = FormzSubmissionStatus.initial});
 
   EmployerState copyWith(
       {double? rating,
-      FormzStatus? status,
+      FormzSubmissionStatus? status,
       String? errorMessage,
-      FormzStatus? requestStatus}) {
+      FormzSubmissionStatus? requestStatus}) {
     return EmployerState(
         rating: rating ?? this.rating,
         status: status ?? this.status,
@@ -31,21 +31,6 @@ class EmployerState extends Equatable {
       ];
 }
 
-class RequestErrorState extends EmployerState {
-  final String message;
-  const RequestErrorState(this.message);
-}
+class RequestErrorState extends EmployerState {}
 
-class RequestLoadingState extends EmployerState {}
-
-class RequestSuccessState extends EmployerState {}
-
-class RatingErrorState extends EmployerState {
-  final String message;
-
-  const RatingErrorState(this.message);
-}
-
-class RatingLoadingState extends EmployerState {}
-
-class RatingSuccessState extends EmployerState {}
+class RatingErrorState extends EmployerState {}

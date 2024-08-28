@@ -5,7 +5,7 @@ import 'package:mobile_app/screens/employer_regisration/widgets/address_info/blo
 import 'package:mobile_app/screens/employer_regisration/widgets/address_info/view/address_info_form.dart';
 
 class AddressInfoScreen extends StatelessWidget {
-  const AddressInfoScreen({Key? key}) : super(key: key);
+  const AddressInfoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

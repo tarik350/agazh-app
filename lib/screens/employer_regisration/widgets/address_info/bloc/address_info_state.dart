@@ -2,54 +2,38 @@ part of 'address_info_bloc.dart';
 
 class AddressInfoState extends Equatable {
   const AddressInfoState(
-      {this.city = const City.pure(),
+      {this.houseNumber = const HouseNumber.pure(),
+      this.city = const City.pure(),
       this.familySize = const FamilySize.pure(),
       this.subCity = const SubCity.pure(),
-      this.status = FormzStatus.pure,
-      this.houseNumber = const HouseNumber.pure(),
-      this.isNewHouseNumberSelected = false,
+      this.status = FormzSubmissionStatus.initial,
       this.specialLocation = const SpecialLocaion.pure()});
 
   final HouseNumber houseNumber;
   final FamilySize familySize;
   final City city;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final SubCity subCity;
   final SpecialLocaion specialLocation;
-  final bool isNewHouseNumberSelected;
 
   AddressInfoState copyWith({
+    HouseNumber? houseNumber,
     FamilySize? familySize,
     City? city,
     SubCity? subCity,
     SpecialLocaion? specialLocation,
-    FormzStatus? status,
-    HouseNumber? houseNumber,
-    bool? isNewHouseNumberSelected,
+    FormzSubmissionStatus? status,
   }) {
     return AddressInfoState(
-      familySize: familySize ?? this.familySize,
-      city: city ?? this.city,
-      subCity: subCity ?? this.subCity,
-      status: status ?? this.status,
-      specialLocation: specialLocation ?? this.specialLocation,
-      houseNumber: isNewHouseNumberSelected == true
-          ? const HouseNumber
-              .pure() // Reset field if new house number is selected
-          : houseNumber ?? this.houseNumber,
-      isNewHouseNumberSelected:
-          isNewHouseNumberSelected ?? this.isNewHouseNumberSelected,
-    );
+        houseNumber: houseNumber ?? this.houseNumber,
+        familySize: familySize ?? this.familySize,
+        city: city ?? this.city,
+        subCity: subCity ?? this.subCity,
+        status: status ?? this.status,
+        specialLocation: specialLocation ?? this.specialLocation);
   }
 
   @override
-  List<Object> get props => [
-        houseNumber,
-        subCity,
-        city,
-        familySize,
-        status,
-        specialLocation,
-        isNewHouseNumberSelected
-      ];
+  List<Object> get props =>
+      [houseNumber, subCity, city, familySize, status, specialLocation];
 }

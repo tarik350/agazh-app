@@ -1,44 +1,33 @@
 part of 'home_bloc.dart';
 
 class HomeState extends Equatable {
-  final FormzStatus requestDeleteStatus;
-  final FormzStatus requestGetStatus;
+  final FormzSubmissionStatus requestDeleteStatus;
+  final FormzSubmissionStatus requestGetStatus;
   final List<Map<String, dynamic>>? requests;
   final int? deletingRequestIndex;
   final String? errorMessage;
-  final FormzStatus changePinStatus;
-  final PIN pin;
-  final ConfirmPIN confirmPin;
 
   const HomeState({
     this.requests,
     this.errorMessage,
-    this.requestGetStatus = FormzStatus.pure,
-    this.requestDeleteStatus = FormzStatus.pure,
+    this.requestGetStatus = FormzSubmissionStatus.initial,
+    this.requestDeleteStatus = FormzSubmissionStatus.initial,
     this.deletingRequestIndex,
-    this.changePinStatus = FormzStatus.pure,
-    this.pin = const PIN.pure(),
-    this.confirmPin = const ConfirmPIN.pure(),
   });
 
   HomeState copyWith(
-      {FormzStatus? requestDeleteStatus,
+      {FormzSubmissionStatus? requestDeleteStatus,
       int? deletingRequestIndex,
       List<Map<String, dynamic>>? requests,
       String? errorMessage,
-      FormzStatus? changePinStatus,
-      PIN? pin,
-      ConfirmPIN? confirmPin,
-      FormzStatus? requestGetStatus}) {
+      FormzSubmissionStatus? requestGetStatus}) {
     return HomeState(
-        requestGetStatus: requestGetStatus ?? this.requestGetStatus,
-        requests: requests,
-        errorMessage: errorMessage,
-        requestDeleteStatus: requestDeleteStatus ?? this.requestDeleteStatus,
-        deletingRequestIndex: deletingRequestIndex,
-        pin: pin ?? this.pin,
-        changePinStatus: changePinStatus ?? this.changePinStatus,
-        confirmPin: confirmPin ?? this.confirmPin);
+      requestGetStatus: requestGetStatus ?? this.requestGetStatus,
+      requests: requests,
+      errorMessage: errorMessage,
+      requestDeleteStatus: requestDeleteStatus ?? this.requestDeleteStatus,
+      deletingRequestIndex: deletingRequestIndex,
+    );
   }
 
   @override
@@ -47,10 +36,7 @@ class HomeState extends Equatable {
         deletingRequestIndex,
         requestGetStatus,
         requests,
-        errorMessage,
-        changePinStatus,
-        pin,
-        confirmPin
+        errorMessage
       ];
 }
 

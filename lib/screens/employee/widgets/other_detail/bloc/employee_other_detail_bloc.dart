@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/other_detail/models/age.dart';
+import 'package:mobile_app/screens/employee/widgets/other_detail/models/religion.dart';
 
 part 'employee_other_detail_event.dart';
 part 'employee_other_detail_state.dart';
@@ -23,7 +24,12 @@ class EmployeeOtherDetailBloc
   FutureOr<void> _onAgeChanged(
       AgeChanged event, Emitter<EmployeeOtherDetailState> emit) {
     final age = Age.dirty(event.age);
-    emit(state.copyWith(age: age, status: Formz.validate([age])));
+    final validate = Formz.validate([age]);
+    emit(state.copyWith(
+        age: age,
+        status: validate
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.failure));
   }
 
   FutureOr<void> _onReligionChanged(
@@ -33,17 +39,17 @@ class EmployeeOtherDetailBloc
 
   FutureOr<void> _onFormSubmitted(
       FormSubmitted event, Emitter<EmployeeOtherDetailState> emit) {
-    if (state.status.isValidated) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    if (state.status.isSuccess) {
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {
         employeeRepository.updateOtherDetails(
             age: int.parse(state.age.value),
             religion: state.religion,
             workType: state.workType);
-        emit(state.copyWith(status: FormzStatus.success));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }
   }

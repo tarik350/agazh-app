@@ -21,7 +21,7 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
+        if (state.status.isFailure) {
           //todo => show error message
           final message = state.errorMessage;
           ScaffoldMessenger.of(context)
@@ -30,7 +30,7 @@ class RegisterForm extends StatelessWidget {
               SnackBar(content: Text(message ?? "unknown_error".tr())),
             );
         }
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           try {
             final role = context.read<RoleCubit>().state.userRole;
             if (role == UserRole.employee) {
@@ -38,17 +38,13 @@ class RegisterForm extends StatelessWidget {
                   .read<EmployeeRepository>()
                   .updatePhone(state.phoneNumber.value);
               context.router.push(OtpRoute(
-                  phoneNumber: state.phoneNumber.value,
-                  verificationId: state.verificationId!,
-                  route: "register"));
+                  verificationId: state.verificationId!, route: "register"));
             } else if (role == UserRole.employer) {
               context
                   .read<EmployerRepository>()
                   .updatePhone(state.phoneNumber.value);
               context.router.push(OtpRoute(
-                  phoneNumber: state.phoneNumber.value,
-                  verificationId: state.verificationId!,
-                  route: "register"));
+                  verificationId: state.verificationId!, route: "register"));
             }
           } catch (e) {
             debugPrint(e.toString());
@@ -87,9 +83,9 @@ class _PhoneNumberInput extends StatelessWidget {
             inputType: TextInputType.phone,
             onChanged: (phone) =>
                 context.read<RegisterBloc>().add(PhoneNumberChanged(phone)),
-            hintText: 'phone_number'.tr(),
+            hintText: 'phone_number',
             keyString: 'registerForm_phoneNumberInput_textField',
-            errorText: state.phoneNumber.invalid
+            errorText: state.phoneNumber.isNotValid
                 ? state.phoneNumber.error!.message
                 : null);
       },
@@ -106,17 +102,36 @@ class _SubmitButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.status.isValidated &&
-                  !state.status.isSubmissionInProgress
+          onTap: state.status.isSuccess && !state.status.isInProgress
               ? () => context.read<RegisterBloc>().add(RegisterFormSubmitted(
                   context.read<RoleCubit>().state.userRole))
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "register".tr(),
+          lable: state.status.isInProgress ? "loading".tr() : "register".tr(),
           backgroundColor: AppColors.primaryColor,
         );
       },
     );
   }
 }
+
+// class _PasswordInput extends StatelessWidget {
+//   const _PasswordInput({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<RegisterBloc, RegisterState>(
+//       buildWhen: (previous, current) => previous.password != current.password,
+//       builder: (context, state) {
+//         return CustomTextfield(
+//             hintText: "Password",
+//             obscureText: false,
+//             onChanged: (password) =>
+//                 context.read<RegisterBloc>().add(PasswordChanged(password)),
+//             keyString: "registerForm_passwordInput_textField",
+//             inputType: TextInputType.text,
+//             errorText:
+//                 state.password.isNotValid ? state.password.error?.message : null);
+//       },
+//     );
+//   }
+// }

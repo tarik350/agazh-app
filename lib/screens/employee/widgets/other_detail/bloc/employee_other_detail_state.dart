@@ -3,17 +3,20 @@ part of 'employee_other_detail_bloc.dart';
 class EmployeeOtherDetailState extends Equatable {
   final String religion;
   final Age age;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final String workType;
 
   const EmployeeOtherDetailState(
       {this.age = const Age.pure(),
       this.workType = '',
       this.religion = '',
-      this.status = FormzStatus.pure});
+      this.status = FormzSubmissionStatus.initial});
 
   EmployeeOtherDetailState copyWith(
-      {String? religion, Age? age, FormzStatus? status, String? workType}) {
+      {String? religion,
+      Age? age,
+      FormzSubmissionStatus? status,
+      String? workType}) {
     return EmployeeOtherDetailState(
         status: status ?? this.status,
         age: age ?? this.age,

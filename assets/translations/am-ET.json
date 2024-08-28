@@ -14,7 +14,7 @@
   "employer": "ቀጣሪ",
   "submit": "ቀጥል",
   "register_title": "እባኮ ስልክ ቁጥር ያስገቡ",
-  "register_subtitle": "የማረጋገጫ ኮድ ለማግኘት እባኮ ስልክ ቁጥሮን ያስገቡ",
+  "register_subtitle": "ስልክ ቁጥር ከ (+251) መጀመር አለበት",
   "register": "ተመዝገብ",
   "unknown_error": "ያልታወቅ ችግር አጋጥሟል",
   "otp_title": "ስልክ ቁጥሮን ያረጋግጡ",
@@ -29,8 +29,6 @@
   "firstname": "የእርሶ ስም",
   "lastname": "የአባት ስም",
   "upload_id": "መታወቅያ ይላኩ",
-  "upload_id_front": "መታወቅያ ፊት ገጽ ይላኩ",
-  "upload_id_back": "መታወቅያ ህዋላ ገጽ ይላኩ",
   "proceed": "ቀጥል",
   "idcard_upload_error_message": "መታወቅያ ምስል ሲላክ ችግር አጋጥሟል",
   "idcard_upload_success_message": "የመታወቂያ ምስል በተሳካ ሁኔታ ተሻሽሏል",
@@ -60,8 +58,6 @@
   "other_detail": {
     "religion": "ሃይማኖት",
     "age": "እድሜ",
-    "salary": "ደሞዝ",
-
     "select_work_type": "የስራ አይነት ይምረጡ",
     "kitchen_staff": "ወጥቤት",
     "cleaner": "ፅዳት",
@@ -123,20 +119,5 @@
   "request_error_message": "ለ {} ከዚ ፊት የስራ ጥያቄ ለከዋል",
   "profile_success_message": "የግል መረጃ ተሻሽሏል",
   "profile_error_message": "የግል መረጃ በማሻሻል ላይ ችግር አጋጥሞል",
-  "profile_picture_success_message": "የግል ምስል በተሳካ ሁኔታ ተሻሽሏል",
-
-  "select_language": "ቋንቋ ይቀይሩ",
-  "change_pin": "የሚስጥር ቁጥር ቀይር",
-  "change_pin_title": "የሚስጥር ቁጥሮን ይቀይሩ",
-  "change_pin_subtitle": "ከታች ያለውን መጠይቅ በሞምላት የሚስጥር ቁጥሮን ይቀይሩ ",
-  "change": "ቀይር",
-  "pin_changed_success_message": "የሚስጥር ቁጥሮ ተሻሽላል",
-  "pin_changed_error_message": "የሚስጥር ቁጥሮን ለማሻሻል ችግር አጋጥሞል",
-  "new": "አድስ",
-  "select_salary": "ደሞዞን ይምረጡ",
-  "resend_otp_in": "ኦቲፒ ኮድ እንደገና ለመላክ {}",
-  "resend_failed_message" : "ኦቲፒ መላክ አልተቻለም",
-  "resend_success_message": "ኦቲፒ ኮድ በድጋሜ ተልኮል"
-
-
+  "profile_picture_success_message": "የግል ምስል በተሳካ ሁኔታ ተሻሽሏል"
 }

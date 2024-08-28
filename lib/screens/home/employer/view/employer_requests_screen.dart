@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
+import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
 import 'package:mobile_app/screens/home/employer/widgets/employer_request_list_view.dart';
 import 'package:mobile_app/utils/widgets/employee_loading_shimmer.dart';
@@ -59,12 +60,12 @@ class EmployerRequestScreen extends StatelessWidget {
               child: BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
                   if (state.requestGetStatus ==
-                      FormzStatus.submissionInProgress) {
+                      FormzSubmissionStatus.inProgress) {
                     return const EmployeeLoadingSkeleton();
                   }
                   if (state.requestGetStatus ==
-                      FormzStatus.submissionFailure) {}
-                  if (state.requestGetStatus == FormzStatus.success) {
+                      FormzSubmissionStatus.failure) {}
+                  if (state.requestGetStatus == FormzSubmissionStatus.success) {
                     if (state.requests == null || state.requests!.isEmpty) {
                       return Center(
                           child: Text(

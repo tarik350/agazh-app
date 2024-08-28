@@ -13,14 +13,14 @@ import 'package:mobile_app/screens/setting/view/setting_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
-class AgazhAppScreen extends StatefulWidget {
-  const AgazhAppScreen({super.key});
+class SiraAppScreen extends StatefulWidget {
+  const SiraAppScreen({super.key});
 
   @override
-  State<AgazhAppScreen> createState() => _SiraAppScreenState();
+  State<SiraAppScreen> createState() => _SiraAppScreenState();
 }
 
-class _SiraAppScreenState extends State<AgazhAppScreen> {
+class _SiraAppScreenState extends State<SiraAppScreen> {
   late List<Widget> _widgets = [];
 
   @override

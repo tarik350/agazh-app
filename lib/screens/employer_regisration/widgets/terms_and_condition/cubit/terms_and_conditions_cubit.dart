@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
+import 'package:mobile_app/screens/auth/register/models/Password.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/confirm_pin.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/models/pin.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
@@ -17,7 +18,7 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
       : super(const TermsAndConditionState());
 
   void saveUser(UserRole role) async {
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       if (role == UserRole.employee) {
         employeeRepository.updatePassword(state.pin.value);
@@ -26,23 +27,25 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
         employerRepositroy.updatePassword(password: state.pin.value);
         await employerRepositroy.saveEmployer();
       }
-      emit(state.copyWith(status: FormzStatus.success));
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
       emit(state.copyWith(
-          status: FormzStatus.submissionCanceled, errorMessage: e.toString()));
+          status: FormzSubmissionStatus.canceled, errorMessage: e.toString()));
     }
   }
 
   void onPinChanged(String p) {
     final pin = PIN.dirty(p);
-    final confirmPin = state.confirmPin.pure
+    final confirmPin = state.confirmPin.isPure
         ? state.confirmPin
         : ConfirmPIN.dirty(password: p, value: state.confirmPin.value);
 
     emit(state.copyWith(
       pin: pin,
       confirmPin: confirmPin, // Update confirm pin only if it's dirty
-      status: Formz.validate([pin, confirmPin]),
+      status: Formz.validate([pin, confirmPin])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -51,7 +54,9 @@ class TermsandconditionCubit extends Cubit<TermsAndConditionState> {
 
     emit(state.copyWith(
       confirmPin: confirmPin,
-      status: Formz.validate([state.pin, confirmPin]),
+      status: Formz.validate([state.pin, confirmPin])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 

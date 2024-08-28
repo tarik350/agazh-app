@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
+import 'package:mobile_app/utils/exceptions/exceptions.dart';
 
 import '../models/Employer.dart';
 
@@ -17,7 +18,7 @@ class EmployeeRepository {
   void updateDemographyInformation(
       {required String city,
       required String subCity,
-      required dynamic houseNumber,
+      required int houseNumber,
       required JobStatusEnum jobStatus,
       required int salaray}) {
     _employee = (_employee ?? const Employee()).copyWith(
@@ -38,15 +39,13 @@ class EmployeeRepository {
   void updatePersonalInfo(
       {required String firstName,
       required String lastName,
-      required String idCardImagePathBack,
-      required String idCardImagePathFront,
+      required String idCardImagePath,
       required String profilePicturePath,
       required String id}) {
     _employee = (_employee ?? const Employee()).copyWith(
         firstName: firstName,
         lastName: lastName,
-        idCardImagePathBack: idCardImagePathBack,
-        idCardImagePathFront: idCardImagePathFront,
+        idCardImagePath: idCardImagePath,
         profilePicturePath: profilePicturePath,
         id: id);
   }
@@ -249,22 +248,6 @@ class EmployeeRepository {
     } catch (e) {
       print('Error fetching employee ratings with employers: $e');
       return null;
-    }
-  }
-
-  Future<void> updateEmployeePassword(String newPassword) async {
-    try {
-      final userId = _auth.currentUser?.uid;
-
-      if (userId == null) {
-        throw Exception("User is not logged in");
-      }
-
-      final employeeDocRef = _firestore.collection('employee').doc(userId);
-
-      await employeeDocRef.update({'password': newPassword});
-    } catch (e) {
-      throw Exception("Failed to update password: $e");
     }
   }
 }

@@ -15,63 +15,66 @@ class EmployerStepper extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EmployerRegistrationCubit, EmployerRegisrationState>(
       builder: (context, state) {
-        return Column(
-          children: [
-            EasyStepper(
-              stepRadius: 30.r,
-              // internalPadding: 50,
-              lineStyle: LineStyle(
-                  activeLineColor: AppColors.primaryColor,
-                  unreachedLineColor: Colors.grey.shade500),
-              direction: Axis.horizontal,
-              showScrollbar: false,
-              showTitle: false,
-              activeStep: state.activeStepperIndex,
-              borderThickness: 14.sp,
-              activeStepBorderColor: AppColors.primaryColor,
-              unreachedStepBorderColor: Colors.grey.shade500,
-              showLoadingAnimation: false,
-              activeStepIconColor: AppColors.primaryColor,
-              finishedStepBackgroundColor: AppColors.succesColor,
-              onStepReached: (index) {
-                // context.read<EmployerRegistrationCubit>().stepTapped(index);
-              },
-              steps: const [
-                EasyStep(
-                  icon: Icon(Icons.person),
-                  finishIcon: Icon(
-                    Icons.check_circle,
-                    color: AppColors.succesColor,
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              EasyStepper(
+                stepRadius: 30.r,
+                // internalPadding: 50,
+                lineStyle: LineStyle(
+                    activeLineColor: AppColors.primaryColor,
+                    unreachedLineColor: Colors.grey.shade500),
+                direction: Axis.horizontal,
+                showScrollbar: false,
+                showTitle: false,
+                activeStep: state.activeStepperIndex,
+                borderThickness: 14.sp,
+                activeStepBorderColor: AppColors.primaryColor,
+                unreachedStepBorderColor: Colors.grey.shade500,
+                showLoadingAnimation: false,
+                activeStepIconColor: AppColors.primaryColor,
+                finishedStepBackgroundColor: AppColors.succesColor,
+                onStepReached: (index) {
+                  // context.read<EmployerRegistrationCubit>().stepTapped(index);
+                },
+                steps: const [
+                  EasyStep(
+                    icon: Icon(Icons.person),
+                    finishIcon: Icon(
+                      Icons.check_circle,
+                      color: AppColors.succesColor,
+                    ),
                   ),
-                ),
-                EasyStep(
-                  icon: Icon(
-                    Icons.location_on_rounded,
+                  EasyStep(
+                    icon: Icon(
+                      Icons.location_on_rounded,
+                    ),
+                    finishIcon: Icon(
+                      Icons.check_circle,
+                      color: AppColors.succesColor,
+                    ),
+                    topTitle: true,
                   ),
-                  finishIcon: Icon(
-                    Icons.check_circle,
-                    color: AppColors.succesColor,
+                  EasyStep(
+                    icon: Icon(
+                      Icons.policy,
+                    ),
+                    topTitle: true,
                   ),
-                  topTitle: true,
-                ),
-                EasyStep(
-                  icon: Icon(
-                    Icons.policy,
-                  ),
-                  topTitle: true,
-                ),
-                // EasyStep(icon: Icon(Icons.ondemand_video)),
-              ],
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            state.activeStepperIndex == 0
-                ? const PersonalInfoScreen()
-                : state.activeStepperIndex == 1
-                    ? const AddressInfoScreen()
-                    : TermsAndConditionScreen()
-          ],
+                  // EasyStep(icon: Icon(Icons.ondemand_video)),
+                ],
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              state.activeStepperIndex == 0
+                  ? const PersonalInfoScreen()
+                  : state.activeStepperIndex == 1
+                      ? const AddressInfoScreen()
+                      : const TermsAndConditionScreen()
+            ],
+          ),
         );
       },
     );

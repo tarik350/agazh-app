@@ -80,7 +80,7 @@ class EmployeeProfileList extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  '${user.city}, ${user.subCity}',
+                                  '${user.city ?? 'No City'}, ${user.subCity ?? 'No Subcity'}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.grey[700],

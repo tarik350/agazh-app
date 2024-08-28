@@ -54,9 +54,3 @@ class SalaryChanged extends EmployeeDemographyEvent {
 
   const SalaryChanged(this.salary);
 }
-
-class DemographyHouseNumberNewSelected extends EmployeeDemographyEvent {
-  final bool isNewSelected;
-
-  const DemographyHouseNumberNewSelected(this.isNewSelected);
-}

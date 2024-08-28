@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
+import 'package:mobile_app/data/repository/auth_detail_repository.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/role/enums/role_status.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';

@@ -23,21 +23,11 @@ class LastNameChanged extends PersonalInfoEvent {
   List<Object> get props => [name];
 }
 
-class IdCardChangedFront extends PersonalInfoEvent {
+class IdCardChanged extends PersonalInfoEvent {
   final Uint8List file;
   final String path;
 
-  const IdCardChangedFront({required this.file, required this.path});
-
-  @override
-  List<Object> get props => [file, path];
-}
-
-class IdCardChangedBack extends PersonalInfoEvent {
-  final Uint8List file;
-  final String path;
-
-  const IdCardChangedBack({required this.file, required this.path});
+  const IdCardChanged({required this.file, required this.path});
 
   @override
   List<Object> get props => [file, path];

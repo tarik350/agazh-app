@@ -9,13 +9,13 @@ enum UserSubmissionStatus {
   invalid,
 
   /// The form is in the process of being submitted.
-  submissionInProgress,
+  inProgress,
 
   /// The form has been submitted successfully.
-  submissionSuccess,
+  success,
 
   /// The form submission failed.
-  submissionFailure,
+  failure,
 
   /// The form submission has been canceled.
   submissionCanceled
@@ -27,21 +27,21 @@ class TermsAndConditionState extends Equatable {
   final String? errorMessage;
   final PIN pin;
   final ConfirmPIN confirmPin;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
 
   const TermsAndConditionState({
     this.isChecked = false,
     this.errorMessage,
     this.pin = const PIN.pure(),
     this.confirmPin = const ConfirmPIN.pure(),
-    this.status = FormzStatus.pure,
+    this.status = FormzSubmissionStatus.initial,
   });
   TermsAndConditionState copyWith(
       {bool? isChecked,
       UserSubmissionStatus? userSubmissionStatus,
       PIN? pin,
       ConfirmPIN? confirmPin,
-      FormzStatus? status,
+      FormzSubmissionStatus? status,
       String? errorMessage}) {
     return TermsAndConditionState(
         isChecked: isChecked ?? this.isChecked,

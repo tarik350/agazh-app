@@ -23,10 +23,10 @@ class EmployerRequestList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(listener: (context, state) {
-      if (state.requestDeleteStatus == FormzStatus.success) {
+      if (state.requestDeleteStatus == FormzSubmissionStatus.success) {
         showSuccessDialog(context, "delete_success_message".tr());
       }
-      if (state.requestDeleteStatus == FormzStatus.submissionFailure) {
+      if (state.requestDeleteStatus == FormzSubmissionStatus.failure) {
         showErrorDialog(context, "delete_request_message".tr());
       }
     }, builder: (context, state) {
@@ -38,7 +38,7 @@ class EmployerRequestList extends StatelessWidget {
           var status = request['status'];
           var timestamp = request['timestamp']?.toDate();
           bool isDeleting = state.deletingRequestIndex == index &&
-              state.requestDeleteStatus == FormzStatus.submissionInProgress;
+              state.requestDeleteStatus == FormzSubmissionStatus.inProgress;
 
           String formattedDate = timestamp != null
               ? DateFormat('EEEE MMMM d, yyyy').format(timestamp)
@@ -80,7 +80,7 @@ class EmployerRequestList extends StatelessWidget {
                             height: 100,
                             child: CachedNetworkImage(
                               fit: BoxFit.cover,
-                              imageUrl: employee.profilePicturePath,
+                              imageUrl: employee.profilePicturePath ?? '',
                               progressIndicatorBuilder:
                                   (context, _, progress) => const Center(
                                       child: CircularProgressIndicator()),
@@ -111,7 +111,7 @@ class EmployerRequestList extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      '${employee.city}, ${employee.subCity}',
+                                      '${employee.city ?? 'No City'}, ${employee.subCity ?? 'No Subcity'}',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.grey[700],
@@ -124,7 +124,8 @@ class EmployerRequestList extends StatelessWidget {
                               const SizedBox(height: 8),
                               RatingBar.builder(
                                 itemSize: 15,
-                                initialRating: employee.totalRating.toDouble(),
+                                initialRating:
+                                    employee.totalRating.toDouble() ?? 0,
                                 minRating: 0,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
@@ -211,12 +212,12 @@ class EmployerRequestList extends StatelessWidget {
 //
 // listener: (context, state) {
 // if (state.requestDeleteStatus ==
-// FormzStatus.success) {
+// FormzSubmissionStatus. success) {
 // showSuccessDialog(
 // context, "delete_success_message".tr());
 // }
 // if (state.requestDeleteStatus ==
-// FormzStatus.submissionFailure) {
+// FormzSubmissionStatus. failure) {
 // showErrorDialog(
 // context, "delete_request_message".tr());
 // }

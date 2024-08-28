@@ -19,15 +19,13 @@ class EmployerRepository {
   void updatePersonalInfo(
       {required String firstName,
       required String lastName,
-      required String idCardImagePathBack,
-      required String idCardImagePathFront,
+      required String idCardImagePath,
       required String profilePicturePath,
       required String id}) {
     _employer = (_employer ?? const Employer()).copyWith(
         firstName: firstName,
         lastName: lastName,
-        idCardImagePathBack: idCardImagePathBack,
-        idCardImagePathFront: idCardImagePathFront,
+        idCardImagePath: idCardImagePath,
         profilePicturePath: profilePicturePath,
         id: id);
   }
@@ -36,7 +34,7 @@ class EmployerRepository {
     required String city,
     required String subCity,
     required String specialLocaion,
-    required dynamic houseNumber,
+    required int houseNumber,
     required int familySize,
   }) {
     _employer = (_employer ?? const Employer()).copyWith(
@@ -267,24 +265,5 @@ class EmployerRepository {
 
     return querySnapshot
         .docs.isNotEmpty; // Returns true if any documents match the query
-  }
-
-  Future<void> updateEmployerPassword(String newPassword) async {
-    try {
-      // Get the current user ID
-      final userId = _auth.currentUser?.uid;
-
-      if (userId == null) {
-        throw Exception("User is not logged in");
-      }
-
-      // Reference to the employer document
-      final employerDocRef = _firestore.collection('employers').doc(userId);
-
-      // Update the password field
-      await employerDocRef.update({'password': newPassword});
-    } catch (e) {
-      throw Exception("Failed to update password: $e");
-    }
   }
 }

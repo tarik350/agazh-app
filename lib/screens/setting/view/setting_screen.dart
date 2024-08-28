@@ -8,8 +8,6 @@ import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
 import 'package:mobile_app/screens/setting/bloc/setting_bloc.dart';
-import 'package:mobile_app/services/auth_service.dart';
-import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +25,6 @@ class _SettingScreenState extends State<SettingScreen> {
   bool showOption = false;
   late String language;
   late Future<String?> _roleFuture;
-  final _authService = getit<AuthService>();
 
   @override
   void initState() {
@@ -38,8 +35,7 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    language =
-        context.locale == const Locale('en', "US") ? "English" : "Amharic";
+    language = context.locale == Locale('en', "US") ? "English" : "Amharic";
   }
 
   Future<String?> _getRole() async {
@@ -121,15 +117,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                     title: Text(
                                       "my_request_title".tr(),
                                     )),
-                              SettingsTile(
-                                  onPressed: (context) {
-                                    context.router
-                                        .push(const ChangePasswordRoute());
-                                  },
-                                  leading: const Icon(Icons.key),
-                                  title: Text(
-                                    "change_pin".tr(),
-                                  )),
                             ],
                           ),
                         ],
@@ -139,42 +126,36 @@ class _SettingScreenState extends State<SettingScreen> {
                 },
               ),
             ),
-            Container(
-              color: Colors.white,
-              child: BlocConsumer<SettingBloc, SettingState>(
-                listener: (context, state) async {
-                  if (state is Logout) {
-                    await _authService.logout();
-                    if (context.mounted) {
-                      context.router.replaceAll([const LoginRoute()]);
-                    }
-                  }
-
-                  if (state is LogoutError) {
-                    AppConfig.getMassenger(context, "Error while loggin out");
-                    //todo -> show message if login failed
-                  }
-                },
-                builder: (context, state) {
-                  return Padding(
-                    padding: EdgeInsets.all(50.h),
-                    child: CustomButton(
-                      onTap: state is LogoutLoading
-                          ? null
-                          : () async {
-                              final instance =
-                                  await SharedPreferences.getInstance();
-                              instance.remove('role');
-                              if (context.mounted) {
-                                context.read<SettingBloc>().add(LogoutEvent());
-                              }
-                            },
-                      lable: "logout".tr(),
-                      backgroundColor: AppColors.primaryColor,
-                    ),
-                  );
-                },
-              ),
+            BlocConsumer<SettingBloc, SettingState>(
+              listener: (context, state) {
+                if (state is Logout) {
+                  context.router.push(const LoginRoute());
+                }
+                if (state is LogoutError) {
+                  print(state.message);
+                  AppConfig.getMassenger(context, "Error while loggin out");
+                  //todo -> show message if login failed
+                }
+              },
+              builder: (context, state) {
+                return Padding(
+                  padding: EdgeInsets.all(50.h),
+                  child: CustomButton(
+                    onTap: state is LogoutLoading
+                        ? null
+                        : () async {
+                            final instance =
+                                await SharedPreferences.getInstance();
+                            instance.remove('role');
+                            if (context.mounted) {
+                              context.read<SettingBloc>().add(LogoutEvent());
+                            }
+                          },
+                    lable: "logout".tr(),
+                    backgroundColor: AppColors.primaryColor,
+                  ),
+                );
+              },
             )
           ],
         ),

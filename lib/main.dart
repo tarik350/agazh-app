@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/data/repository/auth_detail_repository.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
@@ -14,23 +12,13 @@ import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
 import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/setting/bloc/setting_bloc.dart';
-import 'package:mobile_app/services/init_service.dart';
 import 'config/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await initApp();
-
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.dark,
-      statusBarColor: AppColors.primaryColor,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      systemStatusBarContrastEnforced: true,
-      systemNavigationBarContrastEnforced: true));
+  // await initApp();
 
   runApp(EasyLocalization(
       supportedLocales: const [Locale('en', 'US'), Locale('am', 'ET')],

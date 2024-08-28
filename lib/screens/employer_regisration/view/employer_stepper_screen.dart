@@ -16,7 +16,7 @@ class EmployerStepperScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: BlocProvider<EmployerRegistrationCubit>(
           create: (_) => EmployerRegistrationCubit(3),
@@ -53,10 +53,7 @@ class EmployerStepperScreen extends StatelessWidget {
               child: Expanded(
                 child: Container(
                     padding: EdgeInsets.only(
-                      top: 12.h,
-                      left: 20.w,
-                      right: 20.w,
-                    ),
+                        top: 12.h, left: 20.w, right: 20.w, bottom: 30.h),
                     decoration: AppConfig.getInsideScreenDecoration(null),
                     child: const EmployerStepper()),
               )),

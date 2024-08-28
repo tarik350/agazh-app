@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
@@ -21,25 +22,23 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     on<SubCityChanged>(_onSubcityChanged);
     on<SpecialLocaionChanged>(_onSpecialLocaionChanged);
     on<FormSubmitted>(_onFormSubmitted);
-    on<HouseNumberNewSelected>(_onHouseNumberNewSelected);
   }
+
   void _onHouseNumberChanged(
     HouseNumberChanged event,
     Emitter<AddressInfoState> emit,
   ) {
-    final houseNumber = HouseNumber.dirty(
-      value: event.houseNumber,
-    );
-
+    final houseNumber = HouseNumber.dirty(event.houseNumber);
     emit(state.copyWith(
       houseNumber: houseNumber,
       status: Formz.validate([
         houseNumber,
+        state.houseNumber,
         state.familySize,
         state.city,
-        state.subCity,
-        state.specialLocation
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -48,7 +47,6 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     Emitter<AddressInfoState> emit,
   ) {
     final familySize = FamilySize.dirty(event.familySize);
-
     emit(state.copyWith(
       familySize: familySize,
       status: Formz.validate([
@@ -56,8 +54,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         familySize,
         state.city,
         state.houseNumber,
-        state.specialLocation
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -69,12 +68,13 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
     emit(state.copyWith(
       city: city,
       status: Formz.validate([
-        state.familySize,
-        state.specialLocation,
+        // state.familySize,
         city,
         state.city,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -90,8 +90,9 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
         state.familySize,
         state.city,
         subCity,
-        state.specialLocation
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -106,36 +107,28 @@ class AddressInfoBloc extends Bloc<AddressInfoEvent, AddressInfoState> {
           state.subCity,
           state.familySize,
           state.houseNumber
-        ])));
+        ])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   void _onFormSubmitted(
     FormSubmitted event,
     Emitter<AddressInfoState> emit,
   ) async {
-    // if (!(state.isNewHouseNumberSelected || state.houseNumber.valid)) {
-    //   //both not provided
-    // }
-    if (state.status.isValidated) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    if (state.status.isSuccess) {
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
         employerRepositroy.updateAddressInformation(
-            houseNumber: state.houseNumber.value,
+            houseNumber: int.parse(state.houseNumber.value),
             city: state.city.value,
             subCity: state.subCity.value,
             specialLocaion: state.specialLocation.value,
             familySize: int.parse(state.familySize.value));
-        emit(state.copyWith(status: FormzStatus.success));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
     }
-  }
-
-  FutureOr<void> _onHouseNumberNewSelected(
-      HouseNumberNewSelected event, Emitter<AddressInfoState> emit) {
-    emit(
-      state.copyWith(isNewHouseNumberSelected: event.isNewSelected),
-    );
   }
 }

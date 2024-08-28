@@ -3,28 +3,27 @@ part of 'login_bloc.dart';
 class LoginState extends Equatable {
   final PhoneNumber phoneNumber;
   // final Password password;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
   final String? errorMessage;
-  final PIN password;
+  final Password password;
   final String? verificationId;
   final UserRole userRole;
-
   const LoginState(
-      {this.status = FormzStatus.pure,
+      {this.status = FormzSubmissionStatus.initial,
       this.errorMessage,
       this.userRole = UserRole.none,
-      this.password = const PIN.pure(),
+      this.password = const Password.pure(),
       this.verificationId,
       this.phoneNumber = const PhoneNumber.pure()});
 
   LoginState copyWith(
       {PhoneNumber? phoneNumber,
-      FormzStatus? status,
+      FormzSubmissionStatus? status,
       String? errorMessage,
-      PIN? password,
+      Password? password,
       UserRole? userRole,
       String? verificationId}) {
-    if (status == FormzStatus.success && verificationId == null) {
+    if (status == FormzSubmissionStatus.success && verificationId == null) {
       throw VerificationIdNotReceivedException();
     }
 
@@ -33,20 +32,15 @@ class LoginState extends Equatable {
       status: status ?? this.status,
       userRole: userRole ?? this.userRole,
       password: password ?? this.password,
-      errorMessage: status == FormzStatus.submissionFailure
+      errorMessage: status == FormzSubmissionStatus.failure
           ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
           : errorMessage ?? this.errorMessage,
       verificationId: verificationId ?? this.verificationId,
+      // password: password ?? this.password
     );
   }
 
   @override
-  List<dynamic> get props => [
-        phoneNumber,
-        status,
-        errorMessage,
-        userRole,
-        password,
-        verificationId,
-      ];
+  List<dynamic> get props =>
+      [phoneNumber, status, errorMessage, userRole, password, verificationId];
 }

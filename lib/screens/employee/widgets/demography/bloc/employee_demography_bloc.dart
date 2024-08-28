@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:formz/formz.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/models/salaray.dart';
@@ -26,16 +25,13 @@ class EmployeeDemographyBloc
     on<FormSubmitted>(_onFormSubmitted);
     on<JobStatusChanged>(_onJobStatusChangd);
     on<SalaryChanged>(_onSalaryChanged);
-    on<DemographyHouseNumberNewSelected>(_onHouseNumberNewSelected);
   }
 
   void _onHouseNumberChanged(
     HouseNumberChanged event,
     Emitter<EmployeeDemographyState> emit,
   ) {
-    final houseNumber = HouseNumber.dirty(
-      value: event.houseNumber,
-    );
+    final houseNumber = HouseNumber.dirty(event.houseNumber);
     emit(state.copyWith(
       houseNumber: houseNumber,
       status: Formz.validate([
@@ -43,7 +39,9 @@ class EmployeeDemographyBloc
         state.salary,
         state.subCity,
         state.city,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -61,7 +59,9 @@ class EmployeeDemographyBloc
         state.city,
         state.salary,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -77,7 +77,9 @@ class EmployeeDemographyBloc
         state.salary,
         state.subCity,
         state.houseNumber,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -88,8 +90,10 @@ class EmployeeDemographyBloc
     final subCity = SubCity.dirty(event.country);
     emit(state.copyWith(
       subCity: subCity,
-      status: Formz.validate(
-          [state.houseNumber, state.city, subCity, state.salary]),
+      status:
+          Formz.validate([state.houseNumber, state.city, subCity, state.salary])
+              ? FormzSubmissionStatus.success
+              : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -99,7 +103,9 @@ class EmployeeDemographyBloc
     emit(state.copyWith(
         salary: salary,
         status: Formz.validate(
-            [state.houseNumber, state.city, state.subCity, salary])));
+                [state.houseNumber, state.city, state.subCity, salary])
+            ? FormzSubmissionStatus.success
+            : FormzSubmissionStatus.initial));
   }
 
   void _onFormSubmitted(
@@ -108,35 +114,25 @@ class EmployeeDemographyBloc
   ) async {
     if (state.jobStatus == JobStatusEnum.none) {
       emit(state.copyWith(
-          status: FormzStatus.submissionFailure,
+          status: FormzSubmissionStatus.failure,
           errorMessage: "You have to select job status"));
       return;
     }
 
-    if (state.status.isValid) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    if (state.status.isSuccess) {
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {
         employeeRepository.updateDemographyInformation(
-            houseNumber: state.houseNumber.value,
+            houseNumber: int.parse(state.houseNumber.value),
             city: state.city.value,
             salaray: state.salary.value,
             subCity: state.subCity.value,
             jobStatus: state.jobStatus);
-        emit(state.copyWith(status: FormzStatus.success));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
-    } else {
-      debugPrint("");
     }
-  }
-
-  FutureOr<void> _onHouseNumberNewSelected(
-      DemographyHouseNumberNewSelected event,
-      Emitter<EmployeeDemographyState> emit) {
-    emit(
-      state.copyWith(isNewHouseNumberSelected: event.isNewSelected),
-    );
   }
 }

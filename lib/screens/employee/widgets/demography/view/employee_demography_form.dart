@@ -13,13 +13,13 @@ import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
 import '../../../../../config/constants/app_colors.dart';
 
 class EmplyeeDemographyForm extends StatelessWidget {
-  const EmplyeeDemographyForm({Key? key}) : super(key: key);
+  const EmplyeeDemographyForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<EmployeeDemographyBloc, EmployeeDemographyState>(
       listener: (context, state) {
-        // if (state.status.isSubmissionFailure) {
+        // if (state.status.isFailure) {
         //   ScaffoldMessenger.of(context)
         //     ..hideCurrentSnackBar()
         //     ..showSnackBar(
@@ -27,41 +27,30 @@ class EmplyeeDemographyForm extends StatelessWidget {
         //     );
         // }
       },
-      child: Expanded(
-        child: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    _SalaryInput(),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    const _JobStatusDropDown(),
-                    const SizedBox(height: 12.0),
-                    _CityInput(),
-                    const SizedBox(height: 12.0),
-                    _SubCityInput(),
-                    const SizedBox(height: 12.0),
-                    _HouseNumberInput(),
-                    const SizedBox(height: 12.0),
-                    Row(
-                      children: [
-                        Expanded(child: _SubmitButton()),
-                        const SizedBox(width: 8.0),
-                        Expanded(child: _CancelButton()),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _SalaryInput(),
+            const SizedBox(
+              height: 12,
             ),
-          );
-        }),
+            const _JobStatusDropDown(),
+            const SizedBox(height: 12.0),
+            _CityInput(),
+            const SizedBox(height: 12.0),
+            _SubCityInput(),
+            const SizedBox(height: 12.0),
+            _HouseNumberInput(),
+            const SizedBox(height: 12.0),
+            Row(
+              children: [
+                Expanded(child: _SubmitButton()),
+                const SizedBox(width: 8.0),
+                Expanded(child: _CancelButton()),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -72,64 +61,19 @@ class _HouseNumberInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EmployeeDemographyBloc, EmployeeDemographyState>(
       buildWhen: (previous, current) =>
-          previous.houseNumber != current.houseNumber ||
-          previous.isNewHouseNumberSelected != current.isNewHouseNumberSelected,
+          previous.houseNumber != current.houseNumber,
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomTextfield(
-              hintText: 'house_number',
-              obscureText: false,
-              onChanged: (houseNumber) => context
-                  .read<EmployeeDemographyBloc>()
-                  .add(HouseNumberChanged(houseNumber)),
-              keyString: "billingAddressForm_streetInput_textField",
-              inputType: TextInputType.text,
-              errorText: state.houseNumber.invalid
-                  ? state.houseNumber.error?.message
-                  : null,
-              // Disable input if 'new' is selected
-              enabled: !state.isNewHouseNumberSelected,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5.h),
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: 30.h,
-                    width: 30.h,
-                    child: Checkbox(
-                      // fillColor: WidgetStateProperty.all<Color>(
-                      // AppColors.primaryColor),
-                      activeColor: AppColors.primaryColor,
-
-                      value: state.isNewHouseNumberSelected,
-                      onChanged: (value) {
-                        context
-                            .read<EmployeeDemographyBloc>()
-                            .add(DemographyHouseNumberNewSelected(value!));
-                        if (value == true) {
-                          context
-                              .read<EmployeeDemographyBloc>()
-                              .add(const HouseNumberChanged('new'));
-                        } else {
-                          context
-                              .read<EmployeeDemographyBloc>()
-                              .add(const HouseNumberChanged(""));
-                        }
-                      },
-                    ),
-                  ),
-                  Text(
-                    'new'.tr(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
+        return CustomTextfield(
+            hintText: 'house_number',
+            obscureText: false,
+            onChanged: (houseNumber) => context
+                .read<EmployeeDemographyBloc>()
+                .add(HouseNumberChanged(houseNumber)),
+            keyString: "billingAddressForm_streetInput_textField",
+            inputType: TextInputType.text,
+            errorText: state.houseNumber.isNotValid
+                ? state.houseNumber.error?.message
+                : null);
       },
     );
   }
@@ -148,7 +92,8 @@ class _CityInput extends StatelessWidget {
                 context.read<EmployeeDemographyBloc>().add(CityChanged(city)),
             keyString: "billingAddressForm_cityInput_textField",
             inputType: TextInputType.text,
-            errorText: state.city.invalid ? state.city.error?.message : null);
+            errorText:
+                state.city.isNotValid ? state.city.error?.message : null);
       },
     );
   }
@@ -169,7 +114,7 @@ class _SubCityInput extends StatelessWidget {
             keyString: "subCity_subCityInput_textField",
             inputType: TextInputType.text,
             errorText:
-                state.subCity.invalid ? state.subCity.error?.message : null);
+                state.subCity.isNotValid ? state.subCity.error?.message : null);
       },
     );
   }
@@ -184,18 +129,9 @@ class _SalaryInput extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  'select_salary'.tr(),
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  ': ${state.salary.value} ETB',
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
+            Text(
+              'Selected Salary: ${state.salary.value} ETB',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Slider(
               value: state.salary.value.toDouble(),
@@ -209,9 +145,9 @@ class _SalaryInput extends StatelessWidget {
                     .add(SalaryChanged(newValue.toInt()));
               },
             ),
-            if (state.salary.invalid)
+            if (state.salary.isNotValid)
               Text(
-                state.salary.invalid ? state.salary.error!.message : "",
+                state.salary.isNotValid ? state.salary.error!.message : "",
                 style: const TextStyle(color: Colors.red),
               ),
           ],
@@ -235,7 +171,7 @@ class _SalaryInput extends StatelessWidget {
 //             keyString: "billingAddressForm_countryInput_textField",
 //             inputType: TextInputType.text,
 //             errorText:
-//                 state.country.invalid ? state.country.error?.message : null);
+//                 state.country.isNotValid ? state.country.error?.message : null);
 //       },
 //     );
 //   }
@@ -256,7 +192,7 @@ class _SalaryInput extends StatelessWidget {
 //                 .add(FamilySizeChanged(name)),
 //             keyString: 'familySize_FamilySizeInput_textField',
 //             inputType: TextInputType.number,
-//             errorText: state.familySize.invalid
+//             errorText: state.familySize.isNotValid
 //                 ? state.familySize.error!.message
 //                 : null);
 //       },
@@ -270,7 +206,7 @@ class _SubmitButton extends StatelessWidget {
     return BlocConsumer<EmployeeDemographyBloc, EmployeeDemographyState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isSubmissionSuccess) {
+        if (state.status.isSuccess) {
           context.read<EmployerRegistrationCubit>().stepContinued();
         }
       },
@@ -279,14 +215,12 @@ class _SubmitButton extends StatelessWidget {
           previous.jobStatus != current.jobStatus,
       builder: (context, state) {
         return CustomButton(
-          onTap: state.jobStatus != JobStatusEnum.none && state.status.isValid
+          onTap: state.status.isSuccess && state.jobStatus != JobStatusEnum.none
               ? () =>
                   context.read<EmployeeDemographyBloc>().add(FormSubmitted())
               : null,
-          lable: state.status.isSubmissionInProgress
-              ? "loading".tr()
-              : "proceed".tr(),
-          backgroundColor: AppColors.primaryColor,
+          lable: state.status.isInProgress ? "loading".tr() : "proceed".tr(),
+          backgroundColor: Colors.black,
         );
       },
     );
@@ -299,7 +233,7 @@ class _CancelButton extends StatelessWidget {
     return BlocBuilder<EmployeeDemographyBloc, EmployeeDemographyState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
+        return state.status.isInProgress
             ? const SizedBox.shrink()
             : CustomButton(
                 key:

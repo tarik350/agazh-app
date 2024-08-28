@@ -28,9 +28,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     on<FirstNameChanged>(_onFirstNameChanged);
     on<LastNameChanged>(_onLastNameChanged);
     on<FormSubmitted>(_onFormSubmitted);
-    on<IdCardChangedFront>(_onIdCardChangedFront);
-    on<IdCardChangedBack>(_onIdCardChangedBack);
-
+    on<IdCardChanged>(_onIdCardChanged);
     on<ProfilePictureChanged>(_onProfilePictureChanged);
   }
 
@@ -44,7 +42,9 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
       status: Formz.validate([
         firstName,
         state.lastName,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
@@ -53,43 +53,26 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     final lastName = LastName.dirty(event.name);
     emit(state.copyWith(
       lastName: lastName,
-      status: Formz.validate([lastName, state.firstName]),
+      status: Formz.validate([lastName, state.firstName])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.initial,
     ));
   }
 
-  FutureOr<void> _onIdCardChangedFront(
-      IdCardChangedFront event, Emitter<PersonalInfoState> emit) async {
-    emit(state.copyWith(idCardUploadStatusFront: ImageUploadStatus.loading));
+  FutureOr<void> _onIdCardChanged(
+      IdCardChanged event, Emitter<PersonalInfoState> emit) async {
+    emit(state.copyWith(idCardUploadStatus: ImageUploadStatus.loading));
     try {
-      final response = await _firebaseService.uploadImgeToStorage(
-          event.path, event.file,
-          fileName: "${_auth.currentUser!.uid}id_front");
+      final response =
+          await _firebaseService.uploadImgeToStorage(event.path, event.file);
       if (response.isNotEmpty) {
         emit(state.copyWith(
-            idCardUploadStatusFront: ImageUploadStatus.completed,
-            idCardPathStringFront: response));
+            idCardUploadStatus: ImageUploadStatus.completed,
+            idCardPathString: response));
         //todo update the personal info
       } else {}
     } catch (e) {
-      emit(state.copyWith(idCardUploadStatusFront: ImageUploadStatus.failed));
-    }
-  }
-
-  FutureOr<void> _onIdCardChangedBack(
-      IdCardChangedBack event, Emitter<PersonalInfoState> emit) async {
-    emit(state.copyWith(idCardUploadStatusBack: ImageUploadStatus.loading));
-    try {
-      final response = await _firebaseService.uploadImgeToStorage(
-          event.path, event.file,
-          fileName: "${_auth.currentUser!.uid}id_back");
-      if (response.isNotEmpty) {
-        emit(state.copyWith(
-            idCardUploadStatusBack: ImageUploadStatus.completed,
-            idCardPathStringBack: response));
-        //todo update the personal info
-      } else {}
-    } catch (e) {
-      emit(state.copyWith(idCardUploadStatusBack: ImageUploadStatus.failed));
+      emit(state.copyWith(idCardUploadStatus: ImageUploadStatus.failed));
     }
   }
 
@@ -115,47 +98,38 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
     FormSubmitted event,
     Emitter<PersonalInfoState> emit,
   ) async {
-    if (state.status.isValidated) {
-      if (state.idCardUploadStatusFront != ImageUploadStatus.completed) {
+    if (state.status.isSuccess) {
+      if (state.idCardUploadStatus != ImageUploadStatus.completed) {
         emit(state.copyWith(
-            idCardUploadStatusFront: ImageUploadStatus.notUploaded,
-            errorMessage: "ID cards front must be uploaded"));
-
-        return;
-      }
-      if (state.idCardUploadStatusBack != ImageUploadStatus.completed) {
-        emit(state.copyWith(
-            idCardUploadStatusBack: ImageUploadStatus.notUploaded,
-            errorMessage: "ID cards back must be uploaded"));
+            idCardUploadStatus: ImageUploadStatus.notUploaded,
+            errorMessage: "Id card must be uploaded"));
 
         return;
       }
 
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {
         if (event.role == UserRole.employer) {
           employerRepositroy.updatePersonalInfo(
               firstName: state.firstName.value,
               lastName: state.lastName.value,
-              idCardImagePathFront: state.idCardPathStringFront,
-              idCardImagePathBack: state.idCardPathStringBack,
+              idCardImagePath: state.idCardPathString,
               id: _auth.currentUser!.uid,
               profilePicturePath: state.profilePicturePathString);
         } else {
           employeeRepository.updatePersonalInfo(
               firstName: state.firstName.value,
               lastName: state.lastName.value,
-              idCardImagePathFront: state.idCardPathStringFront,
-              idCardImagePathBack: state.idCardPathStringBack,
+              idCardImagePath: state.idCardPathString,
               profilePicturePath: state.profilePicturePathString,
               id: _auth.currentUser!.uid);
         }
 
-        emit(state.copyWith(status: FormzStatus.success));
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
       } catch (e) {
         emit(state.copyWith(
-            status: FormzStatus.submissionFailure, errorMessage: e.toString()));
+            status: FormzSubmissionStatus.failure, errorMessage: e.toString()));
       }
     }
   }

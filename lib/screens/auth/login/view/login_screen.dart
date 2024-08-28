@@ -11,6 +11,8 @@ import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/screens/auth/login/bloc/login_bloc.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
+import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
+import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
 
 import '../../../../utils/dialogue/language_selection_dialogue.dart';
 
@@ -29,99 +31,116 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      resizeToAvoidBottomInset: false,
+      body: GradientBackgroundContainer(
+        showNavButton: false,
+        title: Stack(
+          children: [
+            Positioned(
+              right: 5,
+              top: 5,
+              child: IconButton(
+                  onPressed: () async {
+                    String? selectedLanguage = await showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const LanguageSelectionDialog();
+                      },
+                    );
+
+                    if (selectedLanguage != null) {
+                      // print('Selected Language: $selectedLanguage');
+
+                      if (context.mounted) {
+                        if (selectedLanguage.toLowerCase() == "amharic") {
+                          context.setLocale(const Locale('am', 'ET'));
+                        } else {
+                          context.setLocale(const Locale('en', 'US'));
+                        }
+                      }
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.language,
+                    color: AppColors.whiteColor,
+                    size: 28,
+                  )),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.only(top: 40.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FadeInUp(
+                        duration: const Duration(milliseconds: 1000),
+                        child: Text(
+                          "login".tr(),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 40),
+                        )),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    FadeInUp(
+                        duration: const Duration(milliseconds: 1300),
+                        child: Text(
+                          "welcome".tr(),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          margin: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              colors: [
-                AppColors.primaryColor,
-                AppColors.primaryColor.withOpacity(.5),
-                AppColors.secondaryColor
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20.r))),
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                FadeInUp(
+                    duration: const Duration(milliseconds: 1400),
+                    child: const Column(
+                      children: [_PhoneNumberInput(), _PasswordInput()],
+                    )),
+                SizedBox(
+                  height: 20.h,
+                ),
+                const _LoginButton(),
+                SizedBox(
+                  height: 20.h,
+                ),
+                const _RegisterButton()
+                // FadeInUp(
+                //     duration: const Duration(milliseconds: 1500),
+                //     child: Align(
+                //       alignment: Alignment.center,
+                //       child: GestureDetector(
+                //         onTap: () => {context.router.push(const RoleRoute())},
+                //         child: Text(
+                //           "create_account".tr(),
+                //           textAlign: TextAlign.center,
+                //           style: const TextStyle(
+                //               color: AppColors.primaryColor,
+                //               fontWeight: FontWeight.w600),
+                //         ),
+                //       ),
+                //     ))
               ],
             ),
-          ),
-          child: Column(
-            // mainAxisSize:
-            //     MainAxisSize.min, // Ensure the Column takes minimum space
-            children: [
-              SizedBox(height: 50.h),
-              SizedBox(
-                height: 50.h,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      right: 0,
-                      top: 0.h,
-                      child: IconButton(
-                          onPressed: () async {
-                            String? selectedLanguage = await showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const LanguageSelectionDialog();
-                              },
-                            );
-
-                            if (selectedLanguage != null) {
-                              // print('Selected Language: $selectedLanguage');
-
-                              if (context.mounted) {
-                                if (selectedLanguage.toLowerCase() ==
-                                    "amharic") {
-                                  context.setLocale(const Locale('am', 'ET'));
-                                } else {
-                                  context.setLocale(const Locale('en', 'US'));
-                                }
-                              }
-                            }
-                          },
-                          icon: const Icon(
-                            Icons.language,
-                            color: AppColors.whiteColor,
-                            size: 28,
-                          )),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 50.h),
-              FadeInUp(
-                duration: const Duration(milliseconds: 1000),
-                child: SizedBox(
-                  height: 140.h,
-                  child: Image.asset('assets/images/agazh.png'),
-                ),
-              ),
-              const SizedBox(height: 10),
-              FadeInUp(
-                duration: const Duration(milliseconds: 1300),
-                child: Text(
-                  "welcome".tr(),
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ),
-              const SizedBox(height: 20),
-              FadeInUp(
-                duration: const Duration(milliseconds: 1400),
-                child: Column(
-                  children: [
-                    const _PhoneNumberInput(),
-                    SizedBox(height: 12.h),
-                    const _PasswordInput(),
-                  ],
-                ),
-              ),
-              SizedBox(height: 25.h),
-              const _LoginButton(),
-              SizedBox(height: 20.h),
-              // const Spacer(),
-              const _RegisterButton(),
-              // SizedBox(
-              //   height: 22.h,
-              // )
-            ],
           ),
         ),
       ),
@@ -147,14 +166,14 @@ class _PhoneNumberInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return LoginTextField(
+        return CustomTextfield(
             hintText: "phone_number".tr(),
             obscureText: false,
             onChanged: (value) =>
                 context.read<LoginBloc>().add(PhoneNumberChanged(value)),
             keyString: "login_PhoneNumberInput_textfield",
             inputType: TextInputType.number,
-            errorText: state.phoneNumber.invalid
+            errorText: state.phoneNumber.isNotValid
                 ? state.phoneNumber.error!.message
                 : null);
       },
@@ -169,15 +188,16 @@ class _PasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return LoginTextField(
+        return CustomTextfield(
             hintText: "pin".tr(),
             obscureText: false,
             onChanged: (value) =>
                 context.read<LoginBloc>().add(PasswordChanged(value)),
             keyString: "login_PasswordInput_textfield",
             inputType: TextInputType.number,
-            errorText:
-                state.password.invalid ? state.password.error!.message : null);
+            errorText: state.password.isNotValid
+                ? state.password.error!.message
+                : null);
       },
     );
   }
@@ -192,14 +212,14 @@ class _LoginButton extends StatelessWidget {
         duration: const Duration(milliseconds: 1600),
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state.status.isSubmissionSuccess) {
+            if (state.status.isSuccess) {
               context.router.push(OtpRoute(
                   verificationId: state.verificationId!,
                   route: "login",
                   userRole: state.userRole,
                   phoneNumber: state.phoneNumber.value));
             }
-            if (state.status.isSubmissionFailure) {
+            if (state.status.isFailure) {
               AppConfig.getMassenger(context, state.errorMessage);
             }
           },
@@ -210,15 +230,12 @@ class _LoginButton extends StatelessWidget {
             return CustomButton(
               onTap:
                   //validated and is not in progress validated && is not in progress
-                  state.status.isValidated &&
-                          !state.status.isSubmissionInProgress
+                  state.status.isSuccess && !state.status.isInProgress
                       ? () =>
                           context.read<LoginBloc>().add(LoginFormSubmitted())
                       : null,
               backgroundColor: AppColors.primaryColor,
-              lable: state.status.isSubmissionInProgress
-                  ? "loading".tr()
-                  : "login".tr(),
+              lable: state.status.isInProgress ? "loading".tr() : "login".tr(),
             );
           },
         ));
@@ -244,64 +261,5 @@ class _RegisterButton extends StatelessWidget {
             ),
           ),
         ));
-  }
-}
-
-class LoginTextField extends StatelessWidget {
-  final String hintText;
-  final bool obscureText;
-  final Function(dynamic) onChanged;
-  final String keyString;
-  final String? errorText;
-  final TextInputType inputType;
-  final String? initialValue;
-  final Widget? suffix;
-  final int? maxLines;
-
-  const LoginTextField(
-      {super.key,
-      // required this.controller,
-      this.initialValue,
-      this.maxLines,
-      required this.hintText,
-      required this.obscureText,
-      required this.onChanged,
-      required this.keyString,
-      required this.inputType,
-      required this.errorText,
-      this.suffix});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      maxLines: maxLines,
-      initialValue: initialValue,
-      obscureText: obscureText,
-      key: Key(keyString),
-      onChanged: onChanged,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 2),
-              borderRadius: BorderRadius.circular(10.h)),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          errorStyle: const TextStyle(fontWeight: FontWeight.w300),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2),
-          ),
-          fillColor: AppColors.primaryColor.withOpacity(.1),
-          filled: true,
-          labelText: hintText,
-          labelStyle:
-              TextStyle(fontSize: 12.sp, color: Colors.black.withOpacity(.5)),
-          errorMaxLines: 3,
-          errorText: errorText?.tr(),
-          hintStyle: TextStyle(color: Colors.grey.shade500)),
-    );
   }
 }
