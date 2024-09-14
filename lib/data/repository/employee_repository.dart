@@ -70,10 +70,10 @@ class EmployeeRepository {
 
       if (name != null && name.isNotEmpty) {
         query = query
-            .orderBy('firstNamee')
+            .orderBy('firstName')
             .orderBy('totalRating', descending: true)
-            .where('firstNamee', isGreaterThanOrEqualTo: name)
-            .where('firstNamee', isLessThanOrEqualTo: '$name\uf8ff');
+            .where('firstName', isGreaterThanOrEqualTo: name)
+            .where('firstName', isLessThanOrEqualTo: '$name\uf8ff');
       } else {
         query = query.orderBy('totalRating', descending: true);
       }
