@@ -76,7 +76,7 @@ class EmplyeeStepper extends StatelessWidget {
                 height: 30.h,
               ),
               state.activeStepperIndex == 0
-                  ? const PersonalInfoScreen()
+                  ? const EmployeeOtherDetailScreen()
                   : state.activeStepperIndex == 1
                       ? const EmployeeOtherDetailScreen()
                       : state.activeStepperIndex == 2

@@ -110,7 +110,8 @@ class _WorkTypeDropDown extends StatelessWidget {
             "Cleaner",
             "Full Time Housekeeper",
             "Part Time Housekeeper",
-            "Nanny"
+            "Nanny",
+            "Waiter"
           ]
               .map((item) => DropdownMenuItem<String>(
                     value: item,

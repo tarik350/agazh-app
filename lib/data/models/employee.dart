@@ -13,6 +13,7 @@ class Employee extends Equatable {
   final String idCardImagePathBack;
   final String city;
   final String subCity;
+  final String status;
   final dynamic houseNumber;
   // final WorkStatus workStatus;
   final String password;
@@ -29,6 +30,7 @@ class Employee extends Equatable {
       {this.firstName = '',
       this.lastName = '',
       this.id = '',
+      this.status = 'active',
       this.salary = 0,
       this.totalRating = 0.0,
       this.jobStatus = JobStatusEnum.none,
@@ -66,7 +68,8 @@ class Employee extends Equatable {
         jobStatus,
         age,
         religion,
-        workType
+        workType,
+        status
       ];
 
   factory Employee.fromJson(Map<String, dynamic> json) {
@@ -74,6 +77,7 @@ class Employee extends Equatable {
         firstName: json['firstName'] ?? '',
         lastName: json['lastName'] ?? '',
         id: json['id'] ?? '',
+        status: json['status'] ?? "",
         salary: json['salary'] ?? 0,
         profilePicturePath: json['profilePicturePath'] ?? '',
         idCardImagePathFront: json['idCardImagePathFront'] ?? '',
@@ -102,6 +106,7 @@ class Employee extends Equatable {
       'idCardImagePathBack': idCardImagePathBack,
       'city': city,
       'subCity': subCity,
+      "status": status,
       'houseNumber': houseNumber,
       // 'workStatus': workStatus.name,
       'password': password,
@@ -128,6 +133,7 @@ class Employee extends Equatable {
         idCardImagePathBack: data['idCardImagePathBack'] ?? '',
         city: data['city'] ?? '',
         subCity: data['subCity'] ?? '',
+        status: data['status'] ?? "",
         houseNumber: data['houseNumber'] ?? 0,
         totalRating: data['totalRating'] ?? 0.0,
         password: data['password'] ?? '',

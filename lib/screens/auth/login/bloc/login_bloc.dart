@@ -54,6 +54,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (employee == null && employer == null) {
         throw UserDoesNotExist();
       }
+
       final String? verificationId =
           await _authService.phoneVerification(state.phoneNumber.value);
 

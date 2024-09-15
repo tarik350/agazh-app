@@ -9,6 +9,7 @@ class Employer extends Equatable {
   final String role;
   final String city;
   final String subCity;
+  final String status;
   final dynamic houseNumber;
   final String idCardImagePathFront;
   final String idCardImagePathBack;
@@ -22,6 +23,7 @@ class Employer extends Equatable {
       this.lastName = '',
       this.id = '',
       this.familySize = 0,
+      this.status = 'active',
       this.role = 'employer',
       this.city = '',
       this.subCity = '',
@@ -44,6 +46,7 @@ class Employer extends Equatable {
       role: data['role'] ?? '',
       city: data['city'] ?? '',
       subCity: data['subCity'] ?? '',
+      status: data['status'] ?? '',
       houseNumber: data['houseNumber'] ?? 0,
       idCardImagePathFront: data['idCardImagePathFront'] ?? '',
       idCardImagePathBack: data['idCardImagePathBack'] ?? '',
@@ -63,6 +66,7 @@ class Employer extends Equatable {
       role: json['role'] ?? 'employer',
       city: json['city'] ?? '',
       subCity: json['subCity'] ?? '',
+      status: json['status'] ?? "",
       houseNumber: json['houseNumber'] ?? 0,
       idCardImagePathFront: json['idCardImagePathFront'] ?? '',
       idCardImagePathBack: json['idCardImagePathBack'] ?? '',
@@ -88,7 +92,8 @@ class Employer extends Equatable {
       'profilePicturePath': profilePicturePath,
       'phone': phone,
       'specialLocation': specialLocation,
-      'password': password
+      'password': password,
+      'status': status
     };
   }
 
@@ -139,6 +144,7 @@ class Employer extends Equatable {
         profilePicturePath,
         phone,
         specialLocation,
-        password
+        password,
+        status
       ];
 }
