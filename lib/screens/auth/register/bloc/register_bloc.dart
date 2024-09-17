@@ -44,15 +44,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         throw UserAlreadyExistException();
       }
 
-      final String? verificationId =
-          await _authService.phoneVerification(state.phoneNumber.value);
+      // final String? verificationId =
+      //     await _authService.phoneVerification(state.phoneNumber.value);
 
-      if (verificationId != null) {
-        emit(state.copyWith(
-            status: FormzStatus.success, verificationId: verificationId));
-      } else {
-        throw VerificationIdNotReceivedException();
-      }
+      // if (verificationId != null) {
+      emit(state.copyWith(
+        status: FormzStatus.success,
+        // verificationId: verificationId
+      ));
+      // } else {
+      //   throw VerificationIdNotReceivedException();
+      // }
     } on UserAlreadyExistException catch (_) {
       emit(state.copyWith(
           status: FormzStatus.submissionFailure,

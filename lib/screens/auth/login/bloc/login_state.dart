@@ -24,9 +24,14 @@ class LoginState extends Equatable {
       PIN? password,
       UserRole? userRole,
       String? verificationId}) {
-    if (status == FormzStatus.success && verificationId == null) {
-      throw VerificationIdNotReceivedException();
-    }
+    //PROCESSED WITH OUT VERIFICATION ID FOR NOT
+    //OTP IS DISABLED FOR NOT
+    //LOGIN DIRECTLY REDIRECT TO HOME PAGE
+    //UNCOMMENT THIS LINE TO ENABLE OTP
+
+    // if (status == FormzStatus.success && verificationId == null) {
+    //   throw VerificationIdNotReceivedException();
+    // }
 
     return LoginState(
       phoneNumber: phoneNumber ?? this.phoneNumber,

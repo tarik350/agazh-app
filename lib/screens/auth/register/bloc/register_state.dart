@@ -21,9 +21,9 @@ class RegisterState extends Equatable {
       FormzStatus? status,
       String? errorMessage,
       String? verificationId}) {
-    if (status == FormzStatus.success && verificationId == null) {
-      throw VerificationIdNotReceivedException();
-    }
+    // if (status == FormzStatus.success && verificationId == null) {
+    //   throw VerificationIdNotReceivedException();
+    // }
 
     return RegisterState(
       phoneNumber: phoneNumber ?? this.phoneNumber,

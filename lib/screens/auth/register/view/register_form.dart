@@ -13,6 +13,7 @@ import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
@@ -20,7 +21,7 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.status.isSubmissionFailure) {
           //todo => show error message
           final message = state.errorMessage;
@@ -33,22 +34,32 @@ class RegisterForm extends StatelessWidget {
         if (state.status.isSubmissionSuccess) {
           try {
             final role = context.read<RoleCubit>().state.userRole;
+            final preference = await SharedPreferences.getInstance();
             if (role == UserRole.employee) {
-              context
-                  .read<EmployeeRepository>()
-                  .updatePhone(state.phoneNumber.value);
-              context.router.push(OtpRoute(
-                  phoneNumber: state.phoneNumber.value,
-                  verificationId: state.verificationId!,
-                  route: "register"));
+              if (context.mounted) {
+                context
+                    .read<EmployeeRepository>()
+                    .updatePhone(state.phoneNumber.value);
+                preference.setString('role', role.name);
+                context.router.replaceAll([const EmployeeStepperRoute()]);
+              }
+              // context.router.push(OtpRoute(
+              //     phoneNumber: state.phoneNumber.value,
+              //     verificationId: state.verificationId!,
+              //     route: "register"));
             } else if (role == UserRole.employer) {
-              context
-                  .read<EmployerRepository>()
-                  .updatePhone(state.phoneNumber.value);
-              context.router.push(OtpRoute(
-                  phoneNumber: state.phoneNumber.value,
-                  verificationId: state.verificationId!,
-                  route: "register"));
+              if (context.mounted) {
+                context
+                    .read<EmployerRepository>()
+                    .updatePhone(state.phoneNumber.value);
+                preference.setString('role', role.name);
+                context.router.replaceAll([const EmployerStepperRoute()]);
+              }
+
+              // context.router.push(OtpRoute(
+              //     phoneNumber: state.phoneNumber.value,
+              //     verificationId: state.verificationId!,
+              //     route: "register"));
             }
           } catch (e) {
             debugPrint(e.toString());

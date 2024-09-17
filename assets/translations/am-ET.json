@@ -54,7 +54,10 @@
     "too_many_requests": "ብዙ ሙከራዎችን አርገዋል። እባኮ ትንሽ ቆይተው ይሞክሩ።",
     "quota_exceeded": "የመልክት ኮታ አልቋል። እባኮ ትንሽ ቆይተው ይሞክሩ።",
     "user_already_exists": "በዚ ስልክ የተመዘገበ ግለሰብ አለ",
-    "verification_id_not_received": "ማረጋገጫ መለያ ማግኘት አልተቻለም"
+    "verification_id_not_received": "ማረጋገጫ መለያ ማግኘት አልተቻለም",
+    "unknown_error": "ያልታወቀ ስተት አጋጥሞል",
+    "account_not_active" : "መለያዎ ዝግጁ አይደለም እባክዎን ለድጋፍ አስተዳዳሪን ያነጋግሩ"
+
   },
 
   "other_detail": {

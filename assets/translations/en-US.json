@@ -52,7 +52,9 @@
     "too_many_requests": "Too many requests. Please try again later.",
     "quota_exceeded": "SMS quota exceeded. Please try again later.",
     "user_already_exists": "User already exists.",
-    "verification_id_not_received": "Verification ID not received."
+    "verification_id_not_received": "Verification ID not received.",
+    "unknown_error": "Unknown error has occurred",
+    "account_not_active" : "Your account is not active please contact admin for support"
   },
   "other_detail": {
     "religion": "Religion",

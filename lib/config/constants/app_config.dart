@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
+import 'package:mobile_app/main.dart';
 
 class AppConfig {
   static final EdgeInsets insideContainerPadding =
@@ -19,7 +21,7 @@ class AppConfig {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(content: Text(message ?? "Unknown error occured")),
+        SnackBar(content: Text(message ?? "Unknown error occured").tr()),
       );
   }
 

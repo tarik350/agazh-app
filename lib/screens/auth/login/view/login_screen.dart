@@ -11,7 +11,10 @@ import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/screens/auth/login/bloc/login_bloc.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../services/auth_service.dart';
+import '../../../../services/init_service.dart';
 import '../../../../utils/dialogue/language_selection_dialogue.dart';
 
 @RoutePage()
@@ -114,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: 25.h),
-              const _LoginButton(),
+              _LoginButton(),
               SizedBox(height: 20.h),
               // const Spacer(),
               const _RegisterButton(),
@@ -184,20 +187,32 @@ class _PasswordInput extends StatelessWidget {
 }
 
 class _LoginButton extends StatelessWidget {
-  const _LoginButton({super.key});
+  _LoginButton({super.key});
+  final _authService = getit<AuthService>();
 
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
         duration: const Duration(milliseconds: 1600),
         child: BlocConsumer<LoginBloc, LoginState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state.status.isSubmissionSuccess) {
-              context.router.push(OtpRoute(
-                  verificationId: state.verificationId!,
-                  route: "login",
-                  userRole: state.userRole,
-                  phoneNumber: state.phoneNumber.value));
+              final userRole = state.userRole;
+              final preference = await SharedPreferences.getInstance();
+              // if ( userRole ) {
+              preference.setString('role', userRole.name);
+              if (context.mounted) {
+                await _authService.setIsAuthenticated();
+                if (context.mounted) {
+                  context.router.replaceAll([const AgazhAppRoute()]);
+                }
+              }
+              //REDIRECT TO OTP PAGE ON LOGIN
+              // context.router.push(OtpRoute(
+              //     verificationId: state.verificationId!,
+              //     route: "login",
+              //     userRole: state.userRole,
+              //     phoneNumber: state.phoneNumber.value));
             }
             if (state.status.isSubmissionFailure) {
               AppConfig.getMassenger(context, state.errorMessage);
