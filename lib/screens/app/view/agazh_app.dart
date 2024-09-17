@@ -11,6 +11,8 @@ import 'package:mobile_app/screens/profile/employer/employer_profile_screen.dart
 
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/screens/setting/view/setting_screen.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
@@ -23,6 +25,7 @@ class AgazhAppScreen extends StatefulWidget {
 
 class _SiraAppScreenState extends State<AgazhAppScreen> {
   late List<Widget> _widgets = [];
+  final _authService = getit<AuthService>();
 
   @override
   void initState() {
@@ -31,9 +34,13 @@ class _SiraAppScreenState extends State<AgazhAppScreen> {
   }
 
   Future<void> initWidgets() async {
-    final preference = await SharedPreferences.getInstance();
+    final String? role = await _authService.getUserRole();
+    if (role == null) {
+      return;
+    }
+    // final preference = await SharedPreferences.getInstance();
 
-    final role = preference.getString('role');
+    // final role = preference.getString('role');
     setState(() {
       _widgets = role == UserRole.employee.name
           ? [

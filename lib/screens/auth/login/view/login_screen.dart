@@ -197,10 +197,11 @@ class _LoginButton extends StatelessWidget {
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) async {
             if (state.status.isSubmissionSuccess) {
-              final userRole = state.userRole;
-              final preference = await SharedPreferences.getInstance();
-              // if ( userRole ) {
-              preference.setString('role', userRole.name);
+              final userRole = state.userRole.name;
+              await _authService.saveUserRole(userRole);
+              // final preference = await SharedPreferences.getInstance();
+              // // if ( userRole ) {
+              // preference.setString('role', userRole);
               if (context.mounted) {
                 await _authService.setIsAuthenticated();
                 await _authService.saveUserID(state.userId ?? "");

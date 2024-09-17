@@ -76,7 +76,6 @@ class EmployerRequestScreen extends StatelessWidget {
                             fontSize: 14.sp),
                       ));
                     }
-
                     return EmployerRequestList(
                       requests: state.requests!,
                     );

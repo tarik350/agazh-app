@@ -11,12 +11,14 @@ import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/register/bloc/register_bloc.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterForm extends StatelessWidget {
-  const RegisterForm({super.key});
+  RegisterForm({super.key});
+  final _authService = getit<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +36,17 @@ class RegisterForm extends StatelessWidget {
         if (state.status.isSubmissionSuccess) {
           try {
             final role = context.read<RoleCubit>().state.userRole;
-            final preference = await SharedPreferences.getInstance();
+
             if (role == UserRole.employee) {
               if (context.mounted) {
                 context
                     .read<EmployeeRepository>()
                     .updatePhone(state.phoneNumber.value);
-                preference.setString('role', role.name);
-                context.router.replaceAll([const EmployeeStepperRoute()]);
+
+                await _authService.saveUserRole(role.name);
+                if (context.mounted) {
+                  context.router.replaceAll([const EmployeeStepperRoute()]);
+                }
               }
               // context.router.push(OtpRoute(
               //     phoneNumber: state.phoneNumber.value,
@@ -52,8 +57,10 @@ class RegisterForm extends StatelessWidget {
                 context
                     .read<EmployerRepository>()
                     .updatePhone(state.phoneNumber.value);
-                preference.setString('role', role.name);
-                context.router.replaceAll([const EmployerStepperRoute()]);
+                await _authService.saveUserRole(role.name);
+                if (context.mounted) {
+                  context.router.replaceAll([const EmployerStepperRoute()]);
+                }
               }
 
               // context.router.push(OtpRoute(

@@ -11,6 +11,8 @@ import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/rating_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
@@ -22,6 +24,7 @@ import '../cubit/employer_cubit.dart';
 class EmployeeDetailScreen extends StatelessWidget {
   final Employee employee;
   final auth = FirebaseAuth.instance;
+  final _authService = getit<AuthService>();
 
   EmployeeDetailScreen({Key? key, required this.employee}) : super(key: key);
 
@@ -45,11 +48,11 @@ class EmployeeDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage:
-                          NetworkImage(employee.profilePicturePath),
-                    ),
+                    // CircleAvatar(
+                    //   radius: 50,
+                    //   backgroundImage:
+                    //       NetworkImage(employee.profilePicturePath),
+                    // ),
                     const SizedBox(height: 16),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -240,13 +243,15 @@ class EmployeeDetailScreen extends StatelessWidget {
                               onPressed: state.requestStatus ==
                                       FormzStatus.submissionInProgress
                                   ? null
-                                  : () => context
+                                  : () async => context
                                       .read<EmployerCubit>()
                                       .requestForEmployee(
                                           fullName:
                                               "${employee.firstName} ${employee.lastName}",
                                           employeeId: employee.id,
-                                          employerId: auth.currentUser!.uid),
+                                          employerId:
+                                              await _authService.getUserId() ??
+                                                  ""),
                               child: Container(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20.0),
@@ -329,7 +334,8 @@ class EmployeeDetailScreen extends StatelessWidget {
                                   context.read<EmployerCubit>().updateRating(
                                       rating: response['rating'],
                                       employeeId: employee.id,
-                                      employerId: auth.currentUser!.uid,
+                                      employerId:
+                                          await _authService.getUserId() ?? "",
                                       feedback: response['feedback'],
                                       name:
                                           "${employee.firstName} ${employee.lastName}");

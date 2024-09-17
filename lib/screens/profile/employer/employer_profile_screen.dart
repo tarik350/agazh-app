@@ -13,6 +13,8 @@ import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_shimmer.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_text_filed.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
 
@@ -30,6 +32,7 @@ class EmployerProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<EmployerProfileScreen> {
   final auth = FirebaseAuth.instance;
+  final _authService = getit<AuthService>();
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController familySizeController;
@@ -78,7 +81,7 @@ class _ProfileScreenState extends State<EmployerProfileScreen> {
   String idCardPath = '';
   String profilePath = '';
 
-  void _updateProfile() {
+  void _updateProfile() async {
     try {
       final updatedFields = <String, dynamic>{};
 
@@ -114,7 +117,9 @@ class _ProfileScreenState extends State<EmployerProfileScreen> {
       }
 
       context.read<ProfileCubit>().updateProfile(
-          auth.currentUser!.uid, updatedFields, UserRole.employer);
+          await _authService.getUserId() ?? "",
+          updatedFields,
+          UserRole.employer);
     } catch (e) {
       print(e);
     }

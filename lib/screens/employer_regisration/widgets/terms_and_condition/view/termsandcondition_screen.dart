@@ -15,7 +15,6 @@ import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../cubit/employer_registration_cubit.dart';
 
@@ -31,27 +30,31 @@ class TermsAndConditionScreen extends StatelessWidget {
           employerRepositroy: context.read<EmployerRepository>()),
       child: BlocConsumer<TermsandconditionCubit, TermsAndConditionState>(
         listener: (context, state) async {
-          final preferences = await SharedPreferences.getInstance();
-          final role = preferences.getString('role');
+          final role = await _authService.getUserRole();
 
           if (state.status.isSubmissionFailure) {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                    content: Text(state.errorMessage ?? 'unknown_error').tr()),
-              );
+            if (context.mounted) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                      content:
+                          Text(state.errorMessage ?? 'unknown_error').tr()),
+                );
+            }
           } else if (state.status.isSubmissionSuccess) {
             await _authService.setIsAuthenticated();
-            if (role == UserRole.employee.name) {
-              await _authService
-                  .saveUserID(context.read<EmployeeRepository>().employee.id);
-            } else {
-              await _authService
-                  .saveUserID(context.read<EmployerRepository>().employer.id);
-            }
             if (context.mounted) {
-              context.router.replaceAll([const AgazhAppRoute()]);
+              if (role == UserRole.employee.name) {
+                await _authService
+                    .saveUserID(context.read<EmployeeRepository>().employee.id);
+              } else {
+                await _authService
+                    .saveUserID(context.read<EmployerRepository>().employer.id);
+              }
+              if (context.mounted) {
+                context.router.replaceAll([const AgazhAppRoute()]);
+              }
             }
           }
         },

@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_app/data/models/Employer.dart';
 
+import '../../../../config/constants/app_image.dart';
+
 class EmployeeFeedbackList extends StatelessWidget {
   final List<Map<String, dynamic>> ratings;
 
@@ -47,15 +49,24 @@ class EmployeeFeedbackList extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      width: 50.0,
-                      height: 50.0,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                    child: SizedBox(
+                      height: 100.h,
+                      width: 100.h,
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Center(
+                                child: SizedBox(
+                                    width: 10.0.w,
+                                    height: 10.0.h,
+                                    child: CircularProgressIndicator(
+                                        value: downloadProgress.progress))),
+                        errorWidget: (context, url, error) => Image.asset(
+                          AppImage.profilePlaceHolder,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10.0),

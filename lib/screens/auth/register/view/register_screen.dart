@@ -54,7 +54,7 @@ class RegisterScreen extends StatelessWidget {
                   child: Container(
                       padding: AppConfig.insideContainerPadding,
                       decoration: AppConfig.getInsideScreenDecoration(null),
-                      child: const RegisterForm()))),
+                      child: RegisterForm()))),
         ),
       ),
     );

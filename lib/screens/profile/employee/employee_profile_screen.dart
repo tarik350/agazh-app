@@ -15,6 +15,8 @@ import 'package:mobile_app/screens/profile/cubit/profile_cubit.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_shimmer.dart';
 import 'package:mobile_app/screens/profile/widgets/profile_text_filed.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
 
@@ -30,6 +32,7 @@ class EmployeeProfileScreen extends StatefulWidget {
 
 class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   final auth = FirebaseAuth.instance;
+  final _authService = getit<AuthService>();
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController cityController;
@@ -81,7 +84,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     return null;
   }
 
-  void _updateProfile() {
+  void _updateProfile() async {
     final updatedFields = <String, dynamic>{};
 
     if (firstNameController.text.isNotEmpty) {
@@ -124,7 +127,9 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
 
     try {
       context.read<ProfileCubit>().updateProfile(
-          auth.currentUser!.uid, updatedFields, UserRole.employee);
+          await _authService.getUserId() ?? "",
+          updatedFields,
+          UserRole.employee);
     } catch (e) {
       print(e);
     }

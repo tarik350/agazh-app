@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile_app/config/constants/app_colors.dart';
+import 'package:mobile_app/config/constants/app_image.dart';
 import 'package:mobile_app/data/models/Employer.dart';
 
 class EmployeeRequestList extends StatelessWidget {
@@ -52,22 +54,47 @@ class EmployeeRequestList extends StatelessWidget {
                     child: Row(
                       children: [
                         ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(15), // Rounded corners
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: employer.profilePicturePath,
-                              progressIndicatorBuilder:
-                                  (context, _, progress) => const Center(
-                                      child: CircularProgressIndicator()),
-                              errorWidget: (context, _, err) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            child: SizedBox(
+                              height: 100.h,
+                              width: 100.h,
+                              child: CachedNetworkImage(
+                                imageUrl: employer.profilePicturePath,
+                                fit: BoxFit.cover,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) => Center(
+                                        child: SizedBox(
+                                            width: 10.0.w,
+                                            height: 10.0.h,
+                                            child: CircularProgressIndicator(
+                                                value: downloadProgress
+                                                    .progress))),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                  AppImage.profilePlaceHolder,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )),
+                        // ClipRRect(
+                        //   borderRadius:
+                        //       BorderRadius.circular(15), // Rounded corners
+                        //   child: SizedBox(
+                        //     width: 100,
+                        //     height: 100,
+                        //     child: CachedNetworkImage(
+                        //       fit: BoxFit.cover,
+                        //       imageUrl: employer.profilePicturePath,
+                        //       progressIndicatorBuilder:
+                        //           (context, _, progress) => const Center(
+                        //               child: CircularProgressIndicator()),
+                        //       errorWidget: (context, _, err) => Image.asset(
+                        //         AppImage.profilePlaceHolder,
+                        //         fit: BoxFit.cover,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(

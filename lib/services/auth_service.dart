@@ -30,6 +30,23 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String?> getUserId() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final id = preferences.getString('userId');
+    return id;
+  }
+
+  Future<void> saveUserRole(String role) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString('role', role);
+    notifyListeners();
+  }
+
+  Future<String?> getUserRole() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString('role');
+  }
+
   Future<void> logout() async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setBool('isAuthenticated', false);

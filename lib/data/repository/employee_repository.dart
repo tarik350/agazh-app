@@ -2,14 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
+import 'package:mobile_app/services/auth_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../services/init_service.dart';
 import '../models/Employer.dart';
 
 class EmployeeRepository {
   Employee? _employee;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
+  // final _auth = FirebaseAuth.instance;
 
   Employee? getUser() {
     return _employee ?? const Employee();
@@ -111,12 +113,14 @@ class EmployeeRepository {
 
   Future<Employee?> getEmployeeByCurrentUserUid() async {
     try {
-      final User? user = _auth.currentUser;
+      // final User? user = _auth.currentUser;
       // if (user == null) {
       //   return null;
       // }
-      final preference = await SharedPreferences.getInstance();
-      final userId = preference.getString('userId');
+      final userId = await getit<AuthService>().getUserId();
+      if (userId == null) {
+        return null;
+      }
 
       final DocumentSnapshot doc =
           await _firestore.collection('employee').doc(userId).get();
@@ -168,7 +172,7 @@ class EmployeeRepository {
 
   Future<List<Map<String, dynamic>>?> getEmployeeRequests() async {
     try {
-      String employeeId = _auth.currentUser?.uid ?? '';
+      String employeeId = await getit<AuthService>().getUserId() ?? "";
 
       if (employeeId.isEmpty) {
         throw Exception('No user is currently logged in.');
@@ -213,17 +217,15 @@ class EmployeeRepository {
 
   Future<List<Map<String, dynamic>>?> getEmployeeRatingsWithEmployers() async {
     try {
-      final user = _auth.currentUser;
-      if (user == null) {
+      final userId = await getit<AuthService>().getUserId();
+      if (userId == null) {
         return null;
       }
-
-      final uid = user.uid;
 
       // Query employee_ratingss where employeeId is the current user's UID
       final ratingsQuerySnapshot = await _firestore
           .collection('employee_ratings')
-          .where('employeeId', isEqualTo: uid)
+          .where('employeeId', isEqualTo: userId)
           .get();
 
       if (ratingsQuerySnapshot.docs.isEmpty) {
@@ -259,7 +261,7 @@ class EmployeeRepository {
 
   Future<void> updateEmployeePassword(String newPassword) async {
     try {
-      final userId = _auth.currentUser?.uid;
+      final userId = await getit<AuthService>().getUserId();
 
       if (userId == null) {
         throw Exception("User is not logged in");

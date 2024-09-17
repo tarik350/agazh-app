@@ -7,7 +7,6 @@ import 'package:mobile_app/config/constants/app_colors.dart';
 import 'package:mobile_app/config/constants/app_config.dart';
 import 'package:mobile_app/config/routes/app_routes.gr.dart';
 import 'package:mobile_app/data/repository/employee_repository.dart';
-
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/auth/otp/cubit/otp_cubit.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
@@ -17,7 +16,6 @@ import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/gradient_background_container.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
 class OtpScreen extends StatelessWidget {
@@ -126,10 +124,12 @@ class OtpScreen extends StatelessWidget {
                               }
                               if (state.otpSubmissionStatus ==
                                   OtpStatus.submissionSuccess) {
-                                final preferance =
-                                    await SharedPreferences.getInstance();
+                                // final preferance =
+                                // await SharedPreferences.getInstance();
                                 if (route == 'login' && userRole != null) {
-                                  preferance.setString('role', userRole!.name);
+                                  // preferance.setString('role', userRole!.name);
+                                  await _authService
+                                      .saveUserRole(userRole!.name);
                                   if (context.mounted) {
                                     await _authService.setIsAuthenticated();
                                     if (context.mounted) {
@@ -143,16 +143,18 @@ class OtpScreen extends StatelessWidget {
                                         .read<RoleCubit>()
                                         .state
                                         .userRole;
-                                    preferance.setString('role', role.name);
-
-                                    if (role == UserRole.employee) {
-                                      //route to employee stepper
-                                      context.router.replaceAll(
-                                          [const EmployeeStepperRoute()]);
-                                    } else if (role == UserRole.employer) {
-                                      context.router.replaceAll(
-                                          [const EmployerStepperRoute()]);
-                                      //route to employer stepper
+                                    // preferance.setString('role', role.name);
+                                    await _authService.saveUserRole(role.name);
+                                    if (context.mounted) {
+                                      if (role == UserRole.employee) {
+                                        //route to employee stepper
+                                        context.router.replaceAll(
+                                            [const EmployeeStepperRoute()]);
+                                      } else if (role == UserRole.employer) {
+                                        context.router.replaceAll(
+                                            [const EmployerStepperRoute()]);
+                                        //route to employer stepper
+                                      }
                                     }
                                   }
                                 }

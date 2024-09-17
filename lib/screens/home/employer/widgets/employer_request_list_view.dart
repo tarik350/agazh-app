@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/config/constants/app_colors.dart';
@@ -12,6 +13,8 @@ import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/screens/home/bloc/home_bloc.dart';
 import 'package:mobile_app/utils/dialogue/error_dialogue.dart';
 import 'package:mobile_app/utils/dialogue/success_dialogue.dart';
+
+import '../../../../config/constants/app_image.dart';
 
 // employee_request_list.dart
 class EmployerRequestList extends StatelessWidget {
@@ -73,22 +76,28 @@ class EmployerRequestList extends StatelessWidget {
                     child: Row(
                       children: [
                         ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(15), // Rounded corners
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: employee.profilePicturePath,
-                              progressIndicatorBuilder:
-                                  (context, _, progress) => const Center(
-                                      child: CircularProgressIndicator()),
-                              errorWidget: (context, _, err) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(20),
+                            child: SizedBox(
+                              width: 100.h,
+                              height: 100.h,
+                              child: CachedNetworkImage(
+                                imageUrl: employee.profilePicturePath,
+                                fit: BoxFit.cover,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) => Center(
+                                        child: SizedBox(
+                                            width: 10.0.w,
+                                            height: 10.0.h,
+                                            child: CircularProgressIndicator(
+                                                value: downloadProgress
+                                                    .progress))),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                  AppImage.profilePlaceHolder,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(

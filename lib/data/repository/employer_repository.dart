@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/data/models/Employer.dart';
 import 'package:mobile_app/data/models/employee.dart';
+import 'package:mobile_app/services/auth_service.dart';
+import 'package:mobile_app/services/init_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployerRepository {
   Employer? _employer;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _authService = getit<AuthService>();
 
   Employer? getUser() {
     return _employer ?? const Employer();
@@ -105,7 +108,9 @@ class EmployerRepository {
   Future<List<Map<String, dynamic>>?> getRequestsForEmployee() async {
     try {
       // Step 1: Fetch all requests made by the employer
-      final employerId = _auth.currentUser!.uid;
+      // final employerId = _auth.currentUser!.uid;
+
+      final employerId = await _authService.getUserId();
       var requestsSnapshot = await _firestore
           .collection('requests')
           .where('employerId', isEqualTo: employerId)
@@ -281,7 +286,7 @@ class EmployerRepository {
   Future<void> updateEmployerPassword(String newPassword) async {
     try {
       // Get the current user ID
-      final userId = _auth.currentUser?.uid;
+      final userId = await getit<AuthService>().getUserId();
 
       if (userId == null) {
         throw Exception("User is not logged in");
