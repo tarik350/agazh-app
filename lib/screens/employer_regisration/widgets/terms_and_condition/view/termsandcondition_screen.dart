@@ -10,10 +10,12 @@ import 'package:mobile_app/data/repository/employee_repository.dart';
 import 'package:mobile_app/data/repository/employer_repository.dart';
 import 'package:mobile_app/screens/employer_regisration/widgets/terms_and_condition/cubit/terms_and_conditions_cubit.dart';
 import 'package:mobile_app/screens/role/cubit/role_cubit.dart';
+import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/auth_service.dart';
 import 'package:mobile_app/services/init_service.dart';
 import 'package:mobile_app/utils/widgets/custom_button.dart';
 import 'package:mobile_app/utils/widgets/custom_textfiled.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../cubit/employer_registration_cubit.dart';
 
@@ -29,6 +31,9 @@ class TermsAndConditionScreen extends StatelessWidget {
           employerRepositroy: context.read<EmployerRepository>()),
       child: BlocConsumer<TermsandconditionCubit, TermsAndConditionState>(
         listener: (context, state) async {
+          final preferences = await SharedPreferences.getInstance();
+          final role = preferences.getString('role');
+
           if (state.status.isSubmissionFailure) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -38,6 +43,13 @@ class TermsAndConditionScreen extends StatelessWidget {
               );
           } else if (state.status.isSubmissionSuccess) {
             await _authService.setIsAuthenticated();
+            if (role == UserRole.employee.name) {
+              await _authService
+                  .saveUserID(context.read<EmployeeRepository>().employee.id);
+            } else {
+              await _authService
+                  .saveUserID(context.read<EmployerRepository>().employer.id);
+            }
             if (context.mounted) {
               context.router.replaceAll([const AgazhAppRoute()]);
             }

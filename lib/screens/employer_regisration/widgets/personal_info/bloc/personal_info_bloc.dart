@@ -12,6 +12,7 @@ import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/mo
 import 'package:mobile_app/screens/employer_regisration/widgets/personal_info/models/LastName.dart';
 import 'package:mobile_app/screens/role/enums/selected_role.dart';
 import 'package:mobile_app/services/firestore_service.dart';
+import 'package:uuid/uuid.dart';
 
 part 'personal_info_event.dart';
 part 'personal_info_state.dart';
@@ -21,6 +22,7 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
   final EmployeeRepository employeeRepository;
   final _auth = FirebaseAuth.instance;
   final FirebaseService _firebaseService = FirebaseService();
+  final uuid = const Uuid();
 
   PersonalInfoBloc(
       {required this.employerRepositroy, required this.employeeRepository})
@@ -61,9 +63,10 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
       IdCardChangedFront event, Emitter<PersonalInfoState> emit) async {
     emit(state.copyWith(idCardUploadStatusFront: ImageUploadStatus.loading));
     try {
+      final fileRef = uuid.v4();
       final response = await _firebaseService.uploadImgeToStorage(
           event.path, event.file,
-          fileName: "${_auth.currentUser!.uid}id_front");
+          fileName: "${fileRef}id_front");
       if (response.isNotEmpty) {
         emit(state.copyWith(
             idCardUploadStatusFront: ImageUploadStatus.completed,
@@ -79,9 +82,11 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
       IdCardChangedBack event, Emitter<PersonalInfoState> emit) async {
     emit(state.copyWith(idCardUploadStatusBack: ImageUploadStatus.loading));
     try {
+      final fileRef = uuid.v4();
+
       final response = await _firebaseService.uploadImgeToStorage(
           event.path, event.file,
-          fileName: "${_auth.currentUser!.uid}id_back");
+          fileName: "${fileRef}id_back");
       if (response.isNotEmpty) {
         emit(state.copyWith(
             idCardUploadStatusBack: ImageUploadStatus.completed,
@@ -140,7 +145,8 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
               lastName: state.lastName.value,
               idCardImagePathFront: state.idCardPathStringFront,
               idCardImagePathBack: state.idCardPathStringBack,
-              id: _auth.currentUser!.uid,
+              // id: _auth.currentUser!.uid,
+              id: uuid.v4(),
               profilePicturePath: state.profilePicturePathString);
         } else {
           employeeRepository.updatePersonalInfo(
@@ -149,7 +155,8 @@ class PersonalInfoBloc extends Bloc<PersonalInfoEvent, PersonalInfoState> {
               idCardImagePathFront: state.idCardPathStringFront,
               idCardImagePathBack: state.idCardPathStringBack,
               profilePicturePath: state.profilePicturePathString,
-              id: _auth.currentUser!.uid);
+              // id: _auth.currentUser!.uid
+              id: uuid.v4());
         }
 
         emit(state.copyWith(status: FormzStatus.success));

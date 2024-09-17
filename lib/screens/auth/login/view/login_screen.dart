@@ -203,6 +203,7 @@ class _LoginButton extends StatelessWidget {
               preference.setString('role', userRole.name);
               if (context.mounted) {
                 await _authService.setIsAuthenticated();
+                await _authService.saveUserID(state.userId ?? "");
                 if (context.mounted) {
                   context.router.replaceAll([const AgazhAppRoute()]);
                 }

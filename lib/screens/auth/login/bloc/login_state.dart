@@ -7,11 +7,13 @@ class LoginState extends Equatable {
   final String? errorMessage;
   final PIN password;
   final String? verificationId;
+  final String? userId;
   final UserRole userRole;
 
   const LoginState(
       {this.status = FormzStatus.pure,
       this.errorMessage,
+      this.userId,
       this.userRole = UserRole.none,
       this.password = const PIN.pure(),
       this.verificationId,
@@ -23,6 +25,7 @@ class LoginState extends Equatable {
       String? errorMessage,
       PIN? password,
       UserRole? userRole,
+      String? userId,
       String? verificationId}) {
     //PROCESSED WITH OUT VERIFICATION ID FOR NOT
     //OTP IS DISABLED FOR NOT
@@ -38,6 +41,7 @@ class LoginState extends Equatable {
       status: status ?? this.status,
       userRole: userRole ?? this.userRole,
       password: password ?? this.password,
+      userId: userId,
       errorMessage: status == FormzStatus.submissionFailure
           ? (errorMessage ?? this.errorMessage ?? 'Unknown error occured')
           : errorMessage ?? this.errorMessage,
@@ -53,5 +57,6 @@ class LoginState extends Equatable {
         userRole,
         password,
         verificationId,
+        userId
       ];
 }

@@ -72,6 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // if (verificationId != null) {
       emit(state.copyWith(
         status: FormzStatus.success,
+        userId: employee != null ? employee['id'] : employer!['id'],
         userRole: employee != null ? UserRole.employee : UserRole.employer,
         // verificationId: verificationId
       ));

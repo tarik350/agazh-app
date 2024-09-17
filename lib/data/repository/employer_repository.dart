@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/data/models/Employer.dart';
 import 'package:mobile_app/data/models/employee.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployerRepository {
   Employer? _employer;
@@ -11,6 +12,8 @@ class EmployerRepository {
   Employer? getUser() {
     return _employer ?? const Employer();
   }
+
+  Employer get employer => _employer ?? const Employer();
 
   void updatePhone(String phone) {
     _employer = (_employer ?? const Employer()).copyWith(phone: phone);
@@ -54,12 +57,12 @@ class EmployerRepository {
 
   Future<void> saveEmployer() async {
     try {
-      if (_employer == null) {
+      if (_employer == null || _employer?.id == null) {
         throw Exception("Employer can not be null");
       }
       await _firestore
           .collection('employers')
-          .doc(_auth.currentUser!.uid)
+          .doc(_employer?.id)
           .set(_employer!.toJson());
     } catch (e) {
       rethrow;
@@ -72,7 +75,13 @@ class EmployerRepository {
     //
     try {
       // Get the currently authenticated user ID
-      String userId = _auth.currentUser!.uid;
+      // String userId = _auth.currentUser!.uid;
+      final preference = await SharedPreferences.getInstance();
+      final userId = preference.getString('userId');
+      if (userId == null) {
+        //todo throw exception and show error
+        return null;
+      }
 
       // Fetch the document from Firestore
       DocumentSnapshot docSnapshot =

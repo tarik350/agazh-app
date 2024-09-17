@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/data/models/employee.dart';
 import 'package:mobile_app/screens/employee/widgets/demography/bloc/employee_demography_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/Employer.dart';
 
@@ -13,6 +14,8 @@ class EmployeeRepository {
   Employee? getUser() {
     return _employee ?? const Employee();
   }
+
+  Employee get employee => _employee ?? const Employee();
 
   void updateDemographyInformation(
       {required String city,
@@ -94,12 +97,12 @@ class EmployeeRepository {
 
   Future<void> saveEmployee() async {
     try {
-      if (_employee == null) {
+      if (_employee == null || _employee?.id == null) {
         throw Exception("Employee can not be null");
       }
       await _firestore
           .collection('employee')
-          .doc(_auth.currentUser!.uid)
+          .doc(_employee?.id)
           .set(_employee!.toJson());
     } catch (e) {
       rethrow;
@@ -109,12 +112,14 @@ class EmployeeRepository {
   Future<Employee?> getEmployeeByCurrentUserUid() async {
     try {
       final User? user = _auth.currentUser;
-      if (user == null) {
-        return null;
-      }
+      // if (user == null) {
+      //   return null;
+      // }
+      final preference = await SharedPreferences.getInstance();
+      final userId = preference.getString('userId');
 
       final DocumentSnapshot doc =
-          await _firestore.collection('employee').doc(user.uid).get();
+          await _firestore.collection('employee').doc(userId).get();
 
       if (doc.exists) {
         return Employee.fromDocument(doc);
